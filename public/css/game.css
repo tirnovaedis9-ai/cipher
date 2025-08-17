@@ -1,0 +1,1426 @@
+/* Smooth scrolling for anchor links (if used) */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Game Section */
+.game-section {
+    padding: 120px 0;
+    background: linear-gradient(135deg, #1C2A41 0%, #0F1A2B 100%);
+}
+
+.game-info {
+    text-align: center;
+}
+
+.game-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature {
+    background: rgba(224, 225, 230, 0.07);
+    backdrop-filter: blur(5px);
+    padding: 1.8rem 0.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(224, 225, 230, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    background: rgba(224, 225, 230, 0.1);
+}
+
+.feature i {
+    font-size: 2.2rem;
+    color: #00AEEF; /* Neon Camgöbeği */
+    margin-bottom: 0.8rem;
+}
+
+.feature h3 {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+}
+
+.feature p {
+    color: #A0A0B0; /* Grafit Grisi */
+    line-height: 1.6;
+}
+
+
+
+/* Game Modal Styles */
+.game-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 26, 43, 0.9);
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+}
+
+#imageCropperModal {
+    z-index: 2001; /* Ensure it's on top of other modals */
+}
+
+
+
+#playerProfileModal .game-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 920px; /* Standard game screen width */
+    max-height: 70vh; /* Adjusted for better visual balance */
+    overflow-y: hidden; /* Prevent main modal scroll */
+    padding-bottom: 2rem; /* Restore bottom padding for scrollbar spacing */
+}
+
+#playerInfoModal .game-container {
+    overflow: visible; /* Allow dropdown to escape */
+}
+
+#playerInfoModal .game-container {
+    overflow: visible;
+}
+
+.game-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 920px;
+    max-height: 95vh;
+    background: linear-gradient(135deg, #1C2A41, #0F1A2B);
+    border-radius: 20px;
+    padding-top: 60px; /* Adjusted padding-top for symmetry */
+    padding-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 15px; /* Space for scrollbar */
+    scroll-behavior: smooth; /* Smooth scrolling */
+    overflow-y: auto;
+    border: 2px solid rgba(0, 174, 239, 0.3);
+}
+
+    .game-controls-top-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45px; /* Kısaltılmış yükseklik */
+    background: linear-gradient(90deg, #0F1A2B, #1C2A41);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    display: flex;
+    justify-content: space-between; /* Symmetrical alignment */
+    align-items: center;
+    padding: 0 15px; /* Symmetrical padding */
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.game-info-display {
+    display: flex;
+    justify-content: center; /* Center the items within the info display */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.2rem; /* Boşluk daha da azaltıldı */
+    margin-top: 0; /* Remove the top margin */
+    margin-left: auto; /* Sağa kaydır */
+}
+
+.game-info-display-in-game {
+    position: absolute;
+    top: -20px; /* Moved further up with negative top value */
+    left: 50%;
+    transform: translateX(-50%) scale(1.15); /* Scaled UP by 15% */
+    z-index: 5; /* Ensure it's above the game grid but below controls */
+    background: none; /* Removed background */
+    padding: 0; /* Removed padding */
+    border-radius: 0; /* Removed border-radius */
+    border: none; /* Removed border */
+    box-shadow: none; /* Removed box-shadow */
+}
+
+.player-profile, .timer, .mode-info {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Increased gap by 15% */
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.86rem; /* Increased font-size by 15% */
+    background: rgba(224, 225, 230, 0.07);
+    padding: 0.4025rem 0.805rem; /* Increased padding by 15% */
+    border-radius: 6px; /* Increased border-radius by 15% */
+    border: 1px solid rgba(224, 225, 230, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Adjusted shadow */
+    margin: 0; /* Added margin: 0; */
+}
+
+.profile-logo {
+    width: 25; /* Increased width by 15% */
+    height: 25px; /* Increased height by 15% */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #00AEEF; /* Reduced border */
+}
+
+.player-profile .flag-icon {
+    height: 15px; /* Increased height by 15% */
+    width: auto;
+    border-radius: 2px;
+}
+
+.game-header-timers {
+    display: flex;
+    gap: 12px; /* Increased gap by 15% */
+    margin: 0; /* Added margin: 0; */
+}
+
+.timer span, .mode-info span {
+    color: #00AEEF;
+    font-weight: 700;
+    font-size: 0.98rem; /* Increased font-size by 15% */
+    font-family: monospace; /* Prevents timer jitter */
+}
+
+.player-profile, .timer, .mode-info {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Original gap */
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.75rem; /* Original font size */
+    background: rgba(224, 225, 230, 0.07);
+    padding: 0.35rem 0.7rem; /* Original padding */
+    border-radius: 5px; /* Original border-radius */
+    border: 1px solid rgba(224, 225, 230, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-logo {
+    width: 21px; /* Original width */
+    height: 21px; /* Original height */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #00AEEF; /* Original border */
+}
+
+.player-profile .flag-icon {
+    height: 14px; /* Original height */
+    width: auto;
+    border-radius: 2px;
+}
+
+.game-header-timers {
+    display: flex;
+    gap: 10px; /* Original gap */
+}
+
+.timer span, .mode-info span {
+    color: #00AEEF;
+    font-weight: 700;
+    font-size: 0.85rem; /* Original font size */
+    font-family: monospace; /* Prevents timer jitter */
+}
+
+
+
+.game-area {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    min-height: 70vh; /* Give it some height to allow centering */
+}
+
+.game-controls-top-right h2.modal-title {
+    color: #00AEEF; /* Neon Camgöbeği */
+    font-size: 1.5rem;
+    /* margin: 0; /* Removed */
+    flex-grow: 1; /* Allow title to take available space */
+    text-align: center; /* Center the title */
+    line-height: 45px; /* Match container height for vertical centering */
+    margin-top: auto; /* Force vertical centering */
+    margin-bottom: auto; /* Force vertical centering */
+}
+
+.game-controls-top-right .control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Game Screen */
+.game-screen {
+    display: none;
+    height: 100%; /* Ensure game screens take full height of parent */
+    flex-direction: column; /* Enable flexbox for vertical layout */
+}
+
+.game-screen.active {
+    display: flex; /* Use flex to enable column direction */
+}
+
+/* Main Menu Styles */
+#mainMenu h3 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.game-modes {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.mode-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #E0E1E6;
+    padding: 0.8rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-height: 100px;
+}
+
+.mode-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 174, 239, 0.7);
+    box-shadow: 0 8px 30px rgba(0, 174, 239, 0.3);
+}
+
+.mode-btn i {
+    font-size: 1.8rem;
+    color: #00AEEF; /* Neon Camgöbeği */
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover i {
+    color: #00d4ff;
+    text-shadow: 0 0 15px #00d4ff;
+}
+
+.mode-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.mode-size {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.mode-difficulty {
+    font-size: 0.7rem;
+    color: #A0A0B0;
+    font-weight: 400;
+}
+
+
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #8A2BE2, #6A1BB6); /* Canlı mor gradyan */
+    border-color: #8A2BE2;
+    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); /* Mor gölge */
+    color: white; /* Seçili modda beyaz metin */
+    transform: scale(1.03); /* Seçili olduğunda hafif büyüme */
+}
+
+.mode-btn.active span {
+    color: rgba(255, 255, 255, 0.8); /* Seçili modda span rengi */
+}
+
+/* Individual button colors based on difficulty - Monochrome Theme */
+
+
+
+
+
+.leaderboard-chat-buttons {
+    display: flex;
+    gap: 1rem; /* Boşluk ekle */
+    margin-top: 1rem; /* Üstten boşluk ekle */
+    justify-content: center; /* Butonları ortala */
+    flex-wrap: wrap; /* Küçük ekranlarda alt alta geçmelerini sağla */
+}
+
+.leaderboard-chat-buttons .btn-secondary {
+    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Neon Camgöbeği ve Mor gradyan */
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 174, 239, 0.3);
+}
+
+.leaderboard-chat-buttons .btn-secondary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(0, 174, 239, 0.4);
+}
+
+.game-info-display {
+    display: flex;
+    justify-content: center; /* Center the items within the info display */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Increased gap */
+    margin-top: 0; /* Remove the top margin */
+}
+
+.player-profile, .timer, .mode-info {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* ~15% smaller */
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.75rem; /* ~15% smaller */
+    background: rgba(224, 225, 230, 0.07);
+    padding: 0.35rem 0.7rem; /* ~15% smaller */
+    border-radius: 5px; /* ~15% smaller */
+    border: 1px solid rgba(224, 225, 230, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-logo {
+    width: 21px; /* ~15% smaller */
+    height: 21px; /* ~15% smaller */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #00AEEF; /* Reduced border */
+}
+
+.player-profile .flag-icon {
+    height: 14px;
+    width: auto;
+    border-radius: 2px;
+}
+
+.game-header-timers {
+    display: flex;
+    gap: 10px; /* Reduced gap */
+}
+
+.timer span, .mode-info span {
+    color: #00AEEF;
+    font-weight: 700;
+    font-size: 0.85rem; /* ~15% smaller */
+    font-family: monospace; /* Prevents timer jitter */
+}
+
+.game-area {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    min-height: 70vh; /* Give it some height to allow centering */
+}
+
+.game-grid {
+    display: inline-grid;
+    gap: 2px;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(224, 225, 230, 0.1);
+    border-radius: 10px;
+}
+
+.grid-cell {
+    width: var(--cell-size, 40px);
+    height: var(--cell-size, 40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.grid-cell:hover {
+    border-color: #00AEEF; /* Neon Camgöbeği */
+    transform: scale(1.1);
+}
+
+/* --- START: Instant Feedback Styles --- */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-1px); }
+  20%, 40%, 60%, 80% { transform: translateX(1px); }
+}
+
+.grid-cell.correct-feedback {
+    border-color: #00FF8C !important; /* Use !important to override hover effects */
+    box-shadow: 0 0 10px rgba(0, 255, 140, 0.7);
+    transform: scale(1); /* Prevent hover scale effect on correct cells */
+    cursor: not-allowed;
+}
+
+.grid-cell.incorrect-feedback {
+    animation: shake 0.5s ease-in-out;
+    border-color: #FF4757; /* Hata Kırmızısı */
+}
+/* --- END: Instant Feedback Styles --- */
+
+.start-btn {
+    background: linear-gradient(135deg, #00AEEF, #0077B6);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem; /* Küçültülmüş padding */
+    font-size: 1rem; /* Küçültülmüş font boyutu */
+    font-weight: 600;
+    border-radius: 25px; /* Hafif yuvarlak köşeler */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem; /* Ayarlanmış margin-top */
+    box-shadow: 0 8px 25px rgba(0, 174, 239, 0.3);
+}
+
+.start-btn:hover {
+    transform: translateY(-3px) scale(1.02); /* More pronounced hover effect */
+    box-shadow: 0 12px 35px rgba(0, 174, 239, 0.4);
+}
+
+.start-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.game-message {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-height: 1.5rem;
+}
+
+/* Leaderboard Styles */
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.leaderboard-header h3 {
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.leaderboard-tabs {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 1rem; /* Pushed down for symmetry */
+    padding-top: 5px; /* Keep for hover effect */
+}
+
+.tab-btn {
+    background: rgba(224, 225, 230, 0.1);
+    border: 2px solid rgba(0, 174, 239, 0.3);
+    color: #fff;
+    padding: 0.55rem 1.1rem; /* Reduced by 10% */
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem; /* Reduced by 10% */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    outline: none;
+    user-select: none;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #00AEEF, #0077B6);
+    border-color: #00AEEF;
+    box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+    color: white;
+}
+
+.tab-btn:active {
+    background: linear-gradient(135deg, #00AEEF, #0077B6);
+    border-color: #00AEEF;
+    box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+    transform: none;
+}
+
+.tab-btn:hover {
+    background: rgba(0, 174, 239, 0.2);
+    border-color: #00AEEF;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.3);
+}
+
+.leaderboard-list {
+    list-style: none;
+    padding: 0 28px; /* Replaced padding-right with balanced horizontal padding */
+}
+
+.leaderboard-content {
+    flex-grow: 1; /* Allow content to take available space */
+    display: flex; /* Enable flexbox for internal layout */
+    flex-direction: column; /* Arrange children vertically */
+}
+
+.leaderboard-list {
+    list-style: none;
+    padding: 0 28px; /* Replaced padding-right with balanced horizontal padding */
+    flex-grow: 1; /* Allow list to take available space */
+    overflow-y: auto; /* Enable scrolling for the list */
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem; /* Add horizontal padding */
+    background: rgba(224, 225, 230, 0.05);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #00AEEF;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.leaderboard-item:hover {
+    background: rgba(224, 225, 230, 0.07);
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(0, 174, 239, 0.4);
+}
+
+/* Rank-specific styles - Focused Glow Effect */
+.leaderboard-item.rank-1 {
+    background: linear-gradient(90deg, rgba(254, 234, 0, 0.15) 0%, rgba(254, 234, 0, 0.0) 100%);
+    border-left-color: #FEEA00; /* Vibrant Gold */
+    box-shadow: 0 2px 8px rgba(254, 234, 0, 0.3); /* Tighter, focused glow */
+}
+
+.leaderboard-item.rank-2 {
+    background: linear-gradient(90deg, rgba(229, 228, 226, 0.15) 0%, rgba(229, 228, 226, 0.0) 100%);
+    border-left-color: #E5E4E2; /* Vibrant Silver/Platinum */
+    box-shadow: 0 2px 8px rgba(229, 228, 226, 0.25); /* Tighter, focused glow */
+}
+
+.leaderboard-item.rank-3 {
+    background: linear-gradient(90deg, rgba(232, 145, 45, 0.15) 0%, rgba(232, 145, 45, 0.0) 100%);
+    border-left-color: #E8912D; /* Vibrant Bronze */
+    box-shadow: 0 2px 8px rgba(232, 145, 45, 0.25); /* Tighter, focused glow */
+}
+
+.leaderboard-rank {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00AEEF;
+    min-width: 40px; /* Ensure rank alignment */
+    text-align: center;
+}
+
+.leaderboard-left-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Increased gap for better spacing */
+    flex-grow: 1; /* Allow this group to take up available space */
+    min-width: 0; /* Prevent overflow issues with flexbox */
+}
+
+.leaderboard-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Adjusted gap */
+    justify-content: flex-start;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.leaderboard-info .flag-icon {
+    width: 24px;
+    height: 16px;
+    border-radius: 3px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+.leaderboard-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #00AEEF;
+}
+
+.leaderboard-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1; /* Allow name to shrink if needed */
+}
+
+.country-item .leaderboard-info {
+    gap: 0.75rem; /* Adjust gap specifically for country items */
+}
+
+.country-item .country-flag {
+    display: flex;
+    align-items: center;
+    width: 30px; /* Match avatar width */
+    justify-content: center;
+}
+
+.leaderboard-player-count, .leaderboard-mode {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: #A0A0B0; /* More subtle color */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.leaderboard-score {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00AEEF;
+    padding-left: 1rem; /* Add space between info and score */
+    text-align: right;
+    min-width: 100px; /* Ensure score alignment */
+}
+
+/* Player Info Modal Specific Styles */
+.player-info-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    position: relative; /* Z-index'in çalışması için */
+    z-index: 9998; /* Diğer modal içeriğinin üzerinde olmasını sağlar */
+}
+
+.player-info-form-content input[type="text"],
+.player-info-form-content input[type="password"],
+.player-info-form-content select {
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(224, 225, 230, 0.2);
+    background-color: rgba(224, 225, 230, 0.1);
+    color: #fff;
+    font-size: 1rem;
+    /* Removed position and z-index to avoid interfering with native select dropdown */
+}
+
+.player-info-form-content input[type="text"]::placeholder,
+.player-info-form-content input[type="password"]::placeholder {
+    color: #A0A0B0; /* Grafit Grisi */
+}
+
+.player-info-form-content select option {
+    background-color: #1C2A41;
+    color: #fff;
+}
+
+.submit-info-btn {
+    background: linear-gradient(135deg, #00AEEF, #0077B6);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-info-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 174, 239, 0.3);
+}
+
+/* Auth Tabs */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(224, 225, 230, 0.1);
+}
+
+.auth-tab-btn {
+    background: none;
+    border: none;
+    color: #A0A0B0;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.auth-tab-btn.active {
+    color: #00AEEF;
+}
+
+.auth-tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+.auth-tab-btn.active::after {
+    background: #00AEEF;
+}
+
+.auth-tab-content {
+    display: none;
+}
+
+.auth-tab-content.active {
+    display: block;
+}
+
+/* Active color swatch in palette */
+.color-swatch.active {
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+/* Game Over Screen Styles */
+#gameOverScreen {
+    text-align: center;
+    color: #fff;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding-top: 2rem; /* Add space for the animation glow */
+    box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+.game-over-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.game-over-actions .action-btn {
+    min-width: 150px;
+    height: 40px; /* Sabit yükseklik */
+    padding: 0 1.5rem; /* Dikey padding'i kaldırıp içeriği ortalıyoruz */
+}
+
+.x-share-btn {
+    background-color: #000;
+    color: #fff;
+}
+
+.game-over-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem; /* Reduced size */
+    margin-bottom: 1.5rem; /* Reduced margin */
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Win Text Animation */
+@keyframes winTextAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+        text-shadow: 0 0 0 rgba(0, 255, 140, 0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0) scale(1.1);
+        text-shadow: 0 0 30px rgba(0, 255, 140, 0.8), 0 0 60px rgba(0, 255, 140, 0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1.1);
+        text-shadow: 0 0 30px rgba(0, 255, 140, 0.8), 0 0 60px rgba(0, 255, 140, 0.5);
+    }
+}
+
+.game-over-title.win {
+    animation: winTextAnimation 1.5s ease-out forwards;
+    color: #00FF8C; /* Vibrant Green for WIN */
+}
+
+/* Lose Text Animation */
+@keyframes loseTextAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(1.2);
+        text-shadow: 0 0 0 rgba(255, 71, 87, 0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0) scale(0.9);
+        text-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(0.8);
+        text-shadow: none;
+    }
+}
+
+.game-over-title.lose {
+    animation: loseTextAnimation 1.5s ease-out forwards;
+    color: #FF4757; /* Hata Kırmızısı */
+}
+
+.game-over-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem; /* Reduced gap */
+    margin: 0 auto 2rem auto; /* Centered and reduced bottom margin */
+    max-width: 450px; /* Constrain width */
+    width: 100%;
+}
+
+.stat-item {
+    background: rgba(224, 225, 230, 0.1);
+    padding: 0.75rem; /* Reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item h4 {
+    font-size: 0.9rem; /* Reduced size */
+    color: #00AEEF;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.stat-item p {
+    font-size: 1.3rem; /* Reduced size */
+    font-weight: bold;
+}
+
+#profileScreen h3 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.profile-settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 400px;
+    margin: 0 auto;
+    max-height: 60vh; /* Set a max height to contain the content */
+    overflow-y: auto; /* Add a scrollbar only when needed */
+    padding-right: 1rem; /* Add space for the scrollbar */
+}
+
+.profile-section {
+    background: rgba(224, 225, 230, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(224, 225, 230, 0.1);
+}
+
+.profile-section h4 {
+    color: #00AEEF;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 174, 239, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #00AEEF;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(0, 174, 239, 0.4);
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-group.vertical {
+    flex-direction: column;
+}
+
+.input-group input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(224, 225, 230, 0.2);
+    background-color: rgba(224, 225, 230, 0.1);
+    color: #fff;
+    font-size: 1rem;
+}
+
+
+/* Player Profile Modal Styles */
+.player-profile-content {
+    padding: 1.5rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-grow: 1; /* Allow content to take available space */
+    overflow-y: auto; /* Enable scrolling for content */
+    padding-right: 15px; /* Space for scrollbar */
+    box-sizing: border-box; /* Include padding in element's total width/height */
+    flex-shrink: 1; /* Allow content to shrink if needed */
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Boşluğu daha da azalttım */
+    margin-bottom: 1.5rem;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(224, 225, 230, 0.1);
+}
+
+.profile-header .profile-flag .flag-icon {
+    width: 40px;
+    height: 27px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 174, 239, 0.3);
+    vertical-align: middle; /* Bayrağı dikeyde ortaladım */
+}
+
+.profile-avatar-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent; /* Mevcut mavi çerçeveyi kaldırdım */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-avatar-small-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Match profile-avatar-small size */
+    height: 50px; /* Match profile-avatar-small size */
+    overflow: visible;
+}
+
+/* Profile Stars Container (for small avatars) */
+.profile-avatar-small-wrapper .profile-stars-container {
+    position: absolute;
+    top: -10px; /* Adjust for 50px avatar */
+    left: -10px; /* Adjust for 50px avatar */
+    width: 70px; /* Diameter of the circle (50px avatar + 20px padding) */
+    height: 70px; /* Diameter of the circle */
+    border-radius: 50%; /* Make it circular */
+    z-index: 10; /* Ensure stars are on top */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+.profile-avatar-small-wrapper .star-item {
+    position: absolute;
+    top: 7px; /* Adjusted to align with the border for 50px avatar */
+    left: 50%; /* Center horizontally within the container */
+    transform-origin: 0 28px; /* Adjusted to be the radius of the border */
+    transform: translateX(-50%) rotate(0deg); /* Initial position, rotation handled by inline style */
+    pointer-events: auto; /* Allow interaction with the star itself if needed */
+}
+
+.profile-avatar-small-wrapper .profile-star {
+    font-size: 0.6rem; /* Smaller size for stars to fit above small avatar */
+}
+
+/* Neon Level Borders */
+.profile-avatar-small.level-1-border { border: 3px solid transparent; background: conic-gradient(#A0A0B0, #808090, #A0A0B0) border-box; background-origin: border-box; } /* Gri */
+.profile-avatar-small.level-2-border { border: 3px solid transparent; background: conic-gradient(#2196F3, #1976D2, #2196F3) border-box; background-origin: border-box; } /* Mavi */
+.profile-avatar-small.level-3-border { border: 3px solid transparent; background: conic-gradient(#00FF8C, #00E676, #00FF8C) border-box; background-origin: border-box; } /* Yeşil */
+.profile-avatar-small.level-4-border { border: 3px solid transparent; background: conic-gradient(#FFD700, #FFC107, #FFD700) border-box; background-origin: border-box; } /* Altın */
+.profile-avatar-small.level-5-border { border: 3px solid transparent; background: conic-gradient(#FF0077, #C51162, #FF0077) border-box; background-origin: border-box; } /* Fuşya */
+.profile-avatar-small.level-6-border { border: 3px solid transparent; background: conic-gradient(#8A2BE2, #673AB7, #8A2BE2) border-box; background-origin: border-box; } /* Mor */
+.profile-avatar-small.level-7-border { border: 3px solid transparent; background: conic-gradient(#FF4757, #D32F2F, #FF4757) border-box; background-origin: border-box; } /* Kırmızı */
+.profile-avatar-small.level-8-border { border: 3px solid transparent; background: conic-gradient(#00AEEF, #0077B6, #00AEEF) border-box; background-origin: border-box; } /* Neon Camgöbeği */
+.profile-avatar-small.level-9-border { 
+    border: 5px solid transparent; 
+    background: conic-gradient(#FFD700, #FF0077, #FFD700) border-box; 
+    background-origin: border-box; 
+} /* Altın-Fuşya Gradyan */
+.profile-avatar-small.level-10-border { 
+    border: 6px solid transparent; 
+    background: conic-gradient(#00AEEF, #8A2BE2, #00AEEF) border-box; 
+    background-origin: border-box; 
+} /* Neon Camgöbeği */
+
+
+
+
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff; /* Rengi beyaz yaptım */
+    text-shadow: 0 0 15px rgba(0, 174, 239, 0.5);
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    background: rgba(224, 225, 230, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(224, 225, 230, 0.1);
+}
+
+.profile-stat-item {
+    text-align: center;
+}
+
+.profile-stat-item h4 {
+    color: #A0A0B0;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.profile-stat-item p {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.profile-recent-games {
+    margin-top: 1.5rem;
+}
+
+.profile-recent-games h3 {
+    color: #00AEEF;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 174, 239, 0.2);
+    padding-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.profile-games-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 250px; /* Limit height for scroll if many games */
+    overflow-y: auto;
+    padding-right: 5px; /* Space for scrollbar */
+    flex-shrink: 0;
+}
+
+.profile-game-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(224, 225, 230, 0.03);
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    border-left: 3px solid #FF0077; /* Fusya Enerjisi */
+    transition: all 0.2s ease;
+}
+
+
+
+.profile-game-mode {
+    font-weight: 600;
+    color: #A0A0B0; /* leaderboard-player-count ile aynı renk */
+    font-size: 1rem;
+}
+
+.profile-game-date {
+    font-size: 0.8rem;
+    color: #A0A0B0;
+}
+
+.profile-game-score {
+    font-weight: 700;
+    color: #00FF8C; /* Vibrant Green */
+    font-size: 1.1rem;
+}
+
+/* Image Cropper Modal Styles */
+#imageCropperModal .game-container {
+    max-width: 600px; /* Make the cropper modal a bit smaller */
+    padding-top: 60px; /* Adjust padding for header */
+}
+
+.cropper-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.cropper-image-container {
+    width: 100%;
+    max-width: 400px; /* Limit image container width */
+    height: 300px; /* Fixed height for the cropper area */
+    background: rgba(224, 225, 230, 0.05);
+    border: 1px solid rgba(224, 225, 230, 0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide parts of the image outside the container */
+}
+
+.cropper-image-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    /* Cropper.js will handle the actual sizing within its canvas */
+}
+
+/* Make cropper circular */
+.cropper-view-box,
+.cropper-face {
+    border-radius: 50%;
+}
+
+.cropper-instructions {
+    color: #A0A0B0;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.game-area-controls {
+    position: absolute;
+    top: 39%;
+    right: 3%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.game-control-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-control-btn i {
+    color: #fff; /* Varsayılan olarak beyaz */
+    transition: color 0.3s ease;
+}
+
+.game-control-btn.active i {
+    color: #00AEEF; /* Aktif olduğunda mavi */
+}
+
+.game-control-btn:hover i {
+    color: #00AEEF; /* Üzerine gelindiğinde mavi */
+}
+
+.leaderboard-chat-buttons .btn-secondary {
+    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Varsayılan olarak daha canlı gradyan */
+    border: none; /* Kenarlığı kaldır */
+    color: white; /* Metin rengi beyaz */
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.2s ease-out; /* Sadece transform için geçiş */
+    box-shadow: none; /* Parlama efektini kaldır */
+}
+
+.leaderboard-chat-buttons .btn-secondary:hover {
+    transform: scale(1.03); /* Daha belirgin ama kusursuz büyüme efekti */
+    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Hover'da aynı gradyanı koru */
+    box-shadow: none; /* Parlama efektini kaldır */
+}
+
+.leaderboard-chat-buttons .btn-secondary:active {
+    background: linear-gradient(135deg, #0077B6, #6A1BB6); /* Daha koyu gradyan */
+    box-shadow: 0 4px 15px rgba(0, 174, 239, 0.4);
+    transform: translateY(0);
+}
+
+/* --- START: Polished Responsive Design --- */
+
+/* Medium Screens (Tablets) */
+@media (max-width: 820px) {
+    /* Game Header: Scale down info display to prevent wrapping too early */
+    .game-info-display {
+        transform: scale(0.9);
+        gap: 0.5rem;
+    }
+    .game-controls-top-right {
+        flex-wrap: nowrap;
+    }
+}
+
+/* Small Screens (Mobiles) */
+@media (max-width: 768px) {
+    /* Game Header: Further scaling and adjustments */
+    .game-controls-top-right {
+        height: 55px;
+        padding: 0 8px;
+    }
+    .game-info-display {
+        transform: scale(0.85);
+        gap: 4px;
+    }
+    .player-profile, .timer, .mode-info {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+        white-space: nowrap;
+    }
+    .profile-logo {
+        width: 18px;
+        height: 18px;
+    }
+    .player-profile .flag-icon {
+        height: 12px;
+    }
+    .game-header-timers {
+        gap: 5px;
+    }
+    .timer span, .mode-info span {
+        font-size: 0.75rem;
+    }
+    .game-container {
+        padding-top: 65px;
+    }
+    .game-controls-top-right h2.modal-title {
+        font-size: 1.1rem;
+    }
+
+    /* Game Over Screen */
+    .game-over-title {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+    }
+    .game-over-stats {
+        gap: 0.75rem;
+        padding: 0.5rem;
+        width: 95%;
+    }
+    .stat-item h4 {
+        font-size: 0.8rem;
+    }
+    .stat-item p {
+        font-size: 1.1rem;
+    }
+    .game-over-actions {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .game-over-actions .action-btn {
+        flex-grow: 1;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+        min-width: 110px;
+    }
+
+    /* Leaderboard */
+    .leaderboard-list { padding: 0 10px; }
+    .leaderboard-item, .leaderboard-left-group, .leaderboard-info { gap: 0.5rem; }
+    .leaderboard-item { padding: 0.5rem; }
+    .leaderboard-rank { min-width: 30px; font-size: 1rem; }
+    .leaderboard-avatar { width: 25px; height: 25px; }
+    .leaderboard-info .flag-icon { width: 20px; height: 14px; }
+    .leaderboard-name { font-size: 0.9rem; }
+    .leaderboard-player-count, .leaderboard-mode { display: none; }
+    .leaderboard-score { min-width: 80px; font-size: 1rem; padding-left: 0.5rem; }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+    /* Game Header */
+    .game-info-display {
+        transform: scale(0.7);
+    }
+
+    /* Game Over Screen */
+    .game-over-title {
+        font-size: 1.8rem;
+    }
+    .game-over-stats {
+        width: 98%;
+        gap: 0.3rem;
+    }
+    .stat-item h4 {
+        font-size: 0.65rem;
+    }
+    .stat-item p {
+        font-size: 1rem;
+    }
+    .game-over-actions .action-btn {
+        width: 100%;
+        max-width: 280px;
+    }
+    .game-over-actions {
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+
+    /* Main Menu */
+    .mode-btn { padding: 0.6rem 0.4rem; }
+    .mode-size { font-size: 0.9rem; }
+    .mode-difficulty { font-size: 0.6rem; }
+
+    /* Leaderboard */
+    .leaderboard-item { flex-wrap: wrap; }
+    .leaderboard-left-group { width: 100%; order: 1; }
+    .leaderboard-score { width: 100%; order: 2; text-align: right; padding-top: 0.25rem; padding-left: 0; min-width: 0; }
+    .leaderboard-name { flex-grow: 1; }
+}

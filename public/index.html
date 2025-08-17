@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIPHER</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/vesting.css">
+    <link rel="stylesheet" href="css/share.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+</head>
+<body>
+    
+    
+    
+    
+    <div id="main-content">
+    <div id="notificationBar" class="notification-bar"></div>
+    <!-- Header -->
+    <header class="header">
+        <div class="language-selector">
+            <button class="language-btn" id="languageBtn">
+                <img src="assets/flags/gb.png" alt="English" id="currentFlag">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="language-dropdown" id="languageDropdown">
+                <a href="#" class="language-option" data-lang="en">
+                    <img src="assets/flags/gb.png" alt="English">
+                    <span>English</span>
+                </a>
+                <a href="#" class="language-option" data-lang="tr">
+                    <img src="assets/flags/tr.png" alt="Türkçe">
+                    <span>Türkçe</span>
+                </a>
+                <a href="#" class="language-option" data-lang="de">
+                    <img src="assets/flags/de.png" alt="Deutsch">
+                    <span>Deutsch</span>
+                </a>
+                <a href="#" class="language-option" data-lang="ko">
+                    <img src="assets/flags/kr.png" alt="한국어">
+                    <span>한국어</span>
+                </a>
+                <a href="#" class="language-option" data-lang="ar">
+                    <img src="assets/flags/sa.png" alt="العربية">
+                    <span>العربية</span>
+                </a>
+                <a href="#" class="language-option" data-lang="es">
+                    <img src="assets/flags/es.png" alt="Español">
+                    <span>Español</span>
+                </a>
+                <a href="#" class="language-option" data-lang="fr">
+                    <img src="assets/flags/fr.png" alt="Français">
+                    <span>Français</span>
+                </a>
+                <a href="#" class="language-option" data-lang="it">
+                    <img src="assets/flags/it.png" alt="Italiano">
+                    <span>Italiano</span>
+                </a>
+                <a href="#" class="language-option" data-lang="ja">
+                    <img src="assets/flags/jp.png" alt="日本語">
+                    <span>日本語</span>
+                </a>
+                <a href="#" class="language-option" data-lang="ru">
+                    <img src="assets/flags/ru.png" alt="Русский">
+                    <span>Русский</span>
+                </a>
+                <a href="#" class="language-option" data-lang="zh">
+                    <img src="assets/flags/cn.png" alt="中文">
+                    <span>中文</span>
+                </a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="header-content-wrapper">
+                <a href="" class="logo-link">
+                    <div class="logo">
+                        <img src="assets/logo.jpg" alt="CIPHER Logo" class="site-logo">
+                        
+                    </div>
+                </a>
+                <nav class="nav">
+                    <a href="#about" class="nav-link" data-i18n="about">About</a>
+                    <a href="#tokenomics" class="nav-link" data-i18n="tokenomics">Token Economy</a>
+                    <a href="#vesting" class="nav-link" data-i18n="vesting">Vesting</a>
+                    <a href="#social" class="nav-link" data-i18n="social">Social</a>
+                    <button class="btn btn-primary play-game-btn" id="headerPlayGameBtn">
+                        <span data-i18n="playGame">Play Game</span>
+                    </button>
+                    <div class="language-selector mobile-language-selector">
+                        <button class="language-btn" id="mobileLanguageBtn">
+                            <img src="assets/flags/gb.png" alt="English" id="mobileCurrentFlag">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="language-dropdown" id="mobileLanguageDropdown">
+                            <a href="#" class="language-option" data-lang="en">
+                                <img src="assets/flags/gb.png" alt="English">
+                                <span>English</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="tr">
+                                <img src="assets/flags/tr.png" alt="Türkçe">
+                                <span>Türkçe</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="de">
+                                <img src="assets/flags/de.png" alt="Deutsch">
+                                <span>Deutsch</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="ko">
+                                <img src="assets/flags/kr.png" alt="한국어">
+                                <span>한국어</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="ar">
+                                <img src="assets/flags/sa.png" alt="العربية">
+                                <span>العربية</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="es">
+                                <img src="assets/flags/es.png" alt="Español">
+                                <span>Español</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="fr">
+                                <img src="assets/flags/fr.png" alt="Français">
+                                <span>Français</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="it">
+                                <img src="assets/flags/it.png" alt="Italiano">
+                                <span>Italiano</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="ja">
+                                <img src="assets/flags/jp.png" alt="日本語">
+                                <span>日本語</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="ru">
+                                <img src="assets/flags/ru.png" alt="Русский">
+                                <span>Русский</span>
+                            </a>
+                            <a href="#" class="language-option" data-lang="zh">
+                                <img src="assets/flags/cn.png" alt="中文">
+                                <span>中文</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title" data-i18n="heroTitle">Test Your Memory, Support Your Country</h1>
+            <p class="hero-subtitle" data-i18n="heroSubtitle">Join the international competition and climb the global leaderboard</p>
+            <button class="btn btn-secondary" data-i18n="buyNow">
+                Buy Now
+            </button>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title" data-i18n="aboutCip">About CIPHER</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 data-i18n="visionMission">Vision & Mission</h3>
+                    <p data-i18n="visionMissionText">CIPHER is revolutionizing the crypto gaming space by combining cognitive challenges with blockchain technology. Our mission is to create an engaging platform where players from around the world can compete, test their memory skills, and represent their countries in a global competition.</p>
+                    
+                    <h3 data-i18n="usp">Unique Selling Propositions</h3>
+                    <ul>
+                        <li><strong data-i18n="usp1Title">Global Competition:</strong> <span data-i18n="usp1Text">Compete against players worldwide and climb country-based leaderboards</span></li>
+                        <li><strong data-i18n="usp2Title">Memory Enhancement:</strong> <span data-i18n="usp2Text">Improve cognitive abilities through challenging color puzzle games</span></li>
+                        <li><strong data-i18n="usp4Title">Community Driven:</strong> <span data-i18n="usp4Text">Build connections with players from your country and beyond</span></li>
+                    </ul>
+
+                    <h3 data-i18n="goals">Goals</h3>
+                    <p data-i18n="goalsText">We aim to create the largest international memory competition platform, fostering healthy competition between nations while building a sustainable and community-driven crypto ecosystem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Token Economics Section -->
+    <section id="tokenomics" class="tokenomics">
+        <div class="container">
+            <h2 class="section-title" data-i18n="tokenomicsTitle">Token Economics</h2>
+            <div class="tokenomics-content">
+                <div class="tokenomics-text">
+                    <h3 data-i18n="tokenDistribution">CIPHER Token Distribution</h3>
+                    <p data-i18n="tokenDistributionText">Our tokenomics are designed to ensure fair distribution and long-term sustainability of the CIPHER ecosystem.</p>
+                    
+                    <div class="token-details">
+                        <div class="token-item">
+                            <span class="token-percentage">90%</span>
+                            <span class="token-label" data-i18n="tokenDetailPublic">Public Sale / Liquidity</span>
+                        </div>
+                        <div class="token-item">
+                            <span class="token-percentage">10%</span>
+                            <span class="token-label" data-i18n="tokenDetailTeam">Team</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="tokenChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vesting Section -->
+    <section id="vesting" class="vesting">
+        <div class="container">
+            <h2 class="section-title" data-i18n="vestingTitle">Vesting Schedule</h2>
+            <div class="vesting-content">
+                <div class="vesting-text">
+                    <p data-i18n="vestingIntro">To ensure the long-term success of the project and build trust, our team tokens are subject to a vesting schedule. This means tokens are released gradually over time, not all at once.</p>
+                    <br>
+                    <div class="vesting-table-wrapper">
+                        <table class="vesting-table">
+                        <thead>
+                            <tr>
+                                <th data-i18n="vestingAllocation">Allocation</th>
+                                <th data-i18n="vestingCliff">Cliff Period</th>
+                                <th data-i18n="vestingTotal">Total Vesting</th>
+                                <th data-i18n="vestingRelease">Release Schedule</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-i18n="vestingTeam" data-label="Allocation" data-i18n-label="vestingAllocationLabel">Team Tokens</td>
+                                <td data-i18n="vestingTeamCliff" data-label="Cliff Period" data-i18n-label="vestingCliffPeriodLabel">12 Months</td>
+                                <td data-i18n="vestingTeamTotal" data-label="Total Vesting" data-i18n-label="vestingTotalVestingLabel">36 Months</td>
+                                <td data-i18n="vestingTeamRelease" data-label="Release Schedule" data-i18n-label="vestingReleaseScheduleLabel">Monthly release after cliff</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
+    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section id="social" class="social">
+        <div class="container">
+            <h2 class="section-title" data-i18n="joinCommunity">Join Our Community</h2>
+            <div class="social-links">
+                <a href="#" class="social-link twitter">
+                    <i class="fab fa-twitter"></i>
+                    <span data-i18n="twitter">Twitter</span>
+                </a>
+                <a href="#" class="social-link telegram">
+                    <i class="fab fa-telegram"></i>
+                    <span data-i18n="telegram">Telegram</span>
+                </a>
+                <a href="#" class="social-link youtube">
+                    <i class="fab fa-youtube"></i>
+                    <span data-i18n="youtube">YouTube</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game-section" class="game-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="gameTitle">Color Puzzle Challenge</h2>
+            <div class="game-info">
+                <div class="game-features">
+                    <div class="feature">
+                        <i class="fas fa-trophy"></i>
+                        <h3 data-i18n="feature1Title">Global Leaderboard</h3>
+                        <p data-i18n="feature1Text">Compete with players worldwide and represent your country</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-brain"></i>
+                        <h3 data-i18n="feature2Title">Memory Training</h3>
+                        <p data-i18n="feature2Text">Enhance your cognitive abilities with challenging puzzles</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-flag"></i>
+                        <h3 data-i18n="feature3Title">Country Competition</h3>
+                        <p data-i18n="feature3Text">Help your country climb the international rankings</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary game-btn">
+                        <span data-i18n="startPlaying">Start Playing</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="game-modal">
+        <div class="game-container">
+            <div class="game-controls-top-right">
+                <button id="gameBackButton" class="back-btn" aria-label="Back to Menu"><i class="fas fa-arrow-left"></i></button>
+                <div class="game-info-display">
+                    <div class="player-profile">
+                        <img src="assets/logo.jpg" alt="Profile Logo" class="profile-logo">
+                        <span id="profilePlayerName"></span>
+                        <span id="profileCountryFlag"></span>
+                    </div>
+                    <div class="game-header-timers">
+                        <div class="timer" data-i18n="memoryTimer">Memory: <span id="memoryTimerDisplay">0</span>s</div>
+                        <div class="timer" data-i18n="matchingTimer">Matching: <span id="matchingTimerDisplay">0</span>s</div>
+                    </div>
+                </div>
+                <button class="close-game" aria-label="Close Game">&times;</button>
+            </div>
+            
+            <!-- Main Menu -->
+            <div id="mainMenu" class="game-screen active">
+                <h3 data-i18n="chooseYourChallenge">Choose Your Challenge</h3>
+                <div class="game-modes">
+                    <button class="mode-btn" data-size="2">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">2x2</span>
+                            <span class="mode-difficulty" data-i18n="difficultyEasy">Easy</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="3">
+                        <i class="fas fa-th-large"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">3x3</span>
+                            <span class="mode-difficulty" data-i18n="difficultyNormal">Normal</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="4">
+                        <i class="fas fa-draw-polygon"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">4x4</span>
+                            <span class="mode-difficulty" data-i18n="difficultyMedium">Medium</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="5">
+                        <i class="fas fa-brain"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">5x5</span>
+                            <span class="mode-difficulty" data-i18n="difficultyHard">Hard</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="6">
+                        <i class="fas fa-bolt"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">6x6</span>
+                            <span class="mode-difficulty" data-i18n="difficultyExpert">Expert</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="7">
+                        <i class="fas fa-meteor"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">7x7</span>
+                            <span class="mode-difficulty" data-i18n="difficultyMaster">Master</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="8">
+                        <i class="fas fa-atom"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">8x8</span>
+                            <span class="mode-difficulty" data-i18n="difficultyExtreme">Extreme</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="9">
+                        <i class="fas fa-dungeon"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">9x9</span>
+                            <span class="mode-difficulty" data-i18n="difficultyInsane">Insane</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="10">
+                        <i class="fas fa-infinity"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">10x10</span>
+                            <span class="mode-difficulty" data-i18n="difficultyLegend">Legend</span>
+                        </div>
+                    </button>
+                    <button class="mode-btn" data-size="30">
+                        <i class="fas fa-crown"></i>
+                        <div class="mode-text">
+                            <span class="mode-size">30x30</span>
+                            <span class="mode-difficulty" data-i18n="difficultyUltimate">Ultimate</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="leaderboard-chat-buttons">
+                    <button class="btn btn-secondary leaderboard-btn">
+                        <span data-i18n="leaderboard">Leaderboard</span>
+                    </button>
+                    <button class="btn btn-secondary leaderboard-btn chat-btn">
+                        <span data-i18n="globalChat">Global Chat</span>
+                    </button>
+                    <button class="btn btn-secondary leaderboard-btn profile-btn" id="myProfileBtn">
+                        <span data-i18n="myProfile">My Profile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="gameScreen" class="game-screen">
+                <div class="game-area">
+                    <div class="game-area-controls">
+                        <button id="zoomInBtn" class="game-control-btn" data-i18n-title="zoomInTitle" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+                        <button id="zoomOutBtn" class="game-control-btn" data-i18n-title="zoomOutTitle" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+                        <button id="toggleSoundBtn" class="game-control-btn" data-i18n-title="muteSoundTitle" title="Mute Sound"><i class="fas fa-volume-up"></i></button>
+                        <button id="resetBoardBtn" class="game-control-btn" data-i18n-title="resetBoardTitle" title="Reset Board"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    
+                    <div id="colorPalette" class="color-palette"></div>
+                    <div id="gameGrid" class="game-grid"></div>
+                    <div id="gameMessage" class="game-message"></div>
+                    <button id="startBtn" class="start-btn" data-i18n="startMatching">Start Matching</button>
+                </div>
+            </div>
+
+            <!-- Game Result Overlay -->
+            <div id="gameResultOverlay" class="game-result-overlay"></div>
+
+            <!-- Leaderboard Screen -->
+            <div id="leaderboardScreen" class="game-screen">
+                <div class="leaderboard-content">
+                    <div class="leaderboard-tabs">
+                        <button class="tab-btn active" data-tab-type="country" data-i18n="byCountry">By Country</button>
+                        <button class="tab-btn" data-tab-type="individual" data-i18n="topPlayers">Top Players</button>
+                    </div>
+                    <div id="leaderboardList" class="leaderboard-list"></div>
+                </div>
+            </div>
+
+            <!-- Profile Screen -->
+            <div id="profileScreen" class="game-screen">
+                <h3>My Profile</h3>
+                <div class="profile-settings-content">
+
+                    <!-- Avatar Update -->
+                    <div class="profile-section avatar-section">
+                        <div class="profile-avatar-wrapper">
+                            <img src="assets/logo.jpg" alt="Your Avatar" id="profileAvatarPreview" class="profile-avatar-preview">
+                            <div id="myProfileStars" class="profile-stars-container"></div> <!-- Stars will go here -->
+                        </div>
+                        <input type="file" id="avatarUploadInput" accept="image/*" style="display: none;">
+                        <button class="btn btn-secondary" data-action="changePicture" data-i18n="changePicture">Change Picture</button>
+                    </div>
+
+                    <!-- Profile Stats -->
+                    <div class="profile-stats">
+                        <div class="profile-stat-item">
+                            <h4 data-i18n="level">Level</h4>
+                            <p id="myProfileLevel">0</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 data-i18n="gamesPlayed">Games Played</h4>
+                            <p id="myProfileGamesPlayed">0</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 data-i18n="highestScore">Highest Score</h4>
+                            <p id="myProfileHighestScore">0</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 data-i18n="memberSince">Member Since</h4>
+                            <p id="myProfileMemberSince">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Username Update -->
+                    <div class="profile-section">
+                        <h4 data-i18n="changeUsername">Change Username</h4>
+                        <div class="input-group">
+                            <input type="text" id="newUsernameInput" data-i18n-placeholder="enterNewUsername" placeholder="Enter new username">
+                            <button class="btn btn-primary" data-action="updateUsername" data-i18n="save">Save</button>
+                        </div>
+                    </div>
+
+                    <!-- Password Update -->
+                    <div class="profile-section">
+                        <h4 data-i18n="changePassword">Change Password</h4>
+                        <div class="input-group vertical">
+                            <input type="password" id="currentPasswordInput" data-i18n-placeholder="currentPassword" placeholder="Current Password">
+                            <input type="password" id="newPasswordInput" data-i18n-placeholder="newPassword" placeholder="New Password">
+                            <input type="password" id="confirmPasswordInput" data-i18n-placeholder="confirmNewPassword" placeholder="Confirm New Password">
+                            <button class="btn btn-primary" data-action="updatePassword" data-i18n="updatePassword">Update Password</button>
+                        </div>
+                    </div>
+
+                     <!-- Logout Button -->
+                    <div class="profile-section logout-section">
+                         <button class="btn btn-danger" data-action="logoutUser" data-i18n="logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="gameOverScreen" class="game-screen">
+                <h3 id="gameOverTitle" class="game-over-title"></h3>
+                <div class="game-over-stats">
+                    <div class="stat-item">
+                        <h4 data-i18n="mode">Mode</h4>
+                        <p id="statMode"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h4 data-i18n="score">Score</h4>
+                        <p id="statScore"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h4 data-i18n="accuracy">Accuracy</h4>
+                        <p id="statAccuracy"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h4 data-i18n="time">Time</h4>
+                        <p id="statTime"></p>
+                    </div>
+                </div>
+                <div class="game-over-actions">
+                    <button class="btn btn-primary action-btn" data-action="restartGame" data-i18n="playAgain">Play Again</button>
+                    <button class="btn btn-secondary action-btn" data-action="showLeaderboard" data-i18n="leaderboard">Leaderboard</button>
+                    <button class="btn action-btn x-share-btn" data-action="shareScoreToX" data-i18n="share">Share <i class="fab fa-x-twitter"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="game-modal">
+        <div class="game-container">
+            <!-- Header -->
+            <div class="game-controls-top-right">
+                <button id="chatBackButton" class="back-btn" aria-label="Back to Menu"><i class="fas fa-arrow-left"></i></button>
+                <h2 class="modal-title"></h2>
+                <button class="close-game" aria-label="Close Chat">&times;</button>
+            </div>
+
+            
+
+            <!-- Chat Room Sidebar -->
+            <div id="chatRoomSidebar" class="chat-room-sidebar">
+                <div class="sidebar-tabs">
+                    <button id="showChatRoomsBtn" class="sidebar-tab-btn active" data-i18n="chatRooms">Chat Rooms</button>
+                    <button id="showActiveUsersBtn" class="sidebar-tab-btn" data-i18n="activeUsers">Active Users</button>
+                </div>
+                <div id="chatRoomsContent" class="sidebar-content active">
+                    <ul id="chatRoomList"></ul>
+                </div>
+                <div id="activeUsersContent" class="sidebar-content hidden">
+                    <ul id="activeUserListSidebar"></ul>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="chatMessages">
+                
+                <!-- Messages will be populated by JavaScript -->
+            </div>
+            
+            <!-- Online Users Dropdown/Sidebar -->
+            <div id="onlineUsersDropdown" class="online-users-dropdown">
+                <div class="online-users">
+                    <h4 data-i18n="onlineUsers">Online Users (<span id="onlineUserCount">0</span>)</h4>
+                    <ul id="onlineUserList"></ul>
+                </div>
+                <div class="typing-indicator">
+                    <span id="typingUsersDisplay"></span>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="chat-input-container">
+                <div id="emojiPicker" class="emoji-picker"></div>
+                <button id="chatSendBtn" class="chat-action-btn" title="Send"><i class="fas fa-paper-plane"></i></button>
+                <div class="chat-input-wrapper"> <!-- Yeni kapsayıcı -->
+                    <input type="text" id="chatInput" data-i18n-placeholder="typeYourMessage" placeholder="Type your message...">
+                    <button id="emojiBtn" class="chat-action-btn" data-i18n-title="addEmoji" title="Add Emoji"><i class="fas fa-smile"></i></button>
+                </div>
+                <div id="chatRoomDropdownBtn" class="mobile-menu-toggle" data-i18n-title="selectChatRoom" title="Select Chat Room">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Info Modal (Login/Register) -->
+    <div id="playerInfoModal" class="game-modal">
+        <div class="game-container">
+            <div class="game-header">
+                <div class="game-controls-top-right">
+                <h2 class="modal-title" data-i18n="welcomeToCipher">Welcome to CIPHER</h2>
+                <div class="modal-buttons">
+                    <button class="close-game">&times;</button>
+                </div>
+            </div>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="showLoginTab" data-i18n="login">Login</button>
+                <button class="auth-tab-btn" id="showRegisterTab" data-i18n="register">Register</button>
+            </div>
+            <div id="loginTab" class="auth-tab-content active">
+                <div class="player-info-form-content">
+                    <input type="text" id="usernameInput" data-i18n-placeholder="username" placeholder="Username" required>
+                    <input type="password" id="passwordInput" data-i18n-placeholder="password" placeholder="Password" required>
+                    <button class="btn btn-primary" id="loginBtn" data-i18n="login">Login</button>
+                </div>
+            </div>
+            <div id="registerTab" class="auth-tab-content">
+                <div class="player-info-form-content">
+                    <input type="text" id="usernameInputRegister" data-i18n-placeholder="username" placeholder="Username" required>
+                    <input type="password" id="passwordInputRegister" data-i18n-placeholder="password" placeholder="Password" required>
+                    <select id="playerCountrySelect" required>
+                        <option value="" data-i18n="selectYourCountry">Select Your Country</option>
+                    </select>
+                    <button class="btn btn-primary" id="registerBtn" data-i18n="register">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Profile Modal -->
+    <div id="playerProfileModal" class="game-modal">
+        <div class="game-container">
+            <div class="game-controls-top-right">
+                <h2 id="profileModalPlayerName" data-i18n="playerProfileTitle">Player Profile</h2>
+                <button class="close-game">&times;</button>
+            </div>
+            <div id="playerProfileContent" class="player-profile-content">
+                <!-- Profile data will be loaded here by script.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Cropper Modal -->
+    <div id="imageCropperModal" class="game-modal">
+        <div class="game-container cropper-container">
+            <div class="game-controls-top-right">
+                <h2 class="modal-title" data-i18n="cropYourAvatar">Crop Your Avatar</h2>
+                <button class="close-game">&times;</button>
+            </div>
+            <div class="cropper-content">
+                <div class="cropper-image-container">
+                    <img id="imageToCrop" src="" alt="Image to crop">
+                </div>
+                <p class="cropper-instructions" data-i18n="cropperInstructions">Move and scroll to zoom the image.</p>
+                <button id="cropImageBtn" class="btn btn-primary" data-i18n="cropAndUpload">Crop & Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Confirmation Modal -->
+    <div id="shareConfirmationModal" class="game-modal">
+        <div class="game-container">
+            <div class="game-controls-top-right">
+                <h2 class="modal-title" data-i18n="shareYourScore">Share Your Score!</h2>
+                <button class="close-game" data-modal-id="shareConfirmationModal">&times;</button>
+            </div>
+            <div class="share-content" style="padding: 1.5rem; text-align: center;">
+                <p data-i18n="shareScorePrompt">Here's your score image. Do you want to download it and share on X?</p>
+                <img id="scorePreviewImage" src="" alt="Your Game Score" style="max-width: 52%; height: auto; margin: 1rem auto; display: block; border-radius: 8px; border: 1px solid var(--border-light);">
+                <div class="modal-buttons" style="justify-content: center; margin-top: 1rem;">
+                    <button class="btn btn-primary" id="downloadAndShareBtn" data-i18n="downloadAndShare">Download & Share</button>
+                    <button class="btn btn-secondary" id="cancelShareBtn" data-i18n="cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <img src="assets/logo.jpg" alt="CIPHER Logo" class="footer-logo">
+                    <h3>CIPHER</h3>
+                    <p data-i18n="footerSlogan">The ultimate color puzzle crypto game</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="quickLinks">Quick Links</h4>
+                    <a href="#about" data-i18n="about">About</a>
+                    <a href="#tokenomics" data-i18n="tokenomics">Tokenomics</a>
+                    <a href="#social" data-i18n="social">Social</a>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="community">Community</h4>
+                    <a href="#" data-i18n="twitter">Twitter</a>
+                    <a href="#" data-i18n="telegram">Telegram</a>
+                    <a href="#" data-i18n="discord">Discord</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CIPHER. <span data-i18n="rights">All rights reserved.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script> 
+    <script src="js/state.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/main.js"></script>
+    </div> 
+    <div id="shareImageTemplate">
+        <div class="share-hashtag">#CIPHER</div>
+        <img id="shareAvatar" src="" alt="Player Avatar">
+        <h2 id="shareUsername"></h2>
+        <div id="shareCountry"></div>
+        <div class="stats-grid-container">
+            <!-- Stats will be populated by game.js -->
+        </div>
+        <p class="tagline"><!-- Tagline will be populated by game.js --></p>
+    </div>
+</body>
+</html>
+
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Scroll to top">
+    <i class="fas fa-arrow-up"></i>
+</button>

@@ -1,0 +1,278 @@
+// Continent mapping for countries (Client-side copy)
+const continentMap = {
+    'US': 'North America', 'CA': 'North America', 'MX': 'North America', 'CU': 'North America', 'DO': 'North America', 'GT': 'North America', 'HN': 'North America', 'JM': 'North America', 'PA': 'North America',
+    'BR': 'South America', 'AR': 'South America', 'CO': 'South America', 'PE': 'South America', 'CL': 'South America', 'VE': 'South America', 'EC': 'South America', 'BO': 'South America', 'PY': 'South America', 'UY': 'South America',
+    'GB': 'Europe', 'DE': 'Europe', 'FR': 'Europe', 'IT': 'Europe', 'ES': 'Europe', 'NL': 'Europe', 'SE': 'Europe', 'NO': 'Europe', 'TR': 'Europe', 'BE': 'Europe', 'AT': 'Europe', 'CH': 'Europe', 'PT': 'Europe', 'GR': 'Europe', 'PL': 'Europe', 'CZ': 'Europe', 'HU': 'Europe', 'RO': 'Europe', 'UA': 'Europe', 'IE': 'Europe', 'DK': 'Europe', 'FI': 'Europe', 'IS': 'Europe', 'LU': 'Europe', 'MT': 'Europe', 'CY': 'Europe', 'BG': 'Europe', 'HR': 'Europe', 'RS': 'Europe', 'SK': 'Europe', 'SI': 'Europe', 'LT': 'Europe', 'LV': 'Europe', 'EE': 'Europe', 'AL': 'Europe', 'BA': 'Europe', 'ME': 'Europe', 'MD': 'Europe', 'MK': 'Europe',
+    'JP': 'Asia', 'KR': 'Asia', 'CN': 'Asia', 'IN': 'Asia', 'ID': 'Asia', 'PH': 'Asia', 'VN': 'Asia', 'TH': 'Asia', 'MY': 'Asia', 'SG': 'Asia', 'PK': 'Asia', 'BD': 'Asia', 'IR': 'Asia', 'SA': 'Asia', 'AE': 'Asia', 'IQ': 'Asia', 'SY': 'Asia', 'IL': 'Asia', 'JO': 'Asia', 'LB': 'Asia', 'KW': 'Asia', 'QA': 'Asia', 'BH': 'Asia', 'OM': 'Asia', 'YE': 'Asia', 'AZ': 'Asia', 'GE': 'Asia', 'AM': 'Asia', 'KZ': 'Asia', 'UZ': 'Asia', 'KG': 'Asia', 'TJ': 'Asia', 'TM': 'Asia', 'AF': 'Asia', 'NP': 'Asia', 'LK': 'Asia', 'MM': 'Asia', 'LA': 'Asia', 'KH': 'Asia', 'BN': 'Asia', 'TL': 'Asia', 'BT': 'Asia', 'MV': 'Asia',
+    'AU': 'Oceania', 'NZ': 'Oceania', 'PG': 'Oceania', 'FJ': 'Oceania', 'SB': 'Oceania', 'VU': 'Oceania', 'NC': 'Oceania', 'PF': 'Oceania',
+    'RU': 'Europe', // Russia is transcontinental, but often grouped with Europe for general purposes
+    'EG': 'Africa', 'ZA': 'Africa', 'NG': 'Africa', 'ET': 'Africa', 'KE': 'Africa', 'TZ': 'Africa', 'DZ': 'Africa', 'MA': 'Africa', 'SD': 'Africa', 'CD': 'Africa', 'AO': 'Africa', 'GH': 'Africa', 'CI': 'Africa', 'CM': 'Africa', 'UG': 'Africa', 'MZ': 'Africa', 'MG': 'Africa', 'ML': 'Africa', 'BF': 'Africa', 'NE': 'Africa', 'BJ': 'Africa', 'TG': 'Africa', 'SL': 'Africa', 'LR': 'Africa', 'GW': 'Africa', 'GM': 'Africa', 'SN': 'Africa', 'MR': 'Africa', 'EH': 'Africa', 'LY': 'Africa', 'TN': 'Africa', 'ER': 'Africa', 'DJ': 'Africa', 'SO': 'Africa', 'RW': 'Africa', 'BI': 'Africa', 'ZM': 'Africa', 'ZW': 'Africa', 'MW': 'Africa', 'LS': 'Africa', 'SZ': 'Africa', 'NA': 'Africa', 'BW': 'Africa', 'GA': 'Africa', 'CG': 'Africa', 'GQ': 'Africa', 'CF': 'Africa', 'TD': 'Africa', 'SS': 'Africa', 'KM': 'Africa', 'SC': 'Africa', 'MU': 'Africa', 'CV': 'Africa', 'ST': 'Africa', 'BJ': 'Africa', 'TG': 'Africa', 'BF': 'Africa', 'NE': 'Africa', 'ML': 'Africa', 'MR': 'Africa', 'SN': 'Africa', 'GM': 'Africa', 'GN': 'Africa', 'SL': 'Africa', 'LR': 'Africa', 'CI': 'Africa', 'GH': 'Africa', 'TG': 'Africa', 'BJ': 'Africa', 'NG': 'Africa', 'CM': 'Africa', 'GA': 'Africa', 'CG': 'Africa', 'CD': 'Africa', 'AO': 'Africa', 'ZM': 'Africa', 'ZW': 'Africa', 'MZ': 'Africa', 'MG': 'Africa', 'MW': 'Africa', 'LS': 'Africa', 'SZ': 'Africa', 'NA': 'Africa', 'BW': 'Africa', 'ZA': 'Africa', 'ET': 'Africa', 'KE': 'Africa', 'TZ': 'Africa', 'UG': 'Africa', 'RW': 'Africa', 'BI': 'Africa', 'SO': 'Africa', 'DJ': 'Africa', 'ER': 'Africa', 'SD': 'Africa', 'SS': 'Africa', 'EG': 'Africa', 'LY': 'Africa', 'TN': 'Africa', 'DZ': 'Africa', 'MA': 'Africa', 'EH': 'Africa', 'MR': 'Africa', 'TD': 'Africa', 'CF': 'Africa', 'GQ': 'Africa', 'ST': 'Africa', 'CV': 'Africa', 'KM': 'Africa', 'SC': 'Africa', 'MU': 'Africa', 'YT': 'Africa', 'RE': 'Africa', 'SH': 'Africa', 'BF': 'Africa', 'NE': 'Africa', 'ML': 'Africa', 'MR': 'Africa', 'SN': 'Africa', 'GM': 'Africa', 'GN': 'Africa', 'SL': 'Africa', 'LR': 'Africa', 'CI': 'Africa', 'GH': 'Africa'
+};
+
+// Country data with flags
+const countries = {
+    'US': { name: 'United States', flag: 'assets/flags/us.png' },
+    'TR': { name: 'Turkey', flag: 'assets/flags/tr.png' },
+    'GB': { name: 'United Kingdom', flag: 'assets/flags/gb.png' },
+    'DE': { name: 'Germany', flag: 'assets/flags/de.png' },
+    'FR': { name: 'France', flag: 'assets/flags/fr.png' },
+    'JP': { name: 'Japan', flag: 'assets/flags/jp.png' },
+    'KR': { name: 'South Korea', flag: 'assets/flags/kr.png' },
+    'CN': { name: 'China', flag: 'assets/flags/cn.png' },
+    'BR': { name: 'Brazil', flag: 'assets/flags/br.png' },
+    'CA': { name: 'Canada', flag: 'assets/flags/ca.png' },
+    'AU': { name: 'Australia', flag: 'assets/flags/au.png' },
+    'IN': { name: 'India', flag: 'assets/flags/in.png' },
+    'RU': { name: 'Russia', flag: 'assets/flags/ru.png' },
+    'IT': { name: 'Italy', flag: 'assets/flags/it.png' },
+    'ES': { name: 'Spain', flag: 'assets/flags/es.png' },
+    'NL': { name: 'Netherlands', flag: 'assets/flags/nl.png' },
+    'SE': { name: 'Sweden', flag: 'assets/flags/se.png' },
+    'NO': { name: 'Norway', flag: 'assets/flags/no.png' },
+    'MX': { name: 'Mexico', flag: 'assets/flags/mx.png' },
+    'AR': { name: 'Argentina', flag: 'assets/flags/ar.png' },
+    'AF': { name: 'Afghanistan', flag: 'assets/flags/af.png' },
+    'AL': { name: 'Albania', flag: 'assets/flags/al.png' },
+    'DZ': { name: 'Algeria', flag: 'assets/flags/dz.png' },
+    'AO': { name: 'Angola', flag: 'assets/flags/ao.png' },
+    'AG': { name: 'Antigua and Barbuda', flag: 'assets/flags/ag.png' },
+    'AM': { name: 'Armenia', flag: 'assets/flags/am.png' },
+    'AZ': { name: 'Azerbaijan', flag: 'assets/flags/az.png' },
+    'BS': { name: 'Bahamas', flag: 'assets/flags/bs.png' },
+    'BD': { name: 'Bangladesh', flag: 'assets/flags/bd.png' },
+    'BB': { name: 'Barbados', flag: 'assets/flags/bb.png' },
+    'BY': { name: 'Belarus', flag: 'assets/flags/by.png' },
+    'BE': { name: 'Belgium', flag: 'assets/flags/be.png' },
+    'BZ': { name: 'Belize', flag: 'assets/flags/bz.png' },
+    'BJ': { name: 'Benin', flag: 'assets/flags/bj.png' },
+    'BT': { name: 'Bhutan', flag: 'assets/flags/bt.png' },
+    'BO': { name: 'Bolivia', flag: 'assets/flags/bo.png' },
+    'BA': { name: 'Bosnia and Herzegovina', flag: 'assets/flags/ba.png' },
+    'BW': { name: 'Botswana', flag: 'assets/flags/bw.png' },
+    'BG': { name: 'Bulgaria', flag: 'assets/flags/bg.png' },
+    'BF': { name: 'Burkina Faso', flag: 'assets/flags/bf.png' },
+    'BI': { name: 'Burundi', flag: 'assets/flags/bi.png' },
+    'KH': { name: 'Cambodia', flag: 'assets/flags/kh.png' },
+    'CM': { name: 'Cameroon', flag: 'assets/flags/cm.png' },
+    'CV': { name: 'Cape Verde', flag: 'assets/flags/cv.png' },
+    'CF': { name: 'Central African Republic', flag: 'assets/flags/cf.png' },
+    'TD': { name: 'Chad', flag: 'assets/flags/td.png' },
+    'CL': { name: 'Chile', flag: 'assets/flags/cl.png' },
+    'CO': { name: 'Colombia', flag: 'assets/flags/co.png' },
+    'KM': { name: 'Comoros', flag: 'assets/flags/km.png' },
+    'CG': { name: 'Congo', flag: 'assets/flags/cg.png' },
+    'CR': { name: 'Costa Rica', flag: 'assets/flags/cr.png' },
+    'HR': { name: 'Croatia', flag: 'assets/flags/hr.png' },
+    'CU': { name: 'Cuba', flag: 'assets/flags/cu.png' },
+    'CY': { name: 'Cyprus', flag: 'assets/flags/cy.png' },
+    'CZ': { name: 'Czech Republic', flag: 'assets/flags/cz.png' },
+    'CD': { name: 'Democratic Republic of the Congo', flag: 'assets/flags/cd.png' },
+    'DK': { name: 'Denmark', flag: 'assets/flags/dk.png' },
+    'DJ': { name: 'Djibouti', flag: 'assets/flags/dj.png' },
+    'DM': { name: 'Dominica', flag: 'assets/flags/dm.png' },
+    'DO': { name: 'Dominican Republic', flag: 'assets/flags/do.png' },
+    'EC': { name: 'Ecuador', flag: 'assets/flags/ec.png' },
+    'EG': { name: 'Egypt', flag: 'assets/flags/eg.png' },
+    'SV': { name: 'El Salvador', flag: 'assets/flags/sv.png' },
+    'GQ': { name: 'Equatorial Guinea', flag: 'assets/flags/gq.png' },
+    'ER': { name: 'Eritrea', flag: 'assets/flags/er.png' },
+    'EE': { name: 'Estonia', flag: 'assets/flags/ee.png' },
+    'ET': { name: 'Ethiopia', flag: 'assets/flags/et.png' },
+    'FJ': { name: 'Fiji', flag: 'assets/flags/fj.png' },
+    'FI': { name: 'Finland', flag: 'assets/flags/fi.png' },
+    'GA': { name: 'Gabon', flag: 'assets/flags/ga.png' },
+    'GM': { name: 'Gambia', flag: 'assets/flags/gm.png' },
+    'GE': { name: 'Georgia', flag: 'assets/flags/ge.png' },
+    'GH': { name: 'Ghana', flag: 'assets/flags/gh.png' },
+    'GR': { name: 'Greece', flag: 'assets/flags/gr.png' },
+    'GD': { name: 'Grenada', flag: 'assets/flags/gd.png' },
+    'GT': { name: 'Guatemala', flag: 'assets/flags/gt.png' },
+    'GN': { name: 'Guinea', flag: 'assets/flags/gn.png' },
+    'GW': { name: 'Guinea-Bissau', flag: 'assets/flags/gw.png' },
+    'GY': { name: 'Guyana', flag: 'assets/flags/gy.png' },
+    'HT': { name: 'Haiti', flag: 'assets/flags/ht.png' },
+    'HN': { name: 'Honduras', flag: 'assets/flags/hn.png' },
+    'HU': { name: 'Hungary', flag: 'assets/flags/hu.png' },
+    'IS': { name: 'Iceland', flag: 'assets/flags/is.png' },
+    'ID': { name: 'Indonesia', flag: 'assets/flags/id.png' },
+    'IR': { name: 'Iran', flag: 'assets/flags/ir.png' },
+    'IQ': { name: 'Iraq', flag: 'assets/flags/iq.png' },
+    'IE': { name: 'Ireland', flag: 'assets/flags/ie.png' },
+    'IL': { name: 'Israel', flag: 'assets/flags/il.png' },
+    'JM': { name: 'Jamaica', flag: 'assets/flags/jm.png' },
+    'JO': { name: 'Jordan', flag: 'assets/flags/jo.png' },
+    'KZ': { name: 'Kazakhstan', flag: 'assets/flags/kz.png' },
+    'KE': { name: 'Kenya', flag: 'assets/flags/ke.png' },
+    'KI': { name: 'Kiribati', flag: 'assets/flags/ki.png' },
+    'KW': { name: 'Kuwait', flag: 'assets/flags/kw.png' },
+    'KG': { name: 'Kyrgyzstan', flag: 'assets/flags/kg.png' },
+    'LA': { name: 'Laos', flag: 'assets/flags/la.png' },
+    'LV': { name: 'Latvia', flag: 'assets/flags/lv.png' },
+    'LB': { name: 'Lebanon', flag: 'assets/flags/lb.png' },
+    'LS': { name: 'Lesotho', flag: 'assets/flags/ls.png' },
+    'LR': { name: 'Liberia', flag: 'assets/flags/lr.png' },
+    'LY': { name: 'Libya', flag: 'assets/flags/ly.png' },
+    'LI': { name: 'Liechtenstein', flag: 'assets/flags/li.png' },
+    'LT': { name: 'Lithuania', flag: 'assets/flags/lt.png' },
+    'LU': { name: 'Luxembourg', flag: 'assets/flags/lu.png' },
+    'MG': { name: 'Madagascar', flag: 'assets/flags/mg.png' },
+    'MW': { name: 'Malawi', flag: 'assets/flags/mw.png' },
+    'MY': { name: 'Malaysia', flag: 'assets/flags/my.png' },
+    'MV': { name: 'Maldives', flag: 'assets/flags/mv.png' },
+    'ML': { name: 'Mali', flag: 'assets/flags/ml.png' },
+    'MT': { name: 'Malta', flag: 'assets/flags/mt.png' },
+    'MR': { name: 'Mauritania', flag: 'assets/flags/mr.png' },
+    'MU': { name: 'Mauritius', flag: 'assets/flags/mu.png' },
+    'MD': { name: 'Moldova', flag: 'assets/flags/md.png' },
+    'MC': { name: 'Monaco', flag: 'assets/flags/mc.png' },
+    'MN': { name: 'Mongolia', flag: 'assets/flags/mn.png' },
+    'ME': { name: 'Montenegro', flag: 'assets/flags/me.png' },
+    'MA': { name: 'Morocco', flag: 'assets/flags/ma.png' },
+    'MZ': { name: 'Mozambique', flag: 'assets/flags/mz.png' },
+    'MM': { name: 'Myanmar', flag: 'assets/flags/mm.png' },
+    'NA': { name: 'Namibia', flag: 'assets/flags/na.png' },
+    'NP': { name: 'Nepal', flag: 'assets/flags/np.png' },
+    'NZ': { name: 'New Zealand', flag: 'assets/flags/nz.png' },
+    'NI': { name: 'Nicaragua', flag: 'assets/flags/ni.png' },
+    'NE': { name: 'Niger', flag: 'assets/flags/ne.png' },
+    'NG': { name: 'Nigeria', flag: 'assets/flags/ng.png' },
+    'KP': { name: 'North Korea', flag: 'assets/flags/kp.png' },
+    'MK': { name: 'North Macedonia', flag: 'assets/flags/mk.png' },
+    'OM': { name: 'Oman', flag: 'assets/flags/om.png' },
+    'PK': { name: 'Pakistan', flag: 'assets/flags/pk.png' },
+    'PA': { name: 'Panama', flag: 'assets/flags/pa.png' },
+    'PG': { name: 'Papua New Guinea', flag: 'assets/flags/pg.png' },
+    'PY': { name: 'Paraguay', flag: 'assets/flags/py.png' },
+    'PE': { name: 'Peru', flag: 'assets/flags/pe.png' },
+    'PH': { name: 'Philippines', flag: 'assets/flags/ph.png' },
+    'PL': { name: 'Poland', flag: 'assets/flags/pl.png' },
+    'PT': { name: 'Portugal', flag: 'assets/flags/pt.png' },
+    'QA': { name: 'Qatar', flag: 'assets/flags/qa.png' },
+    'RO': { name: 'Romania', flag: 'assets/flags/ro.png' },
+    'RW': { name: 'Rwanda', flag: 'assets/flags/rw.png' },
+    'KN': { name: 'Saint Kitts and Nevis', flag: 'assets/flags/kn.png' },
+    'LC': { name: 'Saint Lucia', flag: 'assets/flags/lc.png' },
+    'VC': { name: 'Saint Vincent and the Grenadines', flag: 'assets/flags/vc.png' },
+    'WS': { name: 'Samoa', flag: 'assets/flags/ws.png' },
+    'SM': { name: 'San Marino', flag: 'assets/flags/sm.png' },
+    'ST': { name: 'Sao Tome and Principe', flag: 'assets/flags/st.png' },
+    'SA': { name: 'Saudi Arabia', flag: 'assets/flags/sa.png' },
+    'SN': { name: 'Senegal', flag: 'assets/flags/sn.png' },
+    'RS': { name: 'Serbia', flag: 'assets/flags/rs.png' },
+    'SL': { name: 'Sierra Leone', flag: 'assets/flags/sl.png' },
+    'SG': { name: 'Singapore', flag: 'assets/flags/sg.png' },
+    'SK': { name: 'Slovakia', flag: 'assets/flags/sk.png' },
+    'SI': { name: 'Slovenia', flag: 'assets/flags/si.png' },
+    'SB': { name: 'Solomon Islands', flag: 'assets/flags/sb.png' },
+    'SO': { name: 'Somalia', flag: 'assets/flags/so.png' },
+    'ZA': { name: 'South Africa', flag: 'assets/flags/za.png' },
+    'SS': { name: 'South Sudan', flag: 'assets/flags/ss.png' },
+    'LK': { name: 'Sri Lanka', flag: 'assets/flags/lk.png' },
+    'SD': { name: 'Sudan', flag: 'assets/flags/sd.png' },
+    'SR': { name: 'Suriname', flag: 'assets/flags/sr.png' },
+    'SZ': { name: 'Eswatini', flag: 'assets/flags/sz.png' },
+    'CH': { name: 'Switzerland', flag: 'assets/flags/ch.png' },
+    'SY': { name: 'Syria', flag: 'assets/flags/sy.png' },
+    'TJ': { name: 'Tajikistan', flag: 'assets/flags/tj.png' },
+    'TZ': { name: 'Tanzania', flag: 'assets/flags/tz.png' },
+    'TH': { name: 'Thailand', flag: 'assets/flags/th.png' },
+    'TL': { name: 'Timor-Leste', flag: 'assets/flags/tl.png' },
+    'TG': { name: 'Togo', flag: 'assets/flags/tg.png' },
+    'TO': { name: 'Tonga', flag: 'assets/flags/to.png' },
+    'TT': { name: 'Trinidad and Tobago', flag: 'assets/flags/tt.png' },
+    'TN': { name: 'Tunisia', flag: 'assets/flags/tn.png' },
+    'TM': { name: 'Turkmenistan', flag: 'assets/flags/tm.png' },
+    'TV': { name: 'Tuvalu', flag: 'assets/flags/tv.png' },
+    'UG': { name: 'Uganda', flag: 'assets/flags/ug.png' },
+    'UA': { name: 'Ukraine', flag: 'assets/flags/ua.png' },
+    'AE': { name: 'United Arab Emirates', flag: 'assets/flags/ae.png' },
+    'UY': { name: 'Uruguay', flag: 'assets/flags/uy.png' },
+    'UZ': { name: 'Uzbekistan', flag: 'assets/flags/uz.png' },
+    'VU': { name: 'Vanuatu', flag: 'assets/flags/vu.png' },
+    'VE': { name: 'Venezuela', flag: 'assets/flags/ve.png' },
+    'VN': { name: 'Vietnam', flag: 'assets/flags/vn.png' },
+    'YE': { name: 'Yemen', flag: 'assets/flags/ye.png' },
+    'ZM': { name: 'Zambia', flag: 'assets/flags/zm.png' },
+    'ZW': { name: 'Zimbabwe', flag: 'assets/flags/zw.png' }
+};
+
+// Color palette for the game
+// Country name aliases for mapping variations to a standard code
+const countryNameAliases = {
+    'america': 'US',
+    'united states of america': 'US',
+    'usa': 'US',
+    'russia': 'RU',
+    'russian federation': 'RU',
+    'korea, republic of': 'KR',
+    'south korea': 'KR',
+    'bolivia (plurinational state of)': 'BO',
+    'united kingdom': 'GB',
+    'uk': 'GB',
+    'great britain': 'GB',
+    'germany': 'DE',
+    'federal republic of germany': 'DE',
+    'france': 'FR',
+    'french republic': 'FR',
+    'china': 'CN',
+    'people republic of china': 'CN',
+    'india': 'IN',
+    'republic of india': 'IN',
+    'netherlands': 'NL',
+    'holland': 'NL',
+    'czech republic': 'CZ',
+    'czechia': 'CZ',
+    'democratic republic of the congo': 'CD',
+    'dr congo': 'CD',
+    'congo (democratic republic of the)': 'CD',
+    'egypt': 'EG',
+    'arab republic of egypt': 'EG',
+    'iran': 'IR',
+    'islamic republic of iran': 'IR',
+    'syria': 'SY',
+    'syrian arab republic': 'SY',
+    'tanzania': 'TZ',
+    'united republic of tanzania': 'TZ',
+    'venezuela': 'VE',
+    'bolivarian republic of venezuela': 'VE',
+    'vietnam': 'VN',
+    'socialist republic of vietnam': 'VN'
+};
+
+function getCountryCodeByName(countryName) {
+    const normalizedCountryName = countryName.toLowerCase();
+
+    // Check aliases first
+    if (countryNameAliases[normalizedCountryName]) {
+        return countryNameAliases[normalizedCountryName];
+    }
+
+    // Check primary names
+    for (const code in countries) {
+        if (countries[code].name.toLowerCase() === normalizedCountryName) {
+            return code;
+        }
+    }
+
+    return null;
+}
+
+function getContinentByCountryCode(countryCode) {
+    return continentMap[countryCode] || 'Unknown';
+}
+
+window.getContinentByCountryCode = getContinentByCountryCode;
+
+// Color palette for the game
+const gameColors = [
+    '#FF0000', // Red
+    '#0000FF', // Blue
+    '#FFFF00', // Yellow
+    '#00FF00', // Green
+    '#800080', // Purple
+    '#FFA500', // Orange
+    '#00FFFF', // Cyan
+    '#FF00FF', // Magenta
+    '#A52A2A', // Brown
+    '#FFC0CB'  // Pink
+];

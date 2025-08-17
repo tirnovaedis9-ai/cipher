@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="adminPanelTitle">CIPHER Admin Panel</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <div id="notificationBar" class="notification-bar"></div>
+
+    <div class="admin-container">
+        <div class="admin-login-section" id="adminLoginSection">
+            <h2 data-i18n="adminLogin">Admin Login</h2>
+            <input type="text" id="adminUsername" data-i18n-placeholder="username">
+            <input type="password" id="adminPassword" data-i18n-placeholder="password">
+            <button id="adminLoginBtn" class="btn btn-primary" data-i18n="login">Login</button>
+        </div>
+
+        <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+            <div class="sidebar">
+                <h3 data-i18n="adminPanel">Admin Panel</h3>
+                <ul>
+                    <li><a href="#" id="showUsersBtn"><i class="fas fa-users"></i> <span data-i18n="users">Users</span></a></li>
+                    <li><a href="#" id="showSettingsBtn"><i class="fas fa-cogs"></i> <span data-i18n="settings">Settings</span></a></li>
+                    <li><a href="#" id="showStatsBtn"><i class="fas fa-chart-bar"></i> <span data-i18n="statistics">Statistics</span></a></li>
+                    <li><a href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Logout</span></a></li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <div id="usersSection" class="admin-section">
+                    <h3 data-i18n="userManagement">User Management</h3>
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th data-i18n="id">ID</th>
+                                <th data-i18n="username">Username</th>
+                                <th data-i18n="country">Country</th>
+                                <th data-i18n="createdAt">Created At</th>
+                                <th>Game Count</th>
+                                <th data-i18n="levelActions">Level Actions</th>
+                                <th data-i18n="actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="settingsSection" class="admin-section" style="display: none;">
+                    <h3 data-i18n="generalSettings">General Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label for="siteTitleInput" data-i18n="siteTitle">Site Title:</label>
+                            <input type="text" id="siteTitleInput" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="welcomeMessageInput" data-i18n="welcomeMessage">Welcome Message:</label>
+                            <textarea id="welcomeMessageInput" class="form-control"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="saveSettingsBtn" class="btn btn-primary" data-i18n="saveSettings">Save Settings</button>
+                        </div>
+                    </div>
+                    <div class="settings-form">
+                        <h4 data-i18n="chatManagement">Chat Management</h4>
+                        <div class="form-group">
+                            <label for="chatRoomSelect" data-i18n="selectRoomToClear">Select Room to Clear:</label>
+                            <select id="chatRoomSelect" class="form-control"></select>
+                        </div>
+                        <div class="form-actions">
+                            <button id="clearRoomBtn" class="btn btn-warning" data-i18n="clearSelectedRoom">Clear Selected Room</button>
+                            <button id="clearChatBtn" class="btn btn-danger" data-i18n="clearChatHistory">Clear All Chat History</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="statsSection" class="admin-section" style="display: none;">
+                    <h3 data-i18n="generalStatistics">General Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h4 data-i18n="totalPlayers">Total Players</h4>
+                            <p id="totalPlayersStat"></p>
+                        </div>
+                        <div class="stat-item">
+                            <h4 data-i18n="totalGamesPlayed">Total Games Played</h4>
+                            <p id="totalGamesPlayedStat"></p>
+                        </div>
+                        <div class="stat-item">
+                            <h4 data-i18n="averageScore">Average Score</h4>
+                            <p id="averageScoreStat"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 data-i18n="editUser">Edit User</h3>
+            <input type="hidden" id="editUserId">
+            <label for="editUsername" data-i18n="username">Username:</label>
+            <input type="text" id="editUsername">
+            <label for="editCountry" data-i18n="country">Country:</label>
+            <input type="text" id="editCountry">
+            <label for="editAvatarUrl" data-i18n="avatarURL">Avatar URL:</label>
+            <input type="text" id="editAvatarUrl">
+            <button id="saveUserChangesBtn" class="btn btn-primary" data-i18n="saveChanges">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="js/language.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
