@@ -285,6 +285,7 @@ html {
     grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
     margin-bottom: 2rem;
+    margin-top: 2rem;
 }
 
 .mode-btn {
