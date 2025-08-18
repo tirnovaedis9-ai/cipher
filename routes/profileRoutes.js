@@ -36,10 +36,10 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
-const upload = multer({ 
-    storage: storage, 
+const upload = multer({
+    storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-    fileFilter: fileFilter 
+    fileFilter: fileFilter
 }).single('avatar'); // 'avatar' is the name of the form field
 
 // --- Routes ---
@@ -70,30 +70,21 @@ router.post('/avatar', authenticateToken, (req, res) => {
             const oldAvatarPath = player ? player.avatarurl : null;
 
             // Update database with the new avatar URL
-            const newAvatarUrl = `/uploads/avatars/${req.file.filename}`;
+            const newAvatarUrl = `uploads/avatars/${req.file.filename}`.replace(/\\/g, '/');
             await db.query('UPDATE players SET avatarUrl = $1 WHERE id = $2', [newAvatarUrl, req.user.id]);
             console.log(`[DEBUG] Avatar updated in DB for user ${req.user.id}. New URL: ${newAvatarUrl}`);
 
             // If there was an old avatar and it's a user-uploaded one, delete it
-            if (oldAvatarPath && oldAvatarPath.startsWith('/uploads/avatars/')) {
-                // Validate oldAvatarPath to prevent directory traversal
-                const relativeOldAvatarPath = oldAvatarPath.substring('/uploads/avatars/'.length);
-                // Regex to ensure it's a safe filename (no path separators)
-                if (!/^[a-zA-Z0-9_.-]+$/.test(relativeOldAvatarPath)) {
-                    console.warn(`Attempted to delete an invalid old avatar path: ${oldAvatarPath}`);
-                    // Do not proceed with deletion if path is suspicious
-                } else {
-                    const oldAvatarFullPath = path.join(avatarUploadPath, relativeOldAvatarPath);
-                    // Ensure the path is within the intended directory (redundant with above check, but good for defense in depth)
-                    if (fs.existsSync(oldAvatarFullPath) && oldAvatarFullPath.startsWith(avatarUploadPath)) {
-                        fs.unlinkSync(oldAvatarFullPath);
-                    }
+            if (oldAvatarPath && oldAvatarPath.startsWith('uploads/avatars/')) {
+                const oldAvatarFullPath = path.join(__dirname, '..', oldAvatarPath);
+                if (fs.existsSync(oldAvatarFullPath)) {
+                    fs.unlinkSync(oldAvatarFullPath);
                 }
             }
 
-            res.json({ 
-                message: 'Avatar updated successfully', 
-                avatarUrl: newAvatarUrl 
+            res.json({
+                message: 'Avatar updated successfully',
+                avatarUrl: newAvatarUrl
             });
         } catch (dbErr) {
             console.error('DB update error after avatar upload:', dbErr);
