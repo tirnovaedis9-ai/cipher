@@ -10,13 +10,20 @@ types.setTypeParser(1114, (stringValue) => {
     return stringValue; // Return as is
 });
 
-const pool = new Pool({
+const dbConfig = {
     user: process.env.PG_USER,
     host: process.env.PG_HOST,
     password: process.env.PG_PASSWORD,
     port: process.env.PG_PORT,
     database: process.env.PG_DATABASE,
-});
+};
+    
+ // Add SSL configuration only when PGSSLMODE is set (like on Render)
+if (process.env.PGSSLMODE === 'require') {
+    dbConfig.ssl = { rejectUnauthorized: false };
+}
+   
+const pool = new Pool(dbConfig);
 
 // Optional: Add an error listener to the pool
 pool.on('error', (err, client) => {
