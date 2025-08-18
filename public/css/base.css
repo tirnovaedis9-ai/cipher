@@ -1707,7 +1707,7 @@ body {
     text-align: center;
     color: var(--color-white);
     font-weight: 600;
-    z-index: 3000;
+    z-index: 1999;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out, top 0.4s ease-in-out;

@@ -1425,3 +1425,18 @@ html {
     .leaderboard-score { width: 100%; order: 2; text-align: right; padding-top: 0.25rem; padding-left: 0; min-width: 0; }
     .leaderboard-name { flex-grow: 1; }
 }
+
+
+/* --- END: Polished Responsive Design --- */
+
+/* --- START: Mobile Click Fix --- */
+.game-info-display-in-game,
+.game-area-controls {
+    pointer-events: none;
+}
+
+.game-info-display-in-game > *,
+.game-area-controls > * {
+    pointer-events: auto;
+}
+/* --- END: Mobile Click Fix --- */

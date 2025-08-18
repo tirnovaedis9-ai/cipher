@@ -51,7 +51,7 @@ function getCellsInLine(startIndex, endIndex, gridSize) {
 }
 
 function getCellFromCoordinates(e) {
-    const point = e.touches ? e.touches[0] : e;
+    const point = e; // No longer need to check for e.touches
     return document.elementFromPoint(point.clientX, point.clientY);
 }
 
@@ -180,16 +180,13 @@ function generateGameGrid(size) {
     }
     gameGrid.appendChild(fragment); // Append fragment to DOM once
 
-    // Event Delegation for painting
-    gameGrid.addEventListener('mousedown', handlePaintingStart);
-    gameGrid.addEventListener('mousemove', handlePaintingMove);
-    gameGrid.addEventListener('touchstart', handlePaintingStart, { passive: false });
-    gameGrid.addEventListener('touchmove', handlePaintingMove, { passive: false });
+    // Event Delegation for painting using Pointer Events
+    gameGrid.addEventListener('pointerdown', handlePaintingStart);
+    gameGrid.addEventListener('pointermove', handlePaintingMove);
 
     // Global listeners for stopping painting
-    document.addEventListener('mouseup', handlePaintingEnd);
-    document.addEventListener('touchend', handlePaintingEnd);
-    document.addEventListener('touchcancel', handlePaintingEnd);
+    document.addEventListener('pointerup', handlePaintingEnd);
+    document.addEventListener('pointercancel', handlePaintingEnd);
     gameGrid.addEventListener('mouseleave', handlePaintingEnd);
 
 

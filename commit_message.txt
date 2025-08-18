@@ -1,0 +1,6 @@
+fix(game): Mobil cihazlarda tıklama sorunları düzeltildi
+
+- Oyun modalı içindeki butonların ve diğer interaktif elementlerin mobil cihazlarda tıklanamaması sorunu giderildi.
+- Sorunun, `z-index` ve dokunma olaylarının (touch events) yanlış yönetiminden kaynaklandığı tespit edildi.
+- `.notification-bar`'ın `z-index` değeri, oyun modalının altında kalacak şekilde düşürüldü.
+- Oyun ızgarasındaki `touchstart`/`touchmove` olayları, çakışmaları önlemek için daha modern olan `pointerdown`/`pointermove` olayları ile değiştirildi.
