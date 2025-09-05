@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const theme = document.firstElementChild.getAttribute('data-theme');
         if (theme === 'cipher-light') {
             pyramid.material = lightThemeMaterial;
-            if (pyramidEdges) pyramidEdges.material.color.set(0x333333); // Dark edges for light theme
+            if (pyramidEdges) pyramidEdges.material.color.set(0xaaaaaa); // Changed from 0x333333
         } else {
             pyramid.material = darkThemeMaterial;
             if (pyramidEdges) pyramidEdges.material.color.set(0xffffff); // White edges for dark theme
