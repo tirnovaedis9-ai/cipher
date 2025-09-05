@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs'); // Add this line
+const bcrypt = require('bcryptjs');
 const db = require('../db');
 const { authenticateAdminToken } = require('../middleware/auth');
-const { calculateLevel } = require('./scoreRoutes'); // Import calculateLevel
+const { calculateLevel } = require('./scoreRoutes');
+const { updateLeaderboardView } = require('../update_leaderboard_view');
 
 // Admin Login
 router.post('/login', async (req, res) => {
@@ -31,15 +32,38 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
 // Admin: Get all users
 router.get('/users', authenticateAdminToken, async (req, res) => {
     try {
-        const result = await db.query(`SELECT p.id, p.username, p.country, p.avatarurl, p.createdAt, p.level, 
-                                        (SELECT COUNT(*) FROM scores WHERE playerId = p.id) as gamecount
-                                        FROM players p`);
-        const rows = result.rows;
-        res.json(rows);
+        let { sortBy = 'createdAt', order = 'desc' } = req.query;
+
+        // Whitelist for sortBy to prevent SQL injection
+        const allowedSortBy = {
+            'username': 'username',
+            'country': 'country',
+            'createdAt': 'createdat',
+            'level': 'level',
+            'gameCount': 'gameCount'
+        };
+
+        if (!Object.keys(allowedSortBy).includes(sortBy)) {
+            return res.status(400).json({ message: 'Invalid sort parameter' });
+        }
+
+        // Whitelist for order
+        order = order.toLowerCase();
+        if (order !== 'asc' && order !== 'desc') {
+            return res.status(400).json({ message: 'Invalid order parameter' });
+        }
+
+        const query = `
+            SELECT id, username, country, avatarurl, createdat, level, gameCount
+            FROM players
+            ORDER BY ${allowedSortBy[sortBy]} ${order.toUpperCase()}
+        `;
+
+        const result = await db.query(query);
+        res.json(result.rows);
     } catch (err) {
         console.error('Admin get users error:', err);
         return res.status(500).json({ message: 'An unexpected error occurred while fetching users.' });
@@ -78,6 +102,7 @@ router.put('/users/:id', authenticateAdminToken, async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
+        await updateLeaderboardView(); // Refresh leaderboard view after user update
         res.json({ message: 'User updated successfully', user: result.rows[0] });
     } catch (err) {
         console.error('Admin update user error:', err);
@@ -91,6 +116,7 @@ router.delete('/users/:id', authenticateAdminToken, async (req, res) => {
     try {
         const result = await db.query(`DELETE FROM players WHERE id = $1`, [id]);
         if (result.rowCount === 0) return res.status(404).json({ message: 'User not found' });
+        await updateLeaderboardView(); // Refresh leaderboard view after user deletion
         res.json({ message: 'User deleted successfully' });
     } catch (err) {
         console.error('Admin delete user error:', err);
@@ -162,45 +188,27 @@ router.put('/player/:id/gamecount', authenticateAdminToken, async (req, res) => 
     }
 
     try {
-        // Get current game count for the player
-        const gameCountResult = await db.query(`SELECT COUNT(*) as gameCount FROM scores WHERE playerId = $1`, [id]);
-        const gameCountRow = gameCountResult.rows[0];
-        const currentGameCount = gameCountRow.gameCount || 0;
+        // 1. Delete all existing 'admin_added' scores for this player
+        await db.query(`DELETE FROM scores WHERE playerId = $1 AND mode = 'admin_added'`, [id]);
 
-        const diff = targetGameCount - currentGameCount;
-
-        if (diff > 0) {
-            // Add dummy scores
-            for (let i = 0; i < diff; i++) {
-                const scoreId = `dummy_score_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                const timestamp = new Date().toISOString();
-                await db.query(`INSERT INTO scores (id, playerId, score, mode, timestamp) VALUES ($1, $2, $3, $4, $5)`, 
-                    [scoreId, id, 1, 'admin_added', timestamp]); // Use score 1 and mode 'admin_added' for admin added scores
-            }
-            res.json({ message: `Added ${diff} dummy games for player ${id}. New game count: ${targetGameCount}` });
-        } else if (diff < 0) {
-            // Remove most recent scores (prioritizing dummy scores if they exist)
-            const scoresToDeleteCount = Math.abs(diff);
-            
-            // First, try to delete dummy scores
-            const dummyScoresResult = await db.query(`SELECT id FROM scores WHERE playerId = $1 AND mode = 'dummy' ORDER BY timestamp DESC LIMIT $2`, [id, scoresToDeleteCount]);
-            const dummyScores = dummyScoresResult.rows;
-            
-            let deletedCount = 0;
-            for (const score of dummyScores) {
-                await db.query(`DELETE FROM scores WHERE id = $1`, [score.id]);
-                deletedCount++;
-            }
-
-            
-            res.json({ message: `Removed ${scoresToDeleteCount} games for player ${id}. New game count: ${targetGameCount}` });
-        } else {
-            res.json({ message: `Game count for player ${id} is already ${targetGameCount}. No changes made.` });
+        // 2. Insert 'targetGameCount' number of new 'admin_added' scores
+        for (let i = 0; i < targetGameCount; i++) {
+            const scoreId = `admin_added_score_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            const timestamp = new Date().toISOString();
+            await db.query(`INSERT INTO scores (id, playerId, score, mode, timestamp) VALUES ($1, $2, $3, $4, $5)`,
+                [scoreId, id, 1, 'admin_added', timestamp]);
         }
 
-        // After updating game count (and potentially scores), update the player's level
-        const newLevel = calculateLevel(targetGameCount);
-        await db.query(`UPDATE players SET level = $1 WHERE id = $2`, [newLevel, id]);
+        // 3. Recalculate the total game count for the player
+        const totalGameCountResult = await db.query(`SELECT COUNT(*) as totalGameCount FROM scores WHERE playerId = $1`, [id]);
+        const totalGameCount = parseInt(totalGameCountResult.rows[0].totalGameCount, 10) || 0;
+
+        // 4. Update the player's level and gameCount
+        const newLevel = calculateLevel(totalGameCount);
+        await db.query(`UPDATE players SET level = $1, gameCount = $2 WHERE id = $3`, [newLevel, totalGameCount, id]);
+        await updateLeaderboardView();
+
+        res.json({ message: `Player ${id}'s game count updated to ${totalGameCount}. Level set to ${newLevel}.` });
 
     } catch (err) {
         console.error('Admin update game count error:', err);
@@ -208,19 +216,18 @@ router.put('/player/:id/gamecount', authenticateAdminToken, async (req, res) => 
     }
 });
 
-// Admin: Reset a player's game count to original (remove all dummy scores)
+// Admin: Reset a player's game count to original
 router.post('/player/:id/gamecount/reset', authenticateAdminToken, async (req, res) => {
     const { id } = req.params;
     try {
         const deleteResult = await db.query(`DELETE FROM scores WHERE playerId = $1 AND (mode = 'dummy' OR mode = 'admin_added')`, [id]);
 
-        // After deleting, recalculate the level based on the remaining games
         const gameCountResult = await db.query(`SELECT COUNT(*) as gameCount FROM scores WHERE playerId = $1`, [id]);
         const gameCount = parseInt(gameCountResult.rows[0].gameCount, 10) || 0;
         const newLevel = calculateLevel(gameCount);
 
-        // Update player's level in the players table
-        await db.query(`UPDATE players SET level = $1 WHERE id = $2`, [newLevel, id]);
+        await db.query(`UPDATE players SET level = $1, gameCount = $2 WHERE id = $3`, [newLevel, gameCount, id]);
+        await updateLeaderboardView();
 
         console.log(`[DEBUG] Admin reset: Player ${id} level reset to ${newLevel} based on ${gameCount} remaining games.`);
 

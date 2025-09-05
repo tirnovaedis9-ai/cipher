@@ -1,8 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const db = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 const { countries } = require('../constants');
+
+// Rate limiting for score submission
+const scoreSubmissionLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 10, // limit each IP to 10 score submissions per minute
+    message: 'Too many score submissions, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 // Helper function to calculate level based on game count
 function calculateLevel(gameCount) {
@@ -12,8 +22,9 @@ function calculateLevel(gameCount) {
 }
 
 // Submit a score (protected)
-router.post('/', authenticateToken, async (req, res) => {
-    const { score, mode, memoryTime, matchingTime, clientGameId } = req.body; // Added clientGameId
+router.post('/', scoreSubmissionLimiter, authenticateToken, async (req, res) => {
+    const { score, memoryTime, matchingTime, clientGameId } = req.body; // Added clientGameId
+    const mode = req.body.mode || 'normal';
     const playerId = req.user.id;
 
     if (score === undefined || !mode || !clientGameId) {
@@ -58,20 +69,24 @@ router.post('/', authenticateToken, async (req, res) => {
             [clientGameId, playerId, parsedScore, mode, memoryTime, matchingTime, timestamp]
         );
 
-        // After the transaction, get the new total game count
-        const gameCountResult = await client.query(`SELECT COUNT(*) as gamecount FROM scores WHERE playerId = $1`, [playerId]);
-        const gameCount = parseInt(gameCountResult.rows[0].gamecount, 10) || 0;
-        const newLevel = calculateLevel(gameCount);
+        // After inserting the score, get the new stats for the player
+        const statsQuery = `
+            SELECT
+                COUNT(id) AS gamecount,
+                COALESCE(MAX(score), 0) AS highestscore
+            FROM scores
+            WHERE playerId = $1;
+        `;
+        const statsResult = await client.query(statsQuery, [playerId]);
+        const { gamecount, highestscore } = statsResult.rows[0];
 
-        // --- DEBUG LOGGING ---
-        console.log(`[LEVEL_UPDATE] Player ID: ${playerId}`);
-        console.log(`[LEVEL_UPDATE] Game Count Result:`, gameCountResult.rows[0]);
-        console.log(`[LEVEL_UPDATE] Parsed Game Count: ${gameCount}`);
-        console.log(`[LEVEL_UPDATE] Calculated New Level: ${newLevel}`);
-        // --- END DEBUG LOGGING ---
+        const newLevel = calculateLevel(gamecount);
 
-        // Always update the player's level to ensure it's in sync with the game count
-        await client.query(`UPDATE players SET level = $1 WHERE id = $2`, [newLevel, playerId]);
+        // Update the players table with all new stats in one go
+        await client.query(
+            `UPDATE players SET level = $1, gameCount = $2, highestScore = $3 WHERE id = $4`,
+            [newLevel, gamecount, highestscore, playerId]
+        );
 
         await client.query('COMMIT');
 
@@ -92,56 +107,21 @@ router.post('/', authenticateToken, async (req, res) => {
 // Get individual leaderboard
 router.get('/individual', async (req, res) => {
     try {
-        const result = await db.query(`
-            WITH PlayerStats AS (
-                SELECT
-                    playerId,
-                    MAX(score) AS highestScore,
-                    COUNT(id) AS gameCount
-                FROM scores
-                GROUP BY playerId
-            ),
-            RankedScores AS (
-                SELECT
-                    s.playerId,
-                    s.score,
-                    s.mode,
-                    s.timestamp,
-                    ROW_NUMBER() OVER(PARTITION BY s.playerId ORDER BY s.score DESC, s.timestamp DESC) as rn
-                FROM scores s
-            )
-            SELECT
-                p.username,
-                p.country,
-                p.id AS playerid,
-                p.avatarurl,
-                p.level,
-                p.createdAt,
-                rs.score,
-                rs.mode,
-                ps.highestScore,
-                ps.gameCount
-            FROM players p
-            JOIN RankedScores rs ON p.id = rs.playerId
-            LEFT JOIN PlayerStats ps ON p.id = ps.playerId
-            WHERE rs.rn = 1
-            ORDER BY rs.score DESC
-            LIMIT 20
-        `);
+        const result = await db.query(`SELECT * FROM leaderboard_materialized_view ORDER BY highestscore DESC LIMIT 20`);
+        
         const rows = result.rows;
+        
         const leaderboard = rows.map(row => ({
             name: row.username,
             country: row.country,
             flag: countries[row.country] ? countries[row.country].flag : '🏳️',
-            score: row.score,
-            mode: row.mode,
+            score: row.highestscore,
             playerid: row.playerid,
             avatarUrl: row.avatarurl,
             level: row.level,
-            highestScore: row.highestscore,
-            gameCount: row.gamecount,
-            createdAt: row.createdat
+            mode: row.mode // Add the mode from the view
         }));
+
         res.json(leaderboard);
     } catch (err) {
         console.error('Individual leaderboard error:', err);
@@ -171,13 +151,12 @@ router.get('/country', async (req, res) => {
         const leaderboard = rows.map(row => {
             const countryCode = row.country;
             const countryData = countries[countryCode];
-            const averageScore = parseInt(row.playercount, 10) > 0 ? Math.round(parseInt(row.totalscore, 10) / parseInt(row.playercount, 10)) : 0;
             
             return {
                 countryCode: countryCode,
                 countryName: countryData ? countryData.name : countryCode, // Fallback to code if not found
                 flag: countryData ? countryData.flag : '🏳️',
-                averageScore: averageScore,
+                averageScore: parseInt(row.totalscore, 10),
                 playerCount: parseInt(row.playercount, 10)
             };
         });
@@ -185,6 +164,48 @@ router.get('/country', async (req, res) => {
     } catch (err) {
         console.error('Country leaderboard error:', err);
         return res.status(500).json({ message: 'An unexpected error occurred while fetching country leaderboard.' });
+    }
+});
+
+// Get top players for homepage preview (no authentication required)
+router.get('/top-preview', async (req, res) => {
+    try {
+        const result = await db.query(`
+            WITH RankedScores AS (
+                SELECT
+                    s.playerId,
+                    s.score,
+                    s.mode,
+                    ROW_NUMBER() OVER(PARTITION BY s.playerId ORDER BY s.score DESC, s.timestamp DESC) as rn
+                FROM scores s
+            )
+            SELECT
+                p.username,
+                p.country,
+                p.avatarUrl,
+                p.level,
+                rs.score,
+                rs.mode
+            FROM players p
+            JOIN RankedScores rs ON p.id = rs.playerId
+            WHERE rs.rn = 1
+            ORDER BY rs.score DESC
+            LIMIT 5;
+        `);
+        const rows = result.rows;
+        const leaderboard = rows.map(row => ({
+            name: row.username,
+            country: row.country,
+            flag: countries[row.country] ? countries[row.country].flag : '🏳️',
+            score: row.score,
+            mode: row.mode, // Added mode here
+            avatarUrl: row.avatarurl,
+            level: row.level
+        }));
+        res.json(leaderboard);
+    } catch (err) {
+        console.error('Top players preview leaderboard error:', err);
+        return res.status(500).json({ message: 'An unexpected error occurred while fetching top players preview.' });
     }
 });
 

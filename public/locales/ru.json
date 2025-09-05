@@ -3,7 +3,7 @@
     "tokenomics": "Токеномика",
     "social": "Социальные сети",
     "playGame": "Играть",
-    "heroTitle": "Проверьте свою память, поддержите свою страну",
+    "heroTitle": "Возродите утраченную мозаику с помощью вашей памяти.",
     "heroSubtitle": "Присоединяйтесь к международному соревнованию и поднимитесь в мировом рейтинге",
     "buyNow": "Купить сейчас",
     "aboutCip": "О CIPHER",
@@ -29,7 +29,7 @@
     "tokenDetail4": "Команда и советники",
     "tokenDetail5": "Резервный фонд",
     "joinCommunity": "Присоединяйтесь к нашему сообществу",
-    "twitter": "Twitter",
+    "x": "X",
     "telegram": "Telegram",
     "youtube": "YouTube",
     "gameTitle": "Испытание с цветной головоломкой",
@@ -229,4 +229,14 @@
     "vestingCliffPeriodLabel": "Период клиффа",
     "vestingTotalVestingLabel": "Общий вестинг",
     "vestingReleaseScheduleLabel": "График высвобождения"
+,
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

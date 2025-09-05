@@ -7,6 +7,7 @@ const fs = require('fs');
 const db = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 const { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, PASSWORD_MIN_LENGTH } = require('../constants');
+const { updateLeaderboardView } = require('../update_leaderboard_view');
 
 // --- Multer Setup for Avatar Uploads ---
 const avatarUploadPath = path.join(__dirname, '../uploads/avatars');
@@ -28,11 +29,20 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    // Accept images only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-        req.fileValidationError = 'Only image files are allowed!';
+    // Check file extension
+    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
+    if (!file.originalname.match(allowedExtensions)) {
+        req.fileValidationError = 'Only image files (jpg, jpeg, png, gif) are allowed!';
         return cb(new Error('Only image files are allowed!'), false);
     }
+    
+    // Check MIME type for additional security
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+        req.fileValidationError = 'Invalid file type!';
+        return cb(new Error('Invalid file type!'), false);
+    }
+    
     cb(null, true);
 };
 
@@ -74,6 +84,12 @@ router.post('/avatar', authenticateToken, (req, res) => {
             await db.query('UPDATE players SET avatarUrl = $1 WHERE id = $2', [newAvatarUrl, req.user.id]);
             console.log(`[DEBUG] Avatar updated in DB for user ${req.user.id}. New URL: ${newAvatarUrl}`);
 
+            // Manually trigger leaderboard view refresh after avatar update
+            updateLeaderboardView().catch(err => {
+                // Log the error but don't block the response to the user
+                console.error('[ERROR] Failed to refresh leaderboard view on-demand:', err);
+            });
+
             // If there was an old avatar and it's a user-uploaded one, delete it
             if (oldAvatarPath && oldAvatarPath.startsWith('uploads/avatars/')) {
                 const oldAvatarFullPath = path.join(__dirname, '..', oldAvatarPath);
@@ -100,37 +116,18 @@ router.get('/players/:id', async (req, res) => {
     try {
         const query = `
             SELECT
-                p.id,
-                p.username,
-                p.country,
-                p.avatarurl,
-                p.createdat,
-                p.level,
-                COALESCE(s_stats.highestscore, 0) AS highestscore,
-                COALESCE(s_stats.gamecount, 0) AS gamecount,
-                (
-                    SELECT json_agg(json_build_object('score', s.score, 'mode', s.mode, 'timestamp', s.timestamp))
-                    FROM (
-                        SELECT score, mode, timestamp
-                        FROM scores
-                        WHERE playerid = p.id
-                        ORDER BY timestamp DESC
-                    ) s
-                ) AS scores
+                id,
+                username,
+                country,
+                avatarurl,
+                createdat,
+                level,
+                highestScore, -- Fetched directly from the new column
+                gameCount     -- Fetched directly from the new column
             FROM
-                players p
-            LEFT JOIN (
-                SELECT
-                    playerid,
-                    MAX(score) AS highestscore,
-                    COUNT(*) AS gamecount
-                FROM
-                    scores
-                GROUP BY
-                    playerid
-            ) s_stats ON p.id = s_stats.playerid
+                players
             WHERE
-                p.id = $1;
+                id = $1;
         `;
 
         const result = await db.query(query, [id]);
@@ -142,12 +139,36 @@ router.get('/players/:id', async (req, res) => {
 
         res.json({
             ...player,
-            scores: player.scores || [], // Ensure scores is an array
-            avatarUrl: player.avatarurl // Ensure avatarUrl is correctly mapped
+            scores: [], // Scores will be fetched separately
+            avatarUrl: player.avatarurl
         });
     } catch (err) {
         console.error('Get player profile error:', err);
         return res.status(500).json({ message: 'An unexpected error occurred while fetching player profile.' });
+    }
+});
+
+// Get player scores by ID with pagination
+router.get('/players/:id/scores', async (req, res) => {
+    const { id } = req.params;
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 scores per page
+    const offset = (page - 1) * limit;
+
+    try {
+        const query = `
+            SELECT score, mode, timestamp
+            FROM scores
+            WHERE playerId = $1
+            ORDER BY timestamp DESC
+            LIMIT $2
+            OFFSET $3;
+        `;
+        const result = await db.query(query, [id, limit, offset]);
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Get player scores error:', err);
+        return res.status(500).json({ message: 'An unexpected error occurred while fetching player scores.' });
     }
 });
 

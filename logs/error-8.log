@@ -1,0 +1,11 @@
+2025-08-31 14:36:26: Admin get users error: ReferenceError: orderByClause is not defined
+    at C:\Users\edist\Desktop\cipher\routes\adminRoutes.js:62:24
+    at Layer.handle [as handle_request] (C:\Users\edist\Desktop\cipher\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\edist\Desktop\cipher\node_modules\express\lib\router\route.js:149:13)
+    at C:\Users\edist\Desktop\cipher\middleware\auth.js:29:9
+    at C:\Users\edist\Desktop\cipher\node_modules\jsonwebtoken\verify.js:261:12
+    at getSecret (C:\Users\edist\Desktop\cipher\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (C:\Users\edist\Desktop\cipher\node_modules\jsonwebtoken\verify.js:101:10)
+    at authenticateAdminToken (C:\Users\edist\Desktop\cipher\middleware\auth.js:26:9)
+    at Layer.handle [as handle_request] (C:\Users\edist\Desktop\cipher\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\edist\Desktop\cipher\node_modules\express\lib\router\route.js:149:13)

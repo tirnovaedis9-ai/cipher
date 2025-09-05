@@ -32,7 +32,7 @@ describe('Profile Routes', () => {
             expect(res.body).to.be.an('object');
             expect(res.body).to.have.property('username', 'profileuser');
             expect(res.body).to.have.property('country', 'TR');
-            expect(res.body).to.have.property('level', 1);
+            expect(res.body).to.have.property('level', 0);
         });
 
         it('should return 404 for a non-existent user', async () => {

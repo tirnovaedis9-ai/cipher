@@ -1,0 +1,139 @@
+/* Main container for the Cong game */
+#cong-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color-translucent);
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    #cong-game-container {
+        padding-bottom: 150px; /* Space for joystick */
+    }
+}
+
+/* Wrapper for the canvas and overlays */
+.cong-canvas-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 350px; /* Fixed width */
+    height: 350px; /* Fixed height */
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* The game canvas itself */
+#cong-canvas {
+    background-color: #000;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    display: block; /* Removes bottom space under canvas */
+}
+
+/* Overlays for start and game over screens */
+#cong-start-screen, #cong-game-over-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--text-color);
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+#cong-game-over-screen.hidden, #cong-start-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#cong-game-over-screen h2 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent-color);
+}
+
+#cong-game-over-screen p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Buttons used in the game overlays */
+.cong-game-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 2rem; /* Larger icon/text */
+    border-radius: 50%; /* Circular button */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cong-game-btn:hover {
+    background-color: var(--primary-color-dark);
+    transform: scale(1.1);
+}
+
+/* Score display */
+#cong-score {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 400px;
+    font-size: 2rem; /* Smaller font size for score */
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-family: sans-serif; /* Use a standard font */
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+/* --- Joystick Styles --- */
+#cong-joystick {
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: 30px;
+    right: 30px; /* Changed from left to right */
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.5); /* More opaque background */
+    border: 2px solid var(--primary-color); /* Added border */
+    border-radius: 50%;
+    z-index: 100;
+}
+
+#cong-joystick-handle {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8); /* More opaque handle */
+    border-radius: 50%;
+}
+
+/* Show joystick only on mobile devices */
+@media (max-width: 768px) {
+    #cong-joystick {
+        display: block;
+    }
+}

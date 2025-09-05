@@ -1,0 +1,261 @@
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .tokenomics-content {
+        gap: 5rem;
+    }
+}
+
+.mobile-language-selector {
+    display: block; /* Always display, not just on mobile */
+    margin: 1rem auto; /* Center it */
+    width: 80%; /* Adjust width as needed */
+    text-align: center;
+}
+
+.footer-language-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; /* Adjust base font size for mobile */
+    }
+
+        .header {
+        background: transparent; /* Transparent background for mobile header */
+        backdrop-filter: none; /* Remove blur */
+        border-bottom: none; /* Remove border */
+        padding-top: 20px; /* Move content down */
+    }
+
+    .header .container {
+        justify-content: space-between;
+        padding: 0 var(--spacing-sm);
+    }
+
+    .nav {
+        display: flex; /* Always flex, control visibility with transform */
+        flex-direction: column;
+        position: fixed; /* Fixed to cover viewport */
+        top: 0;
+        right: 0;
+        width: 280px; /* Fixed width for side menu */
+        height: 100vh; /* Full height */
+        background: #000000; /* Black background for menu */
+        border-left: var(--border-light); /* Border on the left */
+        padding: var(--spacing-sm) 0;
+        align-items: center;
+        transform: translateX(100%); /* Hide initially by moving off-screen */
+        transition: transform 0.3s ease-out; /* Smooth slide animation */
+        z-index: 999; /* Ensure it's below header but above content */
+    }
+
+    .nav.active {
+        transform: translateX(0); /* Slide in */
+    }
+
+    .nav-link {
+        padding: 0.75rem 20px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-link::after {
+        width: 0; /* Remove underline on mobile */
+        transition: none; /* Remove transition for underline */
+    }
+
+    .nav-link:active,
+    .nav-link:focus {
+        background: transparent; /* Remove background effect on click/focus */
+    }
+
+    .play-game-btn {
+        margin-top: 1rem;
+        width: 80%;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    
+
+    .mobile-language-selector {
+        display: block;
+        margin-top: 1rem;
+        width: 80%;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 2.2rem; /* Adjusted for better fit */
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem; /* Adjusted for better fit */
+        margin-bottom: 2.5rem;
+    }
+
+    .about, .tokenomics, .social, .game-section {
+        padding: 80px 0; /* Reduce section padding */
+    }
+    
+    .about-content, .tokenomics-content, .social-links {
+        flex-direction: column; /* Stack content vertically */
+        gap: var(--spacing-lg);
+        padding: 0 1rem; /* Add horizontal padding */
+    }
+
+    .tokenomics-content {
+        gap: 2rem; /* Specific gap for tokenomics */
+    }
+    
+    .game-container {
+        width: 95%;
+        padding: 60px var(--spacing-sm) var(--spacing-sm); /* Adjust padding */
+    }
+    
+    .game-modes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .grid-cell {
+        width: 30px;
+        height: 30px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr; /* Stack footer sections */
+        text-align: center;
+    }
+
+    .footer-section {
+        align-items: center;
+    }
+
+    .notification-bar {
+        font-size: 12px; /* Daha küçük font boyutu */
+        padding: 8px 15px; /* Daha az dolgu */
+        max-width: 90%; /* Ekran genişliğine daha iyi uyum */
+        top: 20px; /* Daha yukarıda konumlandır */
+    }
+
+    .social-previews img {
+        width: 100%; /* Mobilde resimler tam genişlikte yer kaplar */
+    }
+
+    #chatModal .game-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto auto;
+    }
+
+    #chatModal .chat-sidebar {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        border-left: none;
+        border-top: var(--border-light);
+        max-height: 200px;
+    }
+
+    #chatModal .chat-input-container {
+        grid-row: 4;
+    }
+
+    .chat-tabs-container {
+        width: calc(100% - 30px);
+    }
+}
+
+@media (max-width: 480px) {
+
+        /* Corrected Chat input layout for small screens to match 768px view */
+    #chatModal .chat-input-container {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background: linear-gradient(135deg, #0F1A2B 0%, #1A2B40 100%);
+        border-top: 1px solid rgba(0, 174, 239, 0.15);
+        padding: 10px 20px;
+        gap: 10px;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    #chatModal .chat-input-wrapper {
+        flex: 1 1 0;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    #chatModal #chatInput {
+        flex: 1 1 0;
+        min-width: 0;
+        margin-bottom: 0; /* Override margin */
+    }
+
+    #chatModal .chat-action-btn {
+        width: auto; /* Override width */
+        border-radius: 50%; /* Keep it circular */
+    }
+
+    #chatModal #chatSendBtn,
+    #chatModal #emojiBtn,
+    #chatModal #chatRoomDropdownBtn {
+        flex-shrink: 0;
+    }
+
+    .hero-title {
+        font-size: 1.9rem;
+    }
+    
+    .game-modes {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cell {
+        width: 25px;
+        height: 25px;
+    }
+
+    .game-controls-top-right {
+        height: auto; /* Adjust height for mobile */
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+
+    .game-info-display {
+        flex-direction: row; /* Keep items in a row */
+        flex-wrap: wrap; /* Allow wrapping */
+        gap: var(--spacing-xs); /* Reduce gap */
+        justify-content: center; /* Center the items */
+    }
+}
+
+@media (max-width: 992px) {
+    .token-key-data {
+        grid-template-columns: repeat(2, 1fr);
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    .data-item.full-width {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 576px) {
+    .token-key-data {
+        grid-template-columns: 1fr;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}

@@ -13,8 +13,54 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeLanguage().then(() => {
         // After translations are loaded, set up the rest of the admin panel
         setupAdminPanel();
+        initializeAdminLanguageSwitcher(); // Add this call
     });
 });
+
+function updateAdminFlag(lang) {
+    const currentFlag = document.getElementById('currentFlagAdmin');
+    if (!currentFlag) return;
+
+    // Find the language option to get the correct flag source
+    const option = document.querySelector(`.language-option[data-lang='${lang}']`);
+    if (option) {
+        const flagSrc = option.querySelector('img').src;
+        const flagAlt = option.querySelector('img').alt;
+        currentFlag.src = flagSrc;
+        currentFlag.alt = flagAlt;
+    }
+}
+
+function initializeAdminLanguageSwitcher() {
+    const languageBtn = document.getElementById('languageBtnAdmin');
+    const languageDropdown = document.getElementById('languageDropdownAdmin');
+
+    if (!languageBtn || !languageDropdown) return;
+
+    // Set initial flag
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    updateAdminFlag(savedLanguage);
+
+    languageBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!languageDropdown.contains(event.target) && !languageBtn.contains(event.target)) {
+            languageDropdown.classList.remove('show');
+        }
+    });
+
+    languageDropdown.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', (event) => {
+            event.preventDefault();
+            const newLang = option.getAttribute('data-lang');
+            localStorage.setItem('selectedLanguage', newLang);
+            window.location.reload(); // Reload the page to apply the new language
+        });
+    });
+}
 
 function setupAdminPanel() {
     const adminLoginSection = document.getElementById('adminLoginSection');
@@ -26,13 +72,14 @@ function setupAdminPanel() {
     const saveUserChangesBtn = document.getElementById('saveUserChangesBtn');
     const adminUsernameInput = document.getElementById('adminUsername');
     const adminPasswordInput = document.getElementById('adminPassword');
+    const sortUsersDropdown = document.getElementById('sortUsers');
 
     const checkAdminLogin = () => {
         const token = localStorage.getItem('adminToken');
         if (token) {
             adminLoginSection.style.display = 'none';
             adminDashboard.style.display = 'flex';
-            loadUsers();
+            loadUsers(); // Load with default sort
             loadStats();
         } else {
             adminLoginSection.style.display = 'block';
@@ -40,6 +87,10 @@ function setupAdminPanel() {
             adminUsernameInput.focus(); // Automatically focus the username field
         }
     };
+
+    sortUsersDropdown.addEventListener('change', () => {
+        loadUsers(sortUsersDropdown.value);
+    });
 
     const handleLogin = async () => {
         const username = adminUsernameInput.value;
@@ -105,10 +156,12 @@ function setupAdminPanel() {
     checkAdminLogin();
 }
 
-async function loadUsers() {
+async function loadUsers(sortOption = 'createdAt_desc') {
     const token = localStorage.getItem('adminToken');
+    const [sortBy, order] = sortOption.split('_');
+
     try {
-        const response = await fetch('/api/admin/users', {
+        const response = await fetch(`/api/admin/users?sortBy=${sortBy}&order=${order}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const users = await response.json();
@@ -118,9 +171,9 @@ async function loadUsers() {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${user.id}</td>
-                <td>${user.username}</td>
+                <td class="user-cell"><img src="${user.avatarurl || 'assets/logo.jpg'}" class="user-avatar"> ${user.username}</td>
                 <td>${user.country}</td>
-                <td>${new Date(user.createdAt).toLocaleString()}</td>
+                <td>${user.createdat ? user.createdat.substring(0, 10) : 'N/A'}</td>
                 <td>
                     <input type="number" class="game-count-input" data-id="${user.id}" value="${user.gamecount || 0}" min="0">
                 </td>

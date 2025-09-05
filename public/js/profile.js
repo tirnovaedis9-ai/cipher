@@ -1,9 +1,12 @@
-// cropper instance is declared in state.js
-
-
+let currentProfilePage = 1;
+const scoresPerPage = 10;
+let isLoadingScores = false;
+let currentProfilePlayerId = null;
 
 async function showPlayerProfile(playerId) {
-    console.log('showPlayerProfile called with playerId:', playerId);
+    if (window.IS_DEVELOPMENT) {
+        console.log('showPlayerProfile called with playerId:', playerId);
+    }
     const modal = document.getElementById('playerProfileModal');
     const content = document.getElementById('playerProfileContent');
     const nameTitle = document.getElementById('profileModalPlayerName');
@@ -11,13 +14,20 @@ async function showPlayerProfile(playerId) {
     modal.style.display = 'block';
     content.innerHTML = '<div class="loading">Loading profile...</div>';
     nameTitle.textContent = 'Player Profile';
-    document.body.classList.add('no-scroll');
+
+    currentProfilePlayerId = playerId; // Store the current player ID
+    currentProfilePage = 1; // Reset the page number
 
     try {
-        console.log('Attempting to fetch player data for playerId:', playerId);
+        if (window.IS_DEVELOPMENT) {
+            console.log('Attempting to fetch player data for playerId:', playerId);
+        }
         const playerData = await apiRequest(`/api/profile/players/${playerId}`);
-        console.log('Player data fetched successfully:', playerData);
+        if (window.IS_DEVELOPMENT) {
+            console.log('Player data fetched successfully:', playerData);
+        }
         displayProfileData(playerData);
+        await loadMoreScores(); // Load the first page of scores
     } catch (error) {
         console.error('Failed to load player profile:', error);
         content.innerHTML = '<div class="error">Could not load player profile.</div>';
@@ -30,56 +40,100 @@ function displayProfileData(data) {
 
     nameTitle.textContent = '';
 
-    const recentGamesHTML = data.scores.map(score => `
-        <div class="profile-game-item">
-            <div>
-                <div class="profile-game-mode">${score.mode}</div>
-                <div class="profile-game-date">${new Date(score.timestamp).toLocaleDateString()}</div>
-            </div>
-            <div class="profile-game-score">${score.score} pts</div>
-        </div>
-    `).join('');
+    const levelClass = data.level > 0 ? ` level-${data.level}-border` : ' no-border';
 
     content.innerHTML = `
         <div class="profile-header">
-            <div class="profile-avatar-small-wrapper"> <!-- Use the small wrapper here -->
-                <img src="${data.avatarurl || 'assets/logo.jpg'}" alt="Player Avatar" class="profile-avatar-small level-${data.level}-border">
+            <div class="profile-avatar-small-wrapper">
+                <img src="${data.avatarurl || 'assets/logo.jpg'}" alt="Player Avatar" class="profile-avatar-small${levelClass} clickable-avatar">
             </div>
             <h2 class="profile-name">${data.username}</h2>
             <span class="profile-flag"><img src="${countries[data.country]?.flag || ''}" alt="${countries[data.country]?.name || 'Unknown'} Flag" class="flag-icon"></span>
         </div>
         <div class="profile-stats">
             <div class="profile-stat-item">
-                <h4>Highest Score</h4>
+                <h4>${getTranslation('highestScore')}</h4>
                 <p>${data.highestscore}</p>
             </div>
             <div class="profile-stat-item">
-                <h4>Games Played</h4>
+                <h4>${getTranslation('gamesPlayed')}</h4>
                 <p>${data.gamecount}</p>
             </div>
             <div class="profile-stat-item">
-                <h4>Level</h4>
+                <h4>${getTranslation('level')}</h4>
                 <p>${data.level}</p>
             </div>
             <div class="profile-stat-item">
-                <h4>Member Since</h4>
+                <h4>${getTranslation('memberSince')}</h4>
                 <p>${new Date(data.createdat).toLocaleDateString()}</p>
             </div>
         </div>
         <div class="profile-recent-games">
-            <h3>Recent Games</h3>
+            <h3>${getTranslation('recentGames')}</h3>
             <div class="profile-games-list" id="profileGamesList">
-                ${recentGamesHTML || '<div class="no-data">No recent games found.</div>'}
+                <div class="loading">Loading games...</div>
             </div>
+            <button id="loadMoreScoresBtn" class="load-more-icon-btn" style="display:none;" title="${getTranslation('loadMore')}"><i class="fas fa-chevron-down"></i></button>
         </div>
     `;
 
-    // Prevent scroll propagation for the recent games list
+    const loadMoreBtn = document.getElementById('loadMoreScoresBtn');
+    loadMoreBtn.onclick = loadMoreScores;
+
     const profileGamesList = document.getElementById('profileGamesList');
     if (profileGamesList) {
         profileGamesList.addEventListener('wheel', (e) => {
             e.stopPropagation();
         });
+    }
+}
+
+async function loadMoreScores() {
+    if (isLoadingScores) return;
+    isLoadingScores = true;
+
+    const loadMoreBtn = document.getElementById('loadMoreScoresBtn');
+    const gamesList = document.getElementById('profileGamesList');
+    const loadingIndicator = gamesList.querySelector('.loading');
+
+    if (loadMoreBtn) loadMoreBtn.disabled = true;
+    if (loadingIndicator) loadingIndicator.style.display = 'block';
+
+    try {
+        const scores = await apiRequest(`/api/profile/players/${currentProfilePlayerId}/scores?page=${currentProfilePage}&limit=${scoresPerPage}`);
+        
+        if (loadingIndicator) loadingIndicator.remove();
+
+        if (scores.length > 0) {
+            const scoresHTML = scores.map(score => `
+                <div class="profile-game-item">
+                    <div>
+                        <div class="profile-game-mode">${score.mode}</div>
+                        <div class="profile-game-date">${new Date(score.timestamp).toLocaleDateString()}</div>
+                    </div>
+                    <div class="profile-game-score">${score.score} pts</div>
+                </div>
+            `).join('');
+            gamesList.innerHTML += scoresHTML;
+            currentProfilePage++;
+        }
+
+        if (scores.length < scoresPerPage) {
+            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+            if (gamesList.children.length === 0) {
+                 gamesList.innerHTML = '<div class="no-data">No recent games found.</div>';
+            }
+        } else {
+            if (loadMoreBtn) loadMoreBtn.style.display = 'block';
+        }
+
+    } catch (error) {
+        console.error('Failed to load more scores:', error);
+        if (loadingIndicator) loadingIndicator.remove();
+        gamesList.innerHTML = '<div class="error">Could not load games.</div>';
+    } finally {
+        isLoadingScores = false;
+        if (loadMoreBtn) loadMoreBtn.disabled = false;
     }
 }
 
@@ -158,7 +212,7 @@ async function processAndUploadAvatar(event) {
         setupCropper();
     };
     reader.onerror = () => {
-        showNotification('Could not read the selected file.', 'error');
+        showNotification(getTranslation('couldNotReadFile'), 'error');
     };
     reader.readAsDataURL(file);
 }
@@ -212,7 +266,6 @@ async function updateAvatar(blob) {
 function closePlayerProfileModal() {
     document.getElementById('playerProfileModal').style.display = 'none';
     showScreen('leaderboardScreen'); // Explicitly go back to leaderboard screen
-    document.body.classList.remove('no-scroll');
 }
 
 async function populateMyProfileData() {
@@ -223,8 +276,12 @@ async function populateMyProfileData() {
         // Update avatar
         const avatarPreview = document.getElementById('profileAvatarPreview');
         avatarPreview.src = profileData.avatarurl || 'assets/logo.jpg';
-        const levelClass = (profileData.level > 0) ? `level-${profileData.level}-border` : '';
-        avatarPreview.className = `profile-avatar-preview ${levelClass}`.trim();
+        avatarPreview.classList.add('clickable-avatar'); // Make avatar clickable
+        if (profileData.level > 0) {
+            avatarPreview.className = `profile-avatar-preview level-${profileData.level}-border`;
+        } else {
+            avatarPreview.className = 'profile-avatar-preview no-border';
+        }
 
         // Update username input
         document.getElementById('newUsernameInput').value = profileData.username;
@@ -234,6 +291,9 @@ async function populateMyProfileData() {
         document.getElementById('myProfileGamesPlayed').textContent = profileData.gamecount;
         document.getElementById('myProfileHighestScore').textContent = profileData.highestscore;
         document.getElementById('myProfileMemberSince').textContent = new Date(profileData.createdat).toLocaleDateString();
+
+        // Store gamecount in gameState for global access
+        gameState.gamecount = profileData.gamecount;
 
     } catch (error) {
         console.error('Failed to populate profile data:', error);
@@ -255,3 +315,11 @@ function closeImageCropper() {
 }
 
 window.closeImageCropper = closeImageCropper;
+
+document.addEventListener('languageChanged', () => {
+    const modal = document.getElementById('playerProfileModal');
+    if (modal && modal.style.display === 'block' && currentProfilePlayerId) {
+        // If a profile modal is open, refresh it to update translations
+        showPlayerProfile(currentProfilePlayerId);
+    }
+});

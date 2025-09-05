@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 const request = require('supertest');
 const { app, cleanupDatabase } = require('./testHelper');
 const { expect } = require('chai');
+const { updateLeaderboardView } = require('../update_leaderboard_view');
 
 describe('Score and Leaderboard Routes', () => {
     let testUserToken;
@@ -13,9 +14,9 @@ describe('Score and Leaderboard Routes', () => {
         const res = await request(app)
             .post('/api/auth/register')
             .send({
-                username: 'scoreuser',
-                password: 'password123',
-                country: 'JP'
+                username: 'edis',
+                password: '123123',
+                country: 'TR'
             });
         testUserToken = res.body.token;
         testUserId = res.body.playerId;
@@ -30,7 +31,8 @@ describe('Score and Leaderboard Routes', () => {
                     score: 1500,
                     mode: 'classic',
                     memoryTime: 30.5,
-                    matchingTime: 60.2
+                    matchingTime: 60.2,
+                    clientGameId: 'game-id-123'
                 });
 
             expect(res.statusCode).to.equal(201);
@@ -47,7 +49,7 @@ describe('Score and Leaderboard Routes', () => {
                 });
 
             expect(res.statusCode).to.equal(400);
-            expect(res.body).to.have.property('message', 'Score and mode are required');
+            expect(res.body).to.have.property('message', 'Score, mode, and game ID are required');
         });
     });
 
@@ -60,8 +62,10 @@ describe('Score and Leaderboard Routes', () => {
                     score: 2000,
                     mode: 'time_attack',
                     memoryTime: 25.0,
-                    matchingTime: 50.0
+                    matchingTime: 50.0,
+                    clientGameId: 'game-id-leaderboard' // Add a clientGameId here
                 });
+            await updateLeaderboardView(); // Refresh the materialized view
         });
 
         it('should get the individual leaderboard', async () => {
@@ -71,7 +75,7 @@ describe('Score and Leaderboard Routes', () => {
             expect(res.statusCode).to.equal(200);
             expect(res.body).to.be.an('array');
             expect(res.body.length).to.be.greaterThan(0);
-            expect(res.body[0]).to.have.property('name', 'scoreuser');
+            expect(res.body[0]).to.have.property('name', 'edis');
             expect(res.body[0]).to.have.property('score', 2000);
         });
     });

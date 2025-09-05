@@ -1,5 +1,5 @@
-// Game State
-let gameState = {
+// Default Game State
+const defaultGameState = {
     currentMode: null,
     gameGrid: [],
     originalColors: [],
@@ -37,6 +37,9 @@ let gameState = {
     zoomInInterval: null, // For holding zoom in
     zoomOutInterval: null // For holding zoom out
 };
+
+// Game State
+let gameState = { ...defaultGameState };
 
 // Cropper.js instance
 let cropper = null;

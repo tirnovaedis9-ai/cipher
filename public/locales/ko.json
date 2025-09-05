@@ -3,7 +3,7 @@
     "tokenomics": "토큰 경제",
     "social": "소셜",
     "playGame": "게임 플레이",
-    "heroTitle": "기억력을 시험하고 국가를 응원하세요",
+    "heroTitle": "기억으로 잃어버린 모자이크를 되살리세요.",
     "heroSubtitle": "국제 대회에 참가하여 글로벌 리더보드에 이름을 올리세요",
     "buyNow": "지금 구매",
     "aboutCip": "CIPHER 정보",
@@ -29,7 +29,7 @@
     "tokenDetail4": "팀 및 고문",
     "tokenDetail5": "예비 기금",
     "joinCommunity": "커뮤니티에 가입하세요",
-    "twitter": "트위터",
+    "x": "X",
     "telegram": "텔레그램",
     "youtube": "유튜브",
     "gameTitle": "컬러 퍼즐 챌린지",
@@ -229,4 +229,14 @@
     "vestingCliffPeriodLabel": "클리프 기간",
     "vestingTotalVestingLabel": "총 베스팅",
     "vestingReleaseScheduleLabel": "해제 일정"
+,
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

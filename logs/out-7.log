@@ -1,0 +1,312 @@
+2025-08-31 14:28:26: Connected to PostgreSQL database: cipher_db
+2025-08-31 14:28:26: Database is ready.
+2025-08-31 14:28:26: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:28:29: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:28:29: Server is running on http://localhost:3000
+2025-08-31 14:33:29: Periodically refreshing leaderboard view...
+2025-08-31 14:33:29: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:33:33: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:38:21: Connected to PostgreSQL database: cipher_db
+2025-08-31 14:38:21: Database is ready.
+2025-08-31 14:38:21: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:38:22: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:38:22: Server is running on http://localhost:3000
+2025-08-31 14:41:01: Connected to PostgreSQL database: cipher_db
+2025-08-31 14:41:01: Database is ready.
+2025-08-31 14:41:01: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:41:09: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:41:09: Server is running on http://localhost:3000
+2025-08-31 14:47:31: Connected to PostgreSQL database: cipher_db
+2025-08-31 14:47:31: Database is ready.
+2025-08-31 14:47:31: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:47:37: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:47:37: Server is running on http://localhost:3000
+2025-08-31 14:47:37: [DEBUG] Fetching profile for player ID: player_1756154115824
+2025-08-31 14:47:39: a user connected
+2025-08-31 14:47:39: User edis attempting to join. Fetched level from DB: 10.
+2025-08-31 14:47:39: edis (player_1756154115824) joined room: country-TR. Stored level: 10
+2025-08-31 14:47:59: user disconnected
+2025-08-31 14:52:37: Periodically refreshing leaderboard view...
+2025-08-31 14:52:37: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:52:37: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:58:11: Connected to PostgreSQL database: cipher_db
+2025-08-31 14:58:11: Database is ready.
+2025-08-31 14:58:11: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 14:58:11: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 14:58:11: Server is running on http://localhost:3000
+2025-08-31 14:58:12: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 14:58:13: a user connected
+2025-08-31 14:58:16: a user connected
+2025-08-31 14:58:16: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 14:58:16: easdew (player_1756641153883) joined room: country-US. Stored level: 0
+2025-08-31 14:58:35: user disconnected
+2025-08-31 14:58:58: user disconnected
+2025-08-31 15:00:43: a user connected
+2025-08-31 15:00:46: a user connected
+2025-08-31 15:00:48: a user connected
+2025-08-31 15:00:48: user disconnected
+2025-08-31 15:00:49: a user connected
+2025-08-31 15:00:49: User easdew attempting to join. Fetched level from DB: 10.
+2025-08-31 15:00:49: easdew (player_1756641153883) joined room: country-US. Stored level: 10
+2025-08-31 15:00:58: user disconnected
+2025-08-31 15:00:58: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:00:59: a user connected
+2025-08-31 15:00:59: User easdew attempting to join. Fetched level from DB: 10.
+2025-08-31 15:00:59: easdew (player_1756641153883) joined room: country-US. Stored level: 10
+2025-08-31 15:01:07: [DEBUG] Fetching profile for player ID: player_1756607214765
+2025-08-31 15:01:14: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:01:28: user disconnected
+2025-08-31 15:01:31: user disconnected
+2025-08-31 15:01:33: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:01:45: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:02:01: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:02:07: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:02:11: user disconnected
+2025-08-31 15:02:11: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:02:13: a user connected
+2025-08-31 15:02:13: User easdew attempting to join. Fetched level from DB: 10.
+2025-08-31 15:02:13: easdew (player_1756641153883) joined room: country-US. Stored level: 10
+2025-08-31 15:02:30: [DEBUG] Admin reset: Player player_1756641153883 level reset to 0 based on 0 remaining games.
+2025-08-31 15:02:35: user disconnected
+2025-08-31 15:02:35: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:02:35: a user connected
+2025-08-31 15:02:35: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:02:35: easdew (player_1756641153883) joined room: country-US. Stored level: 0
+2025-08-31 15:02:36: a user connected
+2025-08-31 15:02:37: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:02:37: easdew (player_1756641153883) joined room: country-US. Stored level: 0
+2025-08-31 15:02:42: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:03:11: Periodically refreshing leaderboard view...
+2025-08-31 15:03:11: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:03:12: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:03:20: user disconnected
+2025-08-31 15:03:43: user disconnected
+2025-08-31 15:03:44: [DEBUG] Fetching profile for player ID: player_1756641153883
+2025-08-31 15:03:44: a user connected
+2025-08-31 15:03:57: a user connected
+2025-08-31 15:03:57: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:03:57: easdew (player_1756641153883) joined room: country-US. Stored level: 0
+2025-08-31 15:04:03: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:04:03: easdew (player_1756641153883) joined room: Global. Stored level: 0
+2025-08-31 15:04:06: Sending message to room: Global
+2025-08-31 15:04:06: Emitted message to room Global for all clients.
+2025-08-31 15:04:12: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:04:12: easdew (player_1756641153883) joined room: country-US. Stored level: 0
+2025-08-31 15:04:15: Sending message to room: country-US
+2025-08-31 15:04:15: Emitted message to room country-US for all clients.
+2025-08-31 15:04:17: User easdew attempting to join. Fetched level from DB: 0.
+2025-08-31 15:04:17: easdew (player_1756641153883) joined room: Global. Stored level: 0
+2025-08-31 15:04:29: user disconnected
+2025-08-31 15:05:13: user disconnected
+2025-08-31 15:05:40: Connected to PostgreSQL database: cipher_db
+2025-08-31 15:05:40: Database is ready.
+2025-08-31 15:05:40: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:05:40: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:05:40: Server is running on http://localhost:3000
+2025-08-31 15:10:40: Periodically refreshing leaderboard view...
+2025-08-31 15:10:40: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:10:41: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:15:40: Periodically refreshing leaderboard view...
+2025-08-31 15:15:40: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:15:40: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:47:44: Connected to PostgreSQL database: cipher_db
+2025-08-31 15:47:44: Database is ready.
+2025-08-31 15:47:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:47:44: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:47:44: Server is running on http://localhost:3000
+2025-08-31 15:50:19: [DEBUG] Fetching profile for player ID: player_1756432294423
+2025-08-31 15:50:21: [DEBUG] Fetching profile for player ID: player_1756432294423
+2025-08-31 15:52:44: Periodically refreshing leaderboard view...
+2025-08-31 15:52:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:52:45: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 15:57:44: Periodically refreshing leaderboard view...
+2025-08-31 15:57:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 15:57:44: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:02:44: Periodically refreshing leaderboard view...
+2025-08-31 16:02:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:02:44: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:07:44: Periodically refreshing leaderboard view...
+2025-08-31 16:07:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:07:44: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:12:44: Periodically refreshing leaderboard view...
+2025-08-31 16:12:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:12:45: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:12:52: a user connected
+2025-08-31 16:12:52: User flight attempting to join. Fetched level from DB: 10.
+2025-08-31 16:12:52: flight (player_1756359060356) joined room: country-KH. Stored level: 10
+2025-08-31 16:12:52: user disconnected
+2025-08-31 16:12:53: a user connected
+2025-08-31 16:12:53: User flight attempting to join. Fetched level from DB: 10.
+2025-08-31 16:12:53: flight (player_1756359060356) joined room: country-KH. Stored level: 10
+2025-08-31 16:13:38: user disconnected
+2025-08-31 16:16:23: [DEBUG] Fetching profile for player ID: player_1756359060356
+2025-08-31 16:17:40: a user connected
+2025-08-31 16:17:42: a user connected
+2025-08-31 16:17:44: a user connected
+2025-08-31 16:17:44: Periodically refreshing leaderboard view...
+2025-08-31 16:17:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:17:45: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:17:46: a user connected
+2025-08-31 16:17:48: a user connected
+2025-08-31 16:17:50: a user connected
+2025-08-31 16:17:51: a user connected
+2025-08-31 16:17:51: User flight attempting to join. Fetched level from DB: 10.
+2025-08-31 16:17:51: flight (player_1756359060356) joined room: country-KH. Stored level: 10
+2025-08-31 16:18:03: user disconnected
+2025-08-31 16:18:04: a user connected
+2025-08-31 16:18:04: User flight attempting to join. Fetched level from DB: 10.
+2025-08-31 16:18:04: flight (player_1756359060356) joined room: country-KH. Stored level: 10
+2025-08-31 16:18:25: user disconnected
+2025-08-31 16:18:27: user disconnected
+2025-08-31 16:18:29: user disconnected
+2025-08-31 16:18:31: user disconnected
+2025-08-31 16:18:33: user disconnected
+2025-08-31 16:18:35: user disconnected
+2025-08-31 16:18:50: user disconnected
+2025-08-31 16:18:54: a user connected
+2025-08-31 16:18:56: a user connected
+2025-08-31 16:18:56: User flight attempting to join. Fetched level from DB: 10.
+2025-08-31 16:18:56: flight (player_1756359060356) joined room: country-KH. Stored level: 10
+2025-08-31 16:19:39: user disconnected
+2025-08-31 16:19:41: user disconnected
+2025-08-31 16:21:21: [DEBUG] Fetching profile for player ID: player_1756359060356
+2025-08-31 16:22:44: Periodically refreshing leaderboard view...
+2025-08-31 16:22:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:22:46: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:27:44: Periodically refreshing leaderboard view...
+2025-08-31 16:27:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:27:47: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:32:44: Periodically refreshing leaderboard view...
+2025-08-31 16:32:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:32:47: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:37:44: Periodically refreshing leaderboard view...
+2025-08-31 16:37:44: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:37:45: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:39:31: Connected to PostgreSQL database: cipher_db
+2025-08-31 16:39:31: Database is ready.
+2025-08-31 16:39:31: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:39:31: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:39:31: Server is running on http://localhost:3000
+2025-08-31 16:44:31: Periodically refreshing leaderboard view...
+2025-08-31 16:44:31: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:44:31: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 16:49:31: Periodically refreshing leaderboard view...
+2025-08-31 16:49:31: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 16:49:33: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:06:51: Periodically refreshing leaderboard view...
+2025-08-31 17:06:52: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:06:53: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:11:51: Periodically refreshing leaderboard view...
+2025-08-31 17:11:51: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:11:51: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:16:51: Periodically refreshing leaderboard view...
+2025-08-31 17:16:52: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:16:52: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:21:51: Periodically refreshing leaderboard view...
+2025-08-31 17:21:51: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:21:53: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:23:36: Connected to PostgreSQL database: cipher_db
+2025-08-31 17:23:36: Database is ready.
+2025-08-31 17:23:36: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:23:36: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:23:36: Server is running on http://localhost:3000
+2025-08-31 17:28:36: Periodically refreshing leaderboard view...
+2025-08-31 17:28:37: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:28:37: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:32:12: Connected to PostgreSQL database: cipher_db
+2025-08-31 17:32:12: Database is ready.
+2025-08-31 17:32:12: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:32:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:32:13: Server is running on http://localhost:3000
+2025-08-31 17:37:13: Periodically refreshing leaderboard view...
+2025-08-31 17:37:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:37:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:42:13: Periodically refreshing leaderboard view...
+2025-08-31 17:42:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:42:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:46:55: a user connected
+2025-08-31 17:46:55: user disconnected
+2025-08-31 17:46:56: a user connected
+2025-08-31 17:46:59: a user connected
+2025-08-31 17:47:13: Periodically refreshing leaderboard view...
+2025-08-31 17:47:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:47:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:47:41: user disconnected
+2025-08-31 17:47:44: user disconnected
+2025-08-31 17:52:13: Periodically refreshing leaderboard view...
+2025-08-31 17:52:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:52:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 17:57:13: Periodically refreshing leaderboard view...
+2025-08-31 17:57:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 17:57:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:02:13: Periodically refreshing leaderboard view...
+2025-08-31 18:02:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:02:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:07:13: Periodically refreshing leaderboard view...
+2025-08-31 18:07:13: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:07:13: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:11:17: Connected to PostgreSQL database: cipher_db
+2025-08-31 18:11:17: Database is ready.
+2025-08-31 18:11:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:11:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:11:17: Server is running on http://localhost:3000
+2025-08-31 18:16:17: Periodically refreshing leaderboard view...
+2025-08-31 18:16:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:16:18: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:21:17: Periodically refreshing leaderboard view...
+2025-08-31 18:21:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:21:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:26:17: Periodically refreshing leaderboard view...
+2025-08-31 18:26:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:26:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:31:17: Periodically refreshing leaderboard view...
+2025-08-31 18:31:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:31:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:36:17: Periodically refreshing leaderboard view...
+2025-08-31 18:36:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:36:18: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:41:17: Periodically refreshing leaderboard view...
+2025-08-31 18:41:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:41:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:46:17: Periodically refreshing leaderboard view...
+2025-08-31 18:46:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:46:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 18:51:17: Periodically refreshing leaderboard view...
+2025-08-31 18:51:17: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 18:51:17: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 19:33:38: Connected to PostgreSQL database: cipher_db
+2025-08-31 19:33:38: Database is ready.
+2025-08-31 19:33:38: Attempting to create or refresh leaderboard_materialized_view...
+2025-08-31 19:33:38: Successfully refreshed leaderboard_materialized_view.
+2025-08-31 19:33:38: Server is running on http://localhost:3000
+2025-08-31 19:33:49: a user connected
+2025-08-31 19:33:49: User edis attempting to join. Fetched level from DB: 10.
+2025-08-31 19:33:49: edis (player_1756154115824) joined room: country-TR. Stored level: 10
+2025-08-31 19:33:52: user disconnected
+2025-08-31 19:33:52: a user connected
+2025-08-31 19:33:54: a user connected
+2025-08-31 19:33:56: a user connected
+2025-08-31 19:34:19: a user connected
+2025-08-31 19:34:21: a user connected
+2025-08-31 19:34:22: a user connected
+2025-08-31 19:34:37: user disconnected
+2025-08-31 19:34:39: user disconnected
+2025-08-31 19:34:41: user disconnected
+2025-08-31 19:34:49: a user connected
+2025-08-31 19:34:51: a user connected
+2025-08-31 19:34:51: User edis attempting to join. Fetched level from DB: 10.
+2025-08-31 19:34:51: edis (player_1756154115824) joined room: country-TR. Stored level: 10
+2025-08-31 19:35:04: user disconnected
+2025-08-31 19:35:06: user disconnected
+2025-08-31 19:35:07: user disconnected
+2025-09-02 10:13:38: Connected to PostgreSQL database: cipher_db
+2025-09-02 10:13:38: Database is ready.
+2025-09-02 10:13:38: Attempting to create or refresh leaderboard_materialized_view...
+2025-09-02 10:13:38: Successfully refreshed leaderboard_materialized_view.
+2025-09-02 10:13:38: Server is running on http://localhost:3000
+2025-09-02 10:18:38: Periodically refreshing leaderboard view...
+2025-09-02 10:18:39: Attempting to create or refresh leaderboard_materialized_view...
+2025-09-02 10:18:39: Successfully refreshed leaderboard_materialized_view.
+2025-09-02 10:23:38: Periodically refreshing leaderboard view...
+2025-09-02 10:23:38: Attempting to create or refresh leaderboard_materialized_view...
+2025-09-02 10:23:38: Successfully refreshed leaderboard_materialized_view.

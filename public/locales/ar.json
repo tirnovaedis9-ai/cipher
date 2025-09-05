@@ -3,7 +3,7 @@
     "tokenomics": "اقتصاد الرمز",
     "social": "اجتماعي",
     "playGame": "العب اللعبة",
-    "heroTitle": "اختبر ذاكرتك، ادعم بلدك",
+    "heroTitle": "أعد إحياء الفسيفساء المفقودة بذاكرتك.",
     "heroSubtitle": "انضم إلى المنافسة الدولية وتسلق لوحة المتصدرين العالمية",
     "buyNow": "اشترِ الآن",
     "aboutCip": "حول CIPHER",
@@ -29,7 +29,7 @@
     "tokenDetail4": "الفريق والمستشارون",
     "tokenDetail5": "صندوق الاحتياطي",
     "joinCommunity": "انضم إلى مجتمعنا",
-    "twitter": "تويتر",
+    "x": "X",
     "telegram": "تليجرام",
     "youtube": "يوتيوب",
     "gameTitle": "تحدي الألغاز الملونة",
@@ -228,5 +228,14 @@
     "vestingAllocationLabel": "التخصيص",
     "vestingCliffPeriodLabel": "فترة الجرف",
     "vestingTotalVestingLabel": "إجمالي الاستحقاق",
-    "vestingReleaseScheduleLabel": "جدول الإصدار"
+    "vestingReleaseScheduleLabel": "جدول الإصدار",
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

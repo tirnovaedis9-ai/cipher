@@ -3,7 +3,7 @@
     "tokenomics": "トークンエコノミー",
     "social": "ソーシャル",
     "playGame": "ゲームをプレイ",
-    "heroTitle": "記憶力を試し、国を応援しよう",
+    "heroTitle": "記憶で失われたモザイクを復活させよう。",
     "heroSubtitle": "国際大会に参加して、グローバルリーダーボードを駆け上がろう",
     "buyNow": "今すぐ購入",
     "aboutCip": "CIPHERについて",
@@ -29,7 +29,7 @@
     "tokenDetail4": "チームとアドバイザー",
     "tokenDetail5": "準備金",
     "joinCommunity": "コミュニティに参加",
-    "twitter": "Twitter",
+    "x": "X",
     "telegram": "Telegram",
     "youtube": "YouTube",
     "gameTitle": "カラーパズルチャレンジ",
@@ -229,4 +229,14 @@
     "vestingCliffPeriodLabel": "クリフ期間",
     "vestingTotalVestingLabel": "総ベスティング",
     "vestingReleaseScheduleLabel": "リリーススケジュール"
+,
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

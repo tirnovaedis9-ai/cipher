@@ -13,7 +13,9 @@ const lastMessageTime = new Map();
 
 module.exports = function(io) {
     io.on('connection', (socket) => {
-        console.log('a user connected');
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('🔌 User connected to chat');
+        }
 
         // Store user's current room
         let currentRoom = DEFAULT_CHAT_ROOM; // Default room
@@ -28,7 +30,9 @@ module.exports = function(io) {
                     return;
                 }
                 const { level, country } = playerResult.rows[0];
-                console.log(`User ${username} attempting to join. Fetched level from DB: ${level}.`);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.log(`👤 User ${username} attempting to join. Level: ${level}`);
+                }
                 // --- END SERVER-SIDE AUTHENTICATION ---
 
                 // Leave previous room if any
@@ -58,7 +62,9 @@ module.exports = function(io) {
 
                 const newUser = { playerId, username, avatarUrl, room: targetRoom, level: socket.level, country: socket.country };
                 connectedUsers.set(socket.id, newUser);
-                console.log(`${username} (${playerId}) joined room: ${targetRoom}. Stored level: ${socket.level}`);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.log(`🏠 ${username} joined room: ${targetRoom}`);
+                }
 
                 const usersInRoom = Array.from(connectedUsers.values())
                     .filter(user => user.room === targetRoom)
@@ -76,7 +82,9 @@ module.exports = function(io) {
         socket.on('sendMessage', async (msg) => {
             const { text, username, playerId } = msg;
             const room = socket.currentRoom || DEFAULT_CHAT_ROOM; // Get room from socket state
-            console.log(`Sending message to room: ${room}`); // DEBUG
+            if (process.env.NODE_ENV !== 'production') {
+                console.log(`💬 Message sent to room: ${room}`);
+            }
 
             // Clear typing status when a message is sent
             if (typingUsers.has(room)) {
@@ -115,7 +123,9 @@ module.exports = function(io) {
 
                 // If saving is successful, then emit the message to the room
                 io.to(room).emit('message', messageData);
-                console.log(`Emitted message to room ${room} for all clients.`);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.log(`📤 Message broadcasted to room: ${room}`);
+                }
 
             } catch (err) {
                 console.error('Socket.IO sendMessage error:', err);
@@ -157,12 +167,16 @@ module.exports = function(io) {
                     avatarUrl: user.avatarUrl, 
                     level: user.level // Include other fields that might change
                 });
-                console.log(`User ${user.username} updated avatar to ${avatarUrl}. Broadcasting update to room ${user.room}.`);
+                if (process.env.NODE_ENV !== 'production') {
+                    console.log(`🖼️ ${user.username} updated avatar`);
+                }
             }
         });
 
         socket.on('disconnect', () => {
-            console.log('user disconnected');
+            if (process.env.NODE_ENV !== 'production') {
+                console.log('🔌 User disconnected from chat');
+            }
             const user = connectedUsers.get(socket.id);
             if (user) {
                 connectedUsers.delete(socket.id);

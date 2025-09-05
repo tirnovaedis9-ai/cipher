@@ -93,7 +93,7 @@ describe('Auth Routes', () => {
             expect(res.body).to.have.property('playerId');
             expect(res.body).to.have.property('username').eql('loginuser');
             expect(res.body).to.have.property('country').eql('DE');
-            expect(res.body).to.have.property('level').eql(1);
+            expect(res.body).to.have.property('level').eql(0);
         });
 
         it('should not login with wrong password', async () => {

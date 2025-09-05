@@ -1,0 +1,522 @@
+/*
+================================================================================
+== MASTER THEME OVERRIDE FILE: cipher-light
+== Version: 5.1 (Aggressive Button Text Fix)
+== Description: This file contains all necessary style overrides to ensure
+== a complete and consistent light theme experience based on the user-provided
+================================================================================
+*/
+
+/* Default (Light) Theme Variables */
+:root {
+    --icon-fill: #3c315b; /* --midnightPurple, a dark color for light theme icons */
+    --icon-fill-hover: #ab9ff2; /* --purple, a primary color for hover */
+}
+
+/*
+========================================
+== 1. CORE VARIABLE MAPPING
+========================================
+*/
+[data-theme="cipher-light"] {
+    /* --- Primary Color Palette --- */
+    --color-primary: #7d6cdd;
+    --color-primary-rgb: 171, 159, 242;
+    --color-secondary: #4a87f2; /* --blue */
+    --color-secondary-rgb: 74, 135, 242;
+    
+    /* --- Backgrounds --- */
+    --color-background-dark: #fffdf8; /* --white */
+    --color-background-light: #f5f2ff; /* --violet3 */
+
+    /* --- Typography --- */
+    --color-text-light: #3c315b; /* --midnightPurple */
+    --color-text-light-rgb: 60, 49, 91;
+    --color-text-medium: #7e7d86; /* --dark10 */
+    --color-white: #fffdf8; /* --white */
+    --color-white-rgb: 255, 253, 248;
+    --color-black: #1c1c1c; /* --black */
+    --color-black-rgb: 28, 28, 28;
+
+    /* --- System & Accent Colors --- */
+    --color-success: #2ec08b; /* --green */
+    --color-success-rgb: 46, 192, 139;
+    --color-error: #ff7243; /* --red */
+    --color-error-rgb: 255, 114, 67;
+    --color-info: #4a87f2; /* --blue */
+    --color-gold: #ffd13f; /* --yellow */
+    --color-gold-rgb: 255, 209, 63;
+
+    /* --- Borders & Gradients --- */
+    --border-light: 1px solid #e8e6e2; /* --grey */
+    --border-light-20: 1px solid #e4e2e4; /* --light6 */
+    --border-primary-light: 1px solid rgba(var(--color-primary-rgb), 0.5);
+    --bg-primary-gradient: var(--color-primary); /* Solid color as requested */
+    --bg-light-07: rgba(60, 49, 91, 0.07);
+    --bg-light-10: rgba(60, 49, 91, 0.1);
+    --rgba-black-20: rgba(28, 28, 28, 0.2);
+}
+
+/*
+========================================
+== 2. GLOBAL & UTILITY OVERRIDES
+========================================
+*/
+
+/* Body Background Pattern */
+[data-theme="cipher-light"] body {
+    background-image: radial-gradient(circle at 1px 1px, rgba(60, 49, 91, 0.08) 1px, transparent 0);
+}
+
+/* Scrollbar */
+[data-theme="cipher-light"] ::-webkit-scrollbar-track {
+    background: #e9e8ea; /* --light5 */
+}
+[data-theme="cipher-light"] ::-webkit-scrollbar-thumb {
+    background: #d7cff9; /* --violet6 */
+}
+[data-theme="cipher-light"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+
+/* Notification Bar */
+[data-theme="cipher-light"] .notification-bar {
+    color: var(--color-black) !important; /* Ensure dark text for light theme */
+    text-shadow: none;
+    border-color: transparent;
+}
+[data-theme="cipher-light"] .notification-bar.success {
+    background-color: #4CAF50 !important;
+}
+[data-theme="cipher-light"] .notification-bar.error {
+    background-color: #F44336 !important;
+}
+[data-theme="cipher-light"] .notification-bar.info {
+    background-color: #2196F3 !important;
+}
+
+/*
+========================================
+== 3. BUTTON OVERRIDES
+========================================
+*/
+
+[data-theme="cipher-light"] .btn-primary {
+    text-shadow: none;
+}
+
+
+[data-theme="cipher-light"] .btn-danger {
+    background: var(--color-error);
+    box-shadow: none;
+}
+
+
+[data-theme="cipher-light"] .btn-outline {
+    color: var(--color-text-light);
+    border-color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .btn-outline:hover {
+    background: var(--color-text-light);
+    color: var(--color-white);
+    border-color: var(--color-text-light);
+}
+
+
+
+/*
+========================================
+== 4. PAGE STRUCTURE & SECTIONS
+========================================
+*/
+
+/* Headers */
+[data-theme="cipher-light"] .header {
+    background: rgba(245, 242, 255, 0.8); /* --violet3 at 80% */
+    border-bottom-color: #e8e6e2; /* --grey */
+}
+[data-theme="cipher-light"] #desktop-header-container {
+    background: transparent; /* Make the full-width container invisible */
+}
+[data-theme="cipher-light"] #dynamic-island-nav {
+    background: rgba(245, 242, 255, 0.8); /* Apply the glassy violet background here */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: #e8e6e2; /* --grey */
+}
+[data-theme="cipher-light"] #dynamic-island-nav .nav-link {
+    color: var(--color-text-medium);
+}
+[data-theme="cipher-light"] #dynamic-island-nav .nav-link:hover {
+    background-color: #e2dffe; /* --lilac */
+}
+[data-theme="cipher-light"] .mobile-menu-toggle span {
+    background: var(--color-text-light);
+}
+
+
+/* Hero Section */
+[data-theme="cipher-light"] .hero {
+    background: var(--color-background-light) !important;
+}
+[data-theme="cipher-light"] .hero #hero-canvas {
+    display: none;
+}
+[data-theme="cipher-light"] .hero-title {
+    color: var(--color-black);
+}
+
+/* General Section Styles */
+[data-theme="cipher-light"] .about, 
+[data-theme="cipher-light"] .tokenomics, 
+[data-theme="cipher-light"] .social, 
+[data-theme="cipher-light"] .vesting, 
+[data-theme="cipher-light"] .roadmap, 
+[data-theme="cipher-light"] .game-section {
+    background: var(--color-background-dark);
+}
+[data-theme="cipher-light"] .section-title {
+    color: var(--color-black);
+    background: rgba(255, 253, 248, 0.7);
+    border-color: #e2dffe; /* --lilac */
+}
+[data-theme="cipher-light"] .section-title::after {
+    background: var();
+    box-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.4);
+}
+
+/* Footer */
+[data-theme="cipher-light"] .footer {
+    background: var(--violet3, #f5f2ff);
+    border-top-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] .footer-section h3, 
+[data-theme="cipher-light"] .footer-section h4 {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .language-dropdown {
+    background: var(--color-background-dark);
+}
+
+/*
+========================================
+== 5. GAME & MODAL COMPONENT OVERRIDES
+========================================
+*/
+
+/* --- Game & Modals --- */
+[data-theme="cipher-light"] .game-modal {
+    background: rgba(60, 49, 91, 0.7); /* --midnightPurple70 */
+}
+[data-theme="cipher-light"] .game-container {
+    background: var(--color-background-light);
+    border-color: rgba(var(--color-primary-rgb), 0.3);
+}
+[data-theme="cipher-light"] .game-controls-top-right {
+    background: var(--color-background-dark);
+    border-bottom: 1px solid #e8e6e2;
+}
+[data-theme="cipher-light"] .game-controls-top-right h2.modal-title {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .back-btn, [data-theme="cipher-light"] .close-game {
+    color: var(--color-text-medium);
+}
+
+/* --- Game Board & Cells --- */
+[data-theme="cipher-light"] #gameGrid {
+    background-color: #ab9ff248; 
+    border: 2px solid var(--color-black);
+}
+[data-theme="cipher-light"] .grid-cell:hover {
+    border-color: var(--color-primary);
+}
+[data-theme="cipher-light"] .color-swatch.active {
+    border-color: var(--color-black);
+    box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.7);
+}
+
+
+/* --- Game Over Screen --- */
+[data-theme="cipher-light"] #gameOverScreen .stat-item-box {
+    background: var(--violet4, #ede9fe);
+}
+[data-theme="cipher-light"] #gameOverScreen .stat-item-box p {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] #gameOverScreen .x-share-btn {
+    background: var(--color-black);
+    color: var(--color-black); /* Changed from white to black */
+}
+[data-theme="cipher-light"] #gameOverScreen .btn-secondary {
+    background: var(--grey, #e8e6e2);
+    color: var(--color-black);
+}
+
+
+/* --- Player Info & Timers --- */
+[data-theme="cipher-light"] .player-profile, 
+[data-theme="cipher-light"] .timer, 
+[data-theme="cipher-light"] .mode-info {
+    color: var(--color-text-light);
+    background: #e9e8ea; /* --light5 */
+    border-color: #e4e2e4; /* --light6 */
+}
+[data-theme="cipher-light"] .timer span, 
+[data-theme="cipher-light"] .mode-info span {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .profile-logo, 
+[data-theme="cipher-light"] .leaderboard-avatar, 
+[data-theme="cipher-light"] .profile-avatar-preview, 
+[data-theme="cipher-light"] .chat-avatar {
+    border-color: transparent; /* Remove default border for level system */
+}
+
+
+/* --- Main Menu & Mode Buttons --- */
+[data-theme="cipher-light"] #mainMenu h3, [data-theme="cipher-light"] .game-message {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .mode-btn {
+    background: var(--violet4, #ede9fe);
+    border-color: transparent;
+}
+[data-theme="cipher-light"] .mode-btn:hover {
+    background: var(--lilac, #e2dffe);
+    border-color: var(--purple, #ab9ff2);
+}
+[data-theme="cipher-light"] .mode-btn i {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .mode-btn .mode-size,
+[data-theme="cipher-light"] .mode-btn {
+    color: var(--color-black) !important;
+}
+[data-theme="cipher-light"] .mode-btn .mode-difficulty {
+    color: var(--color-text-medium) !important;
+}
+
+
+/* --- Leaderboard & Profile --- */
+[data-theme="cipher-light"] .leaderboard-card, [data-theme="cipher-light"] .feature {
+    background: var(--color-background-dark);
+}
+[data-theme="cipher-light"] .feature h3, [data-theme="cipher-light"] .leaderboard-preview-title {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .leaderboard-preview-title::after {
+    background: var(--color-primary);
+}
+[data-theme="cipher-light"] .tab-btn,
+[data-theme="cipher-light"] .auth-tab-btn {
+    color: var(--color-black) !important;
+    background: var(--violet4, #ede9fe);
+    border-color: transparent;
+}
+
+[data-theme="cipher-light"] .tab-btn:hover,
+[data-theme="cipher-light"] .auth-tab-btn:hover {
+    color: var(--color-primary) !important;
+    background: var(--lilac, #e2dffe);
+}
+
+[data-theme="cipher-light"] .tab-btn.active, 
+[data-theme="cipher-light"] .auth-tab-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-black) !important; /* Changed from white to black */
+}
+
+[data-theme="cipher-light"] .auth-tab-btn.active::after {
+    background: var(--color-primary);
+}
+[data-theme="cipher-light"] .leaderboard-item {
+    background: var(--violet1, #fdfcfe);
+    border-left-color: var(--color-primary);
+}
+[data-theme="cipher-light"] .leaderboard-item:hover {
+    background: var(--violet3, #f5f2ff);
+}
+[data-theme="cipher-light"] .leaderboard-name, [data-theme="cipher-light"] .profile-name {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .leaderboard-rank {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .profile-section {
+    background: var(--violet1, #fdfcfe);
+    border-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] #profileScreen h4, [data-theme="cipher-light"] .profile-recent-games h3 {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .profile-stat-item p {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .profile-game-item {
+    border-left-color: var(--color-secondary);
+}
+
+
+/* --- Auth & Inputs --- */
+[data-theme="cipher-light"] .custom-select-wrapper #countrySearchInput, 
+[data-theme="cipher-light"] .player-info-form-content input[type="text"], 
+[data-theme="cipher-light"] .player-info-form-content input[type="password"], 
+[data-theme="cipher-light"] .input-group input {
+    background-color: var(--grey, #e8e6e2);
+    border-color: var(--light6, #e4e2e4);
+    color: var(--color-black);
+}
+[data-theme="cipher-light"] .custom-select-wrapper #countrySearchInput {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20256%20256%22%3E%3Cpath%20fill%3D%22%231c1c1c%22%20d%3D%22M208.49%2096.49L136.49%20168.49a12%2012%200%2001-17%200L47.51%2096.49a12%2012%200%200117-17L128%20135.02l63.49-63.53a12%2012%200%200117%2017z%22%2F%3E%3C%2Fsvg%3E');
+}
+[data-theme="cipher-light"] .country-dropdown-list {
+    background-color: var(--color-primary);
+}
+
+
+/*
+========================================
+== 6. CHAT UI OVERRIDES
+========================================
+*/
+
+[data-theme="cipher-light"] #chatModal .game-container {
+    background: var(--color-background-light);
+}
+[data-theme="cipher-light"] #chatModal .game-controls-top-right {
+    background: var(--color-background-dark);
+    border-bottom-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] .chat-room-sidebar {
+    background: var(--violet1, #fdfcfe);
+    border-left-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] .sidebar-tab-btn {
+    color: var(--color-text-medium);
+}
+[data-theme="cipher-light"] .sidebar-tab-btn.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+[data-theme="cipher-light"] .chat-room-list-item {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .chat-room-list-item:hover {
+    background: var(--violet3, #f5f2ff);
+}
+[data-theme="cipher-light"] .chat-room-list-item.active {
+    background: var(--color-primary);
+    color: var(--color-black);
+}
+[data-theme="cipher-light"] .chat-message-item.sent .message-bubble {
+    background: var(--color-primary);
+    color: var(--color-black);
+}
+[data-theme="cipher-light"] .chat-message-item.received .message-bubble {
+    background: var(--grey, #e8e6e2);
+    color: var(--color-black);
+}
+[data-theme="cipher-light"] .username {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .timestamp {
+    color: var(--light9, #908e96);
+}
+[data-theme="cipher-light"] .chat-input-container {
+    background: var(--color-background-dark);
+    border-top-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] #chatInput {
+    background: var(--grey, #e8e6e2);
+    border-color: var(--light6, #e4e2e4);
+    color: var(--color-black);
+}
+[data-theme="cipher-light"] #chatSendBtn, 
+[data-theme="cipher-light"] #emojiBtn, 
+[data-theme="cipher-light"] #chatRoomDropdownBtn.mobile-menu-toggle span {
+    color: var(--color-black); /* Changed from text-medium to black */
+    background: var(--color-text-medium);
+}
+[data-theme="cipher-light"] #chatSendBtn:hover, 
+[data-theme="cipher-light"] #emojiBtn:hover, 
+[data-theme="cipher-light"] #chatRoomDropdownBtn.mobile-menu-toggle:hover span {
+    color: var(--color-primary);
+    background: var(--color-primary);
+}
+[data-theme="cipher-light"] .emoji-picker {
+    background: var(--color-background-dark);
+    border-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] .emoji-category-btn {
+    color: var(--color-text-medium);
+}
+[data-theme="cipher-light"] .emoji-category-btn:hover, 
+[data-theme="cipher-light"] .emoji-category-btn.active {
+    background: var(--violet3, #f5f2ff);
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .message-actions {
+    background: var(--color-background-dark);
+    border-color: var(--grey, #e8e6e2);
+}
+[data-theme="cipher-light"] .message-actions button {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .message-actions button:hover {
+    background: var(--violet3, #f5f2ff);
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] .chat-message-item.system {
+    background: linear-gradient(135deg, rgba(74, 135, 242, 0.1), rgba(74, 135, 242, 0.05)); /* --blue at 10% and 5% */
+    color: #3c315b; /* --midnightPurple */
+    border: 1px solid rgba(74, 135, 242, 0.2); /* --blue at 20% */
+    box-shadow: 0 2px 10px rgba(74, 135, 242, 0.1);
+}
+
+
+/* --- Final Icon Fix --- */
+[data-theme="cipher-light"] .social-link.x i {
+    color: var(--color-black);
+}
+
+
+/* --- Final Button Text Fix --- */
+[data-theme="cipher-light"] .game-control-btn i {
+    color: var(--color-text-light);
+}
+[data-theme="cipher-light"] .game-control-btn:hover i,
+[data-theme="cipher-light"] .game-control-btn.active i {
+    color: var(--color-primary);
+}
+[data-theme="cipher-light"] #gameOverScreen .btn-secondary {
+    background: var(--grey, #e8e6e2);
+    color: var(--color-black);
+}
+
+
+/* Aggressive targeting for mode button text */
+[data-theme="cipher-light"] .mode-btn .mode-size,
+[data-theme="cipher-light"] .mode-btn {
+    color: var(--color-black) !important;
+}
+[data-theme="cipher-light"] .mode-btn .mode-difficulty {
+    color: var(--color-text-medium) !important;
+}
+
+
+/* Aggressive targeting for tab button text */
+[data-theme="cipher-light"] .tab-btn,
+[data-theme="cipher-light"] .auth-tab-btn {
+    color: var(--color-black) !important;
+}
+
+/* Override for specific buttons that should keep white text for contrast */
+[data-theme="cipher-light"] .leaderboard-chat-buttons .btn-secondary,
+[data-theme="cipher-light"] .start-btn,
+[data-theme="cipher-light"] .tab-btn.active {
+    color: var(--color-black) !important; /* Changed from white to black */
+}
+
+

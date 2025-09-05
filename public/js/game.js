@@ -2,6 +2,19 @@ const STANDARD_ZOOM_LEVEL = 40; // Define the standard zoom level
 
 const preloadedSounds = {}; // Object to store preloaded audio elements
 
+const levelBorderColors = {
+    1: { color: '#FFCCCC', shadow: 'rgba(255, 204, 204, 0.5)' }, // Faded Red
+    2: { color: '#FF9999', shadow: 'rgba(255, 153, 153, 0.5)' },
+    3: { color: '#FF6666', shadow: 'rgba(255, 102, 102, 0.5)' },
+    4: { color: '#FF3333', shadow: 'rgba(255, 51, 51, 0.5)' },
+    5: { color: '#FF0000', shadow: 'rgba(255, 0, 0, 0.5)' }, // Pure Red
+    6: { color: '#CC0000', shadow: 'rgba(204, 0, 0, 0.5)' },
+    7: { color: '#990000', shadow: 'rgba(153, 0, 0, 0.5)' },
+    8: { color: '#660000', shadow: 'rgba(102, 0, 0, 0.5)' },
+    9: { color: '#330000', shadow: 'rgba(51, 0, 0, 0.5)' }, // Vibrant Red
+    10: { color: '#FF0000', shadow: 'rgba(255, 0, 0, 0.7)' } // Vibrant Red for Level 10 fallback
+};
+
 function preloadGameSounds() {
     const soundsToPreload = [
         { name: 'click', path: 'assets/click.mp3' },
@@ -97,7 +110,9 @@ function handlePaintingEnd(e) {
 
 
 function openGame() {
-    console.log('openGame called!', 'gameState.isLoggedIn:', gameState.isLoggedIn);
+    if (window.IS_DEVELOPMENT) { // Check if in development mode
+        console.log('openGame called!', 'gameState.isLoggedIn:', gameState.isLoggedIn);
+    }
     updateProfileDisplay(gameState.level);
     if (!gameState.isLoggedIn) {
         document.getElementById('playerInfoModal').style.display = 'block';
@@ -110,15 +125,22 @@ function openGame() {
             if (gameState.level > 0) {
                 playerAvatar.className = `profile-logo level-${gameState.level}-border`;
             } else {
-                playerAvatar.className = 'profile-logo'; // No border for level 0
+                playerAvatar.className = 'profile-logo no-border'; // No border for level 0
             }
-            console.log('Game screen player avatar class:', playerAvatar.className);
+            if (window.IS_DEVELOPMENT) {
+                console.log('Game screen player avatar class:', playerAvatar.className);
+            }
         }
     }
     document.body.classList.add('no-scroll');
 }
 
 function closeGame() {
+    // Restore the game container's scrollbar when closing the modal.
+    const gameContainer = document.querySelector('#gameModal .game-container');
+    if (gameContainer) {
+        gameContainer.style.overflowY = 'auto';
+    }
     document.getElementById('gameModal').style.display = 'none';
     document.getElementById('chatModal').style.display = 'none';
     resetGame();
@@ -202,7 +224,7 @@ function generateGameGrid(size) {
     document.getElementById('memoryTimerDisplay').textContent = '0';
     document.getElementById('matchingTimerDisplay').textContent = '0';
     document.getElementById('startBtn').disabled = false;
-    document.getElementById('startBtn').textContent = 'Start Matching';
+    document.getElementById('startBtn').textContent = getTranslation('startMatching');
     document.getElementById('gameMessage').textContent = '';
     document.getElementById('colorPalette').innerHTML = '';
     document.getElementById('colorPalette').style.display = 'none';
@@ -228,8 +250,14 @@ function startGame() {
     });
 
     document.getElementById('startBtn').disabled = true;
-    document.getElementById('startBtn').textContent = 'Matching...';
-    document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageMatchColors');
+    document.getElementById('startBtn').textContent = getTranslation('matching');
+    
+    // Hide game message for users who have played 10 or more games
+    if (gameState.gamecount && gameState.gamecount >= 10) {
+        document.getElementById('gameMessage').textContent = '';
+    } else {
+        document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageMatchColors');
+    }
     startMatchingTimer();
     createColorPalette();
 }
@@ -296,7 +324,11 @@ function paintCell(cell) {
             checkGameCompletion();
         }
     } else {
-        document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageSelectColorFirst');
+        if (gameState.gamecount && gameState.gamecount >= 10) {
+            document.getElementById('gameMessage').textContent = '';
+        } else {
+            document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageSelectColorFirst');
+        }
     }
 }
 
@@ -306,16 +338,20 @@ function setActiveColor(color) {
         swatch.classList.remove('active');
     });
     document.querySelector(`.color-swatch[data-color="${color}"]`).classList.add('active');
-    document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageApplyColor');
+    if (gameState.gamecount && gameState.gamecount >= 10) {
+        document.getElementById('gameMessage').textContent = '';
+    } else {
+        document.getElementById('gameMessage').textContent = window.getTranslation('gameMessageApplyColor');
+    }
 }
 
 function createColorPalette() {
     const colorPaletteContainer = document.getElementById('colorPalette');
     colorPaletteContainer.innerHTML = '';
-    const uniqueColors = [...new Set(gameState.originalColors)];
-    gameState.availableColors = uniqueColors; // Store unique colors in gameState
+    const fixedPaletteColors = ['#FF0000', '#FFFF00', '#0000FF']; // Red, Yellow, Blue
+    gameState.availableColors = fixedPaletteColors; // Store fixed colors in gameState for palette
 
-    uniqueColors.forEach(color => {
+    fixedPaletteColors.forEach(color => {
         const colorSwatch = document.createElement('div');
         colorSwatch.className = 'color-swatch';
         colorSwatch.style.backgroundColor = color;
@@ -325,6 +361,12 @@ function createColorPalette() {
     });
 
     colorPaletteContainer.style.display = 'flex';
+
+    // Automatically select the middle color from the fixed palette
+    if (fixedPaletteColors.length > 0) {
+        const middleIndex = Math.floor(fixedPaletteColors.length / 2);
+        setActiveColor(fixedPaletteColors[middleIndex]);
+    }
 
     // --- START: Swipe Functionality for Color Palette ---
     let touchStartX = 0;
@@ -364,7 +406,7 @@ function createColorPalette() {
     // --- END: Swipe Functionality for Color Palette ---
 }
 
-function checkGameCompletion() {
+async function checkGameCompletion() {
     gameState.gameCompleted = true;
     clearInterval(gameState.matchingTimer);
 
@@ -372,7 +414,7 @@ function checkGameCompletion() {
     const isWin = gameState.correctMatches === gameState.totalCellsToMatch;
 
     if (isWin) {
-        saveScore(score);
+        await saveScore(score);
     }
 
     setTimeout(() => {
@@ -386,7 +428,7 @@ function showGameOverScreen(isWin, score) {
     gameState.lastGameAccuracy = `${gameState.correctMatches} / ${gameState.totalCellsToMatch}`;
     gameState.lastGameTime = `${gameState.matchingElapsedTime.toFixed(1)}s`;
 
-    document.getElementById('gameOverTitle').textContent = isWin ? 'WIN' : 'LOSE';
+    document.getElementById('gameOverTitle').textContent = isWin ? getTranslation('gameResultWin') : getTranslation('gameResultLose');
     const gameOverTitleElement = document.getElementById('gameOverTitle');
 
     gameOverTitleElement.classList.remove('win', 'lose');
@@ -413,114 +455,7 @@ function restartGame() {
     selectMode(gameState.currentMode);
 }
 
-function shareScoreToX() {
-    // More dynamic and engaging text
-    const text = `Just crushed it in CIPHER! My score: ${gameState.lastGameScore} in ${gameState.lastGameMode} mode with ${gameState.lastGameAccuracy} accuracy. Challenge your memory and represent your country!`;
-    const hashtags = "CIPHER";
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&hashtags=${hashtags}`;
 
-    // 1. Populate the hidden share image template
-    const shareImageTemplate = document.getElementById('shareImageTemplate');
-    shareImageTemplate.style.backgroundImage = `url('assets/share_background.jpg')`;
-    
-    // --- User Info ---
-    document.getElementById('shareAvatar').src = gameState.avatarUrl || 'assets/logo.jpg';
-    document.getElementById('shareUsername').textContent = gameState.username;
-
-    // Explicitly set position for #CIPHER hashtag before rendering
-    const shareHashtag = shareImageTemplate.querySelector('.share-hashtag');
-    if (shareHashtag) {
-        shareHashtag.style.position = 'absolute';
-        shareHashtag.style.top = '10px'; // Adjust as needed
-        shareHashtag.style.right = '10px'; // Adjust as needed
-    }
-    const shareCountryElement = document.getElementById('shareCountry');
-    const countryInfo = countries[gameState.playerCountry];
-    if (countryInfo) {
-        shareCountryElement.innerHTML = `<img src="${countryInfo.flag}" alt="${countryInfo.name} Flag"> ${countryInfo.name}`;
-    } else {
-        shareCountryElement.innerHTML = '';
-    }
-
-    // --- Stats Grid ---
-    const statsGrid = shareImageTemplate.querySelector('.stats-grid-container');
-    statsGrid.innerHTML = `
-        <div class="stat-item-box">
-            <h3>Mode</h3>
-            <p>${gameState.lastGameMode}</p>
-        </div>
-        <div class="stat-item-box">
-            <h3>Score</h3>
-            <p>${gameState.lastGameScore}</p>
-        </div>
-        <div class="stat-item-box">
-            <h3>Accuracy</h3>
-            <p>${gameState.lastGameAccuracy}</p>
-        </div>
-        <div class="stat-item-box">
-            <h3>Time</h3>
-            <p>${gameState.lastGameTime}</p>
-        </div>
-    `;
-
-    // --- Tagline ---
-    const taglineElement = shareImageTemplate.querySelector('.tagline');
-    taglineElement.textContent = "Can you beat my score?";
-
-
-    // Temporarily make the template visible for html2canvas to render correctly
-    shareImageTemplate.style.display = 'flex'; // Use flex as defined in CSS
-
-    html2canvas(shareImageTemplate, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-        logging: false // Suppress html2canvas logging in console
-    }).then(canvas => {
-        shareImageTemplate.style.display = 'none'; // Hide it again
-
-        const imageUrl = canvas.toDataURL('image/png');
-
-        const shareConfirmationModal = document.getElementById('shareConfirmationModal');
-        const scorePreviewImage = document.getElementById('scorePreviewImage');
-        scorePreviewImage.src = imageUrl;
-        shareConfirmationModal.style.display = 'block';
-        document.body.classList.add('no-scroll');
-
-        const downloadAndShareBtn = document.getElementById('downloadAndShareBtn');
-        downloadAndShareBtn.onclick = () => {
-            const downloadLink = document.createElement('a');
-            downloadLink.href = imageUrl;
-            downloadLink.download = `CIPHER_Score_${gameState.username}_${gameState.lastGameScore}.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-
-            window.open(twitterUrl, '_blank');
-
-            shareConfirmationModal.style.display = 'none';
-            document.body.classList.remove('no-scroll');
-        };
-
-        const cancelShareBtn = document.getElementById('cancelShareBtn');
-        cancelShareBtn.onclick = () => {
-            shareConfirmationModal.style.display = 'none';
-            document.body.classList.remove('no-scroll');
-        };
-
-        const closeModalBtn = shareConfirmationModal.querySelector('.close-game');
-        closeModalBtn.onclick = () => {
-            shareConfirmationModal.style.display = 'none';
-            document.body.classList.remove('no-scroll');
-        };
-
-    }).catch(error => {
-        shareImageTemplate.style.display = 'none'; // Hide it again in case of error
-        console.error('Error capturing game over screen:', error);
-        showNotification('Could not capture game screen. Sharing text only.', 'error');
-        window.open(twitterUrl, '_blank'); // Fallback to text-only tweet
-    });
-}
 
 function calculateScore() {
     const modeSize = gameState.currentMode;
@@ -552,14 +487,18 @@ async function saveScore(score) {
     };
     try {
         const response = await apiRequest('/api/scores', 'POST', scoreEntry);
-        console.log('[DEBUG] Score saved successfully. API Response:', response);
+        if (window.IS_DEVELOPMENT) {
+            console.log('[DEBUG] Score saved successfully. API Response:', response);
+        }
         
         // Update gameState and localStorage with the new level from the server
         if (response.newLevel !== undefined) {
             gameState.level = response.newLevel;
             localStorage.setItem('level', response.newLevel);
             updateProfileDisplay(gameState.level); // Update UI elements that show level
-            console.log('[DEBUG] gameState.level updated to:', gameState.level);
+            if (window.IS_DEVELOPMENT) {
+                console.log('[DEBUG] gameState.level updated to:', gameState.level);
+            }
         }
 
     } catch (error) {
@@ -586,7 +525,7 @@ function resetGame() {
     document.getElementById('memoryTimerDisplay').textContent = '0';
     document.getElementById('matchingTimerDisplay').textContent = '0';
     document.getElementById('startBtn').disabled = false;
-    document.getElementById('startBtn').textContent = 'Start Matching';
+    document.getElementById('startBtn').textContent = getTranslation('startMatching');
     document.getElementById('gameMessage').textContent = '';
     document.getElementById('colorPalette').innerHTML = '';
     document.getElementById('colorPalette').style.display = 'none';
@@ -601,6 +540,11 @@ function resetGame() {
 }
 
 function backToMenu() {
+    // Restore the game container's scrollbar when leaving the leaderboard or other screens.
+    const gameContainer = document.querySelector('#gameModal .game-container');
+    if (gameContainer) {
+        gameContainer.style.overflowY = 'auto';
+    }
     resetGame();
     document.getElementById('chatModal').style.display = 'none'; // Chat modalını kapat
     showScreen('mainMenu');
@@ -611,7 +555,7 @@ function backToMenu() {
 function zoomIn() {
     const gameGrid = document.getElementById('gameGrid');
     let currentSize = parseInt(getComputedStyle(gameGrid).getPropertyValue('--cell-size'));
-    let newSize = Math.min(currentSize + 2, 60);
+    let newSize = Math.min(currentSize + 3, 60);
     gameGrid.style.setProperty('--cell-size', `${newSize}px`);
     gameState.zoomLevel = newSize;
     localStorage.setItem('zoomLevel', newSize);
@@ -621,7 +565,7 @@ function zoomIn() {
 function zoomOut() {
     const gameGrid = document.getElementById('gameGrid');
     let currentSize = parseInt(getComputedStyle(gameGrid).getPropertyValue('--cell-size'));
-    let newSize = Math.max(currentSize - 2, 10);
+    let newSize = Math.max(currentSize - 3, 10);
     gameGrid.style.setProperty('--cell-size', `${newSize}px`);
     gameState.zoomLevel = newSize;
     localStorage.setItem('zoomLevel', newSize);
@@ -651,19 +595,23 @@ function toggleSound() {
 }
 
 function applySoundSetting() {
-    const soundIcon = document.querySelector('#toggleSoundBtn i');
-    const toggleSoundBtn = document.getElementById('toggleSoundBtn');
-    if (gameState.isSoundMuted) {
-        soundIcon.classList.remove('fa-volume-up');
-        soundIcon.classList.add('fa-volume-mute');
-        toggleSoundBtn.title = "Unmute Sound";
-        toggleSoundBtn.classList.remove('active');
-    } else {
-        soundIcon.classList.remove('fa-volume-mute');
-        soundIcon.classList.add('fa-volume-up');
-        toggleSoundBtn.title = "Mute Sound";
-        toggleSoundBtn.classList.add('active');
-    }
+    // Select all sound toggle buttons
+    const toggleSoundBtns = document.querySelectorAll('#toggleSoundBtn');
+
+    toggleSoundBtns.forEach(btn => {
+        const soundIcon = btn.querySelector('i');
+        if (gameState.isSoundMuted) {
+            soundIcon.classList.remove('fa-volume-up');
+            soundIcon.classList.add('fa-volume-mute');
+            btn.title = "Unmute Sound";
+            btn.classList.remove('active'); // White when muted
+        } else {
+            soundIcon.classList.remove('fa-volume-mute');
+            soundIcon.classList.add('fa-volume-up');
+            btn.title = "Mute Sound";
+            btn.classList.add('active'); // Blue when unmuted
+        }
+    });
 }
 
 function applyStoredSettings() {
@@ -688,9 +636,11 @@ function applyStoredSettings() {
 document.addEventListener('DOMContentLoaded', () => {
     applyStoredSettings();
 
-    const zoomInBtn = document.getElementById('zoomInBtn');
-    const zoomOutBtn = document.getElementById('zoomOutBtn');
-    const resetBoardBtn = document.getElementById('resetBoardBtn');
+    // Select all instances of the buttons by their IDs
+    const zoomInBtns = document.querySelectorAll('#zoomInBtn');
+    const zoomOutBtns = document.querySelectorAll('#zoomOutBtn');
+    const resetBoardBtns = document.querySelectorAll('#resetBoardBtn');
+    const toggleSoundBtns = document.querySelectorAll('#toggleSoundBtn');
 
     const stopZoom = () => {
         clearInterval(gameState.zoomInInterval);
@@ -699,33 +649,56 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.zoomOutInterval = null;
     };
 
-    zoomInBtn.addEventListener('mousedown', () => {
-        zoomIn(); // Initial zoom on click
-        gameState.zoomInInterval = setInterval(zoomIn, 100); // Continuous zoom
+    // Attach event listeners to all zoomIn buttons
+    zoomInBtns.forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            zoomIn();
+            gameState.zoomInInterval = setInterval(zoomIn, 100);
+        });
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            zoomIn();
+            gameState.zoomInInterval = setInterval(zoomIn, 100);
+        }, { passive: false });
+        btn.addEventListener('mouseup', stopZoom);
+        btn.addEventListener('mouseleave', stopZoom);
+        btn.addEventListener('touchend', stopZoom);
+        btn.addEventListener('touchcancel', stopZoom);
     });
 
-    zoomOutBtn.addEventListener('mousedown', () => {
-        zoomOut(); // Initial zoom on click
-        gameState.zoomOutInterval = setInterval(zoomOut, 100); // Continuous zoom
+    // Attach event listeners to all zoomOut buttons
+    zoomOutBtns.forEach(btn => {
+        btn.addEventListener('mousedown', () => {
+            zoomOut();
+            gameState.zoomOutInterval = setInterval(zoomOut, 100);
+        });
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            zoomOut();
+            gameState.zoomOutInterval = setInterval(zoomOut, 100);
+        }, { passive: false });
+        btn.addEventListener('mouseup', stopZoom);
+        btn.addEventListener('mouseleave', stopZoom);
+        btn.addEventListener('touchend', stopZoom);
+        btn.addEventListener('touchcancel', stopZoom);
     });
 
-    zoomInBtn.addEventListener('mouseup', stopZoom);
-    zoomInBtn.addEventListener('mouseleave', stopZoom);
-    zoomOutBtn.addEventListener('mouseup', stopZoom);
-    zoomOutBtn.addEventListener('mouseleave', stopZoom);
+    // Attach event listeners to all toggleSound buttons
+    toggleSoundBtns.forEach(btn => {
+        btn.addEventListener('click', toggleSound);
+    });
 
-    document.getElementById('toggleSoundBtn').addEventListener('click', toggleSound);
-
-    if (resetBoardBtn) {
-        resetBoardBtn.addEventListener('click', () => {
+    // Attach event listeners to all resetBoard buttons
+    resetBoardBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
             selectMode(gameState.currentMode);
         });
-    }
+    });
 
-    // Add wheel event listener for color selection
     document.addEventListener('wheel', (event) => {
-        if (!gameState.gameStarted || gameState.memoryPhase || !gameState.activeColor) {
-            return; // Only allow color change during matching phase and if a color is active
+        // Only allow color change during the matching phase on the actual game screen.
+        if (gameState.currentScreen !== 'gameScreen' || !gameState.gameStarted || gameState.memoryPhase || !gameState.activeColor) {
+            return; 
         }
 
         event.preventDefault(); // Prevent page scrolling
@@ -741,6 +714,35 @@ document.addEventListener('DOMContentLoaded', () => {
             nextColorIndex = (currentActiveColorIndex + 1) % gameState.availableColors.length;
         }
 
-        setActiveColor(gameState.availableColors[nextColorIndex]);
+                setActiveColor(gameState.availableColors[nextColorIndex]);
     }, { passive: false });
+
+    document.addEventListener('keydown', (event) => {
+        // Start game with Spacebar
+        if (event.code === 'Space' && !gameState.gameStarted && gameState.memoryPhase) {
+            event.preventDefault(); // Prevent default spacebar action (e.g., scrolling)
+            startGame();
+        }
+
+        // Switch colors with 1, 2, 3 keys
+        if (gameState.currentScreen === 'gameScreen' && gameState.gameStarted && !gameState.memoryPhase) {
+            const colorMap = {
+                'Digit1': 0, // Key '1'
+                'Digit2': 1, // Key '2'
+                'Digit3': 2  // Key '3'
+            };
+
+            const colorIndex = colorMap[event.code];
+            if (colorIndex !== undefined && gameState.availableColors && gameState.availableColors[colorIndex]) {
+                event.preventDefault(); // Prevent default action for number keys if any
+                setActiveColor(gameState.availableColors[colorIndex]);
+            }
+        }
+
+        // Refresh board with 'R' key
+        if (event.code === 'KeyR' && gameState.currentScreen === 'gameScreen') {
+            event.preventDefault();
+            selectMode(gameState.currentMode);
+        }
+    });
 });

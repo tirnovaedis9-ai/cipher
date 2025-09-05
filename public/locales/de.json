@@ -3,7 +3,7 @@
     "tokenomics": "Token-Ökonomie",
     "social": "Soziales",
     "playGame": "Spiel spielen",
-    "heroTitle": "Testen Sie Ihr Gedächtnis, unterstützen Sie Ihr Land",
+    "heroTitle": "Erwecke die verlorenen Mosaike mit deinem Gedächtnis zum Leben.",
     "heroSubtitle": "Nehmen Sie am internationalen Wettbewerb teil und erklimmen Sie die globale Bestenliste",
     "buyNow": "Jetzt kaufen",
     "aboutCip": "Über CIPHER",
@@ -29,7 +29,7 @@
     "tokenDetail4": "Team & Berater",
     "tokenDetail5": "Reservefonds",
     "joinCommunity": "Treten Sie unserer Community bei",
-    "twitter": "Twitter",
+    "x": "X",
     "telegram": "Telegram",
     "youtube": "YouTube",
     "gameTitle": "Farbpuzzle-Herausforderung",
@@ -228,5 +228,14 @@
     "vestingAllocationLabel": "Zuteilung",
     "vestingCliffPeriodLabel": "Cliff-Periode",
     "vestingTotalVestingLabel": "Gesamte Freigabe",
-    "vestingReleaseScheduleLabel": "Freigabeplan"
+    "vestingReleaseScheduleLabel": "Freigabeplan",
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

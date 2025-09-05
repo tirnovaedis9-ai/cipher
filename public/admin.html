@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="adminPanelTitle">CIPHER Admin Panel</title>
-    <link rel="stylesheet" href="css/base.css">
+    <title>$$$</title>
     <link rel="stylesheet" href="css/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/jpeg" href="assets/logo1.png">
 </head>
 <body>
     <div id="notificationBar" class="notification-bar"></div>
@@ -23,6 +24,25 @@
         <div class="admin-dashboard" id="adminDashboard" style="display: none;">
             <div class="sidebar">
                 <h3 data-i18n="adminPanel">Admin Panel</h3>
+                <div class="language-selector-admin">
+                    <button class="language-btn" id="languageBtnAdmin">
+                        <img src="assets/flags/gb.png" alt="English" id="currentFlagAdmin">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdownAdmin">
+                        <a href="#" class="language-option" data-lang="en"><img src="assets/flags/gb.png" alt="English"> <span>English</span></a>
+                        <a href="#" class="language-option" data-lang="tr"><img src="assets/flags/tr.png" alt="Türkçe"> <span>Türkçe</span></a>
+                        <a href="#" class="language-option" data-lang="de"><img src="assets/flags/de.png" alt="Deutsch"> <span>Deutsch</span></a>
+                        <a href="#" class="language-option" data-lang="ko"><img src="assets/flags/kr.png" alt="한국어"> <span>한국어</span></a>
+                        <a href="#" class="language-option" data-lang="ar"><img src="assets/flags/sa.png" alt="العربية"> <span>العربية</span></a>
+                        <a href="#" class="language-option" data-lang="es"><img src="assets/flags/es.png" alt="Español"> <span>Español</span></a>
+                        <a href="#" class="language-option" data-lang="fr"><img src="assets/flags/fr.png" alt="Français"> <span>Français</span></a>
+                        <a href="#" class="language-option" data-lang="it"><img src="assets/flags/it.png" alt="Italiano"> <span>Italiano</span></a>
+                        <a href="#" class="language-option" data-lang="ja"><img src="assets/flags/jp.png" alt="日本語"> <span>日本語</span></a>
+                        <a href="#" class="language-option" data-lang="ru"><img src="assets/flags/ru.png" alt="Русский"> <span>Русский</span></a>
+                        <a href="#" class="language-option" data-lang="zh"><img src="assets/flags/cn.png" alt="中文"> <span>中文</span></a>
+                    </div>
+                </div>
                 <ul>
                     <li><a href="#" id="showUsersBtn"><i class="fas fa-users"></i> <span data-i18n="users">Users</span></a></li>
                     <li><a href="#" id="showSettingsBtn"><i class="fas fa-cogs"></i> <span data-i18n="settings">Settings</span></a></li>
@@ -32,7 +52,19 @@
             </div>
             <div class="main-content">
                 <div id="usersSection" class="admin-section">
-                    <h3 data-i18n="userManagement">User Management</h3>
+                    <div class="section-header">
+                        <h3 data-i18n="userManagement">User Management</h3>
+                        <div class="sort-controls">
+                            <label for="sortUsers" data-i18n="sortBy">Sort By:</label>
+                            <select id="sortUsers">
+                                <option value="createdAt_desc" data-i18n="sortNewest">Newest First</option>
+                                <option value="createdAt_asc" data-i18n="sortOldest">Oldest First</option>
+                                <option value="gamecount_desc" data-i18n="sortMostPlayed">Most Games Played</option>
+                                <option value="gamecount_asc" data-i18n="sortLeastPlayed">Least Games Played</option>
+                                <option value="username_asc" data-i18n="sortAlphabetical">Alphabetical (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
                     <table id="usersTable">
                         <thead>
                             <tr>

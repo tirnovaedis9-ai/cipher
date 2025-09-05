@@ -3,7 +3,7 @@
     "tokenomics": "Economia del Token",
     "social": "Social",
     "playGame": "Gioca",
-    "heroTitle": "Metti alla prova la tua memoria, sostieni il tuo paese",
+    "heroTitle": "Ravviva i Mosaici Perduti con la tua Memoria.",
     "heroSubtitle": "Partecipa alla competizione internazionale e scala la classifica globale",
     "buyNow": "Compra ora",
     "aboutCip": "Informazioni su CIPHER",
@@ -29,7 +29,7 @@
     "tokenDetail4": "Team e Consulenti",
     "tokenDetail5": "Fondo di Riserva",
     "joinCommunity": "Unisciti alla nostra comunità",
-    "twitter": "Twitter",
+    "x": "X",
     "telegram": "Telegram",
     "youtube": "YouTube",
     "gameTitle": "Sfida Puzzle a Colori",
@@ -229,4 +229,14 @@
     "vestingCliffPeriodLabel": "Periodo di Cliff",
     "vestingTotalVestingLabel": "Maturazione Totale",
     "vestingReleaseScheduleLabel": "Piano di Rilascio"
+,
+    "emojiCategory_smileys": "Smileys",
+    "emojiCategory_people": "People",
+    "emojiCategory_animals": "Animals",
+    "emojiCategory_food": "Food",
+    "emojiCategory_activities": "Activities",
+    "emojiCategory_travel": "Travel",
+    "emojiCategory_objects": "Objects",
+    "emojiCategory_symbols": "Symbols",
+    "emojiCategory_flags": "Flags"
 }

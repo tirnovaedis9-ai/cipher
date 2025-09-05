@@ -3,58 +3,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Game Section */
-.game-section {
-    padding: 120px 0;
-    background: linear-gradient(135deg, #1C2A41 0%, #0F1A2B 100%);
-}
-
-.game-info {
-    text-align: center;
-}
-
-.game-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-}
-
-.feature {
-    background: rgba(224, 225, 230, 0.07);
-    backdrop-filter: blur(5px);
-    padding: 1.8rem 0.5rem;
-    border-radius: 15px;
-    border: 1px solid rgba(224, 225, 230, 0.1);
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.feature:hover {
-    transform: translateY(-5px);
-    background: rgba(224, 225, 230, 0.1);
-}
-
-.feature i {
-    font-size: 2.2rem;
-    color: #00AEEF; /* Neon Camgöbeği */
-    margin-bottom: 0.8rem;
-}
-
-.feature h3 {
-    color: #fff;
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-}
-
-.feature p {
-    color: #A0A0B0; /* Grafit Grisi */
-    line-height: 1.6;
-}
-
-
-
 /* Game Modal Styles */
 .game-modal {
     display: none;
@@ -63,7 +11,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 26, 43, 0.9);
+    background: rgba(var(--color-black-rgb), 0.9);
     z-index: 2000;
     backdrop-filter: blur(10px);
 }
@@ -84,11 +32,8 @@ html {
 }
 
 #playerInfoModal .game-container {
+    max-width: 600px;
     overflow: visible; /* Allow dropdown to escape */
-}
-
-#playerInfoModal .game-container {
-    overflow: visible;
 }
 
 .game-container {
@@ -97,9 +42,9 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
-    max-width: 920px;
-    max-height: 95vh;
-    background: linear-gradient(135deg, #1C2A41, #0F1A2B);
+    max-width: 920px;                                                                         
+    max-height: 95vh;                                                                         
+    background-color: #1a1a1a;
     border-radius: 20px;
     padding-top: 60px; /* Adjusted padding-top for symmetry */
     padding-bottom: 2rem;
@@ -107,7 +52,7 @@ html {
     padding-right: 15px; /* Space for scrollbar */
     scroll-behavior: smooth; /* Smooth scrolling */
     overflow-y: auto;
-    border: 2px solid rgba(0, 174, 239, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
     .game-controls-top-right {
@@ -115,8 +60,10 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    height: 45px; /* Kısaltılmış yükseklik */
-    background: linear-gradient(90deg, #0F1A2B, #1C2A41);
+    height: 41px; /* Kısaltılmış yükseklik */
+    background: rgba(var(--color-black-rgb), 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     display: flex;
@@ -218,21 +165,21 @@ html {
     height: 14px; /* Original height */
     width: auto;
     border-radius: 2px;
+    position: relative;
+    top: 3px;
 }
 
 .game-header-timers {
     display: flex;
-    gap: 10px; /* Original gap */
+    gap: 10px; /* Reduced gap */
 }
 
 .timer span, .mode-info span {
     color: #00AEEF;
     font-weight: 700;
-    font-size: 0.85rem; /* Original font size */
+    font-size: 0.85rem; /* ~15% smaller */
     font-family: monospace; /* Prevents timer jitter */
 }
-
-
 
 .game-area {
     position: relative;
@@ -261,7 +208,6 @@ html {
     gap: 5px;
 }
 
-/* Game Screen */
 .game-screen {
     display: none;
     height: 100%; /* Ensure game screens take full height of parent */
@@ -272,7 +218,11 @@ html {
     display: flex; /* Use flex to enable column direction */
 }
 
-/* Main Menu Styles */
+#mainMenu {
+    text-align: center;
+    padding: 0 1rem;
+}
+
 #mainMenu h3 {
     color: #fff;
     text-align: center;
@@ -280,20 +230,21 @@ html {
     font-size: 1.5rem;
 }
 
-.game-modes {
+    .game-modes {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 98px);
     gap: 1rem;
     margin-bottom: 2rem;
     margin-top: 2rem;
+    justify-content: center; /* Center the grid within its parent */
 }
 
 .mode-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #E0E1E6;
-    padding: 0.8rem 0.5rem;
-    border-radius: 12px;
+    padding: 0.53rem; /* Adjusted padding for square aspect and 20% reduction */
+    border-radius: 15px; /* Softer corners */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -301,22 +252,23 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.3rem;
+    gap: 0.25rem; /* Adjusted gap for 20% reduction */
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
     text-align: center;
-    min-height: 100px;
+    min-height: 61px; /* 20% smaller, further reduced by 10% */
+    aspect-ratio: 1 / 1; /* Make it square */
 }
 
 .mode-btn:hover {
-    transform: translateY(-5px) scale(1.05);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(0, 174, 239, 0.7);
-    box-shadow: 0 8px 30px rgba(0, 174, 239, 0.3);
+    /* Removed transform properties */
+    background: linear-gradient(135deg, rgba(0, 174, 239, 0.1), rgba(0, 174, 239, 0.03)); /* Even more subtle blue gradient on hover */
+    border-color: rgba(0, 174, 239, 0.6); /* Slightly less intense border */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15); /* Much more subtle glow */
 }
 
 .mode-btn i {
-    font-size: 1.8rem;
+    font-size: 1.5rem; /* 10% larger */
     color: #00AEEF; /* Neon Camgöbeği */
     margin-bottom: 0.4rem;
     transition: all 0.3s ease;
@@ -324,7 +276,7 @@ html {
 
 .mode-btn:hover i {
     color: #00d4ff;
-    text-shadow: 0 0 15px #00d4ff;
+    text-shadow: 0 0 10px #00d4ff;
 }
 
 .mode-text {
@@ -333,13 +285,13 @@ html {
 }
 
 .mode-size {
-    font-size: 1rem;
+    font-size: 0.82rem; /* 10% larger */
     font-weight: 700;
     color: #fff;
 }
 
 .mode-difficulty {
-    font-size: 0.7rem;
+    font-size: 0.392rem;
     color: #A0A0B0;
     font-weight: 400;
 }
@@ -347,15 +299,15 @@ html {
 
 
 .mode-btn.active {
-    background: linear-gradient(135deg, #8A2BE2, #6A1BB6); /* Canlı mor gradyan */
-    border-color: #8A2BE2;
-    box-shadow: 0 6px 20px rgba(138, 43, 226, 0.4); /* Mor gölge */
-    color: white; /* Seçili modda beyaz metin */
-    transform: scale(1.03); /* Seçili olduğunda hafif büyüme */
+    background: linear-gradient(135deg, #00AEEF, #0077B6);
+    border-color: #00AEEF;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: scale(1.05);
 }
 
 .mode-btn.active span {
-    color: rgba(255, 255, 255, 0.8); /* Seçili modda span rengi */
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* Individual button colors based on difficulty - Monochrome Theme */
@@ -372,31 +324,75 @@ html {
     flex-wrap: wrap; /* Küçük ekranlarda alt alta geçmelerini sağla */
 }
 
-.leaderboard-chat-buttons .btn-secondary {
-    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Neon Camgöbeği ve Mor gradyan */
+.leaderboard-chat-buttons .btn-secondary,
+.start-btn,
+#downloadAndShareBtn,
+#cancelShareBtn,
+.hero .btn-secondary,
+#profileScreen .avatar-section .btn-secondary,
+#profileScreen .logout-section .btn-danger,
+#profileScreen button[data-action="updateUsername"],
+#profileScreen button[data-action="updatePassword"] {
+    background: var(--bg-primary-gradient) !important; /* Mavi gradyanı zorla uygula */
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 25px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(0, 174, 239, 0.3);
+    transition: none;
+    box-shadow: none;
+    transform: none;
 }
 
-.leaderboard-chat-buttons .btn-secondary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 35px rgba(0, 174, 239, 0.4);
+.leaderboard-chat-buttons .btn-secondary:hover,
+.leaderboard-chat-buttons .btn-secondary:focus,
+.start-btn:hover,
+.start-btn:focus,
+#downloadAndShareBtn:hover,
+#downloadAndShareBtn:focus,
+#cancelShareBtn:hover,
+#cancelShareBtn:focus,
+.hero .btn-secondary:hover,
+.hero .btn-secondary:focus,
+#profileScreen .avatar-section .btn-secondary:hover,
+#profileScreen .avatar-section .btn-secondary:focus,
+#profileScreen .logout-section .btn-danger:hover,
+#profileScreen .logout-section .btn-danger:focus,
+#profileScreen button[data-action="updateUsername"]:hover,
+#profileScreen button[data-action="updateUsername"]:focus,
+#profileScreen button[data-action="updatePassword"]:hover,
+#profileScreen button[data-action="updatePassword"]:focus {
+    background: var(--bg-primary-gradient) !important; /* Rengin aynı kalmasını sağla */
+    transform: none;
+    box-shadow: none;
+    filter: brightness(1.1); /* Sade bir parlaklık efekti */
 }
+
+.leaderboard-chat-buttons .btn-secondary:active,
+.start-btn:active,
+#downloadAndShareBtn:active,
+#cancelShareBtn:active,
+.hero .btn-secondary:active,
+#profileScreen .avatar-section .btn-secondary:active,
+#profileScreen .logout-section .btn-danger:active,
+#profileScreen button[data-action="updateUsername"]:active,
+#profileScreen button[data-action="updatePassword"]:active {
+    filter: brightness(1);
+    transform: none;
+}
+
+
 
 .game-info-display {
     display: flex;
     justify-content: center; /* Center the items within the info display */
     align-items: center;
     flex-wrap: wrap;
-    gap: 1.5rem; /* Increased gap */
+    gap: 0.6rem; /* Reduced gap */
     margin-top: 0; /* Remove the top margin */
+    flex-basis: 70%;
+    flex-shrink: 0;
 }
 
 .player-profile, .timer, .mode-info {
@@ -440,6 +436,7 @@ html {
 }
 
 .game-area {
+    position: relative;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -455,6 +452,7 @@ html {
     padding: 1rem;
     background: rgba(224, 225, 230, 0.1);
     border-radius: 10px;
+    touch-action: none; /* Prevent scrolling on mobile, allowing drag-to-paint */
 }
 
 .grid-cell {
@@ -491,29 +489,7 @@ html {
 }
 /* --- END: Instant Feedback Styles --- */
 
-.start-btn {
-    background: linear-gradient(135deg, #00AEEF, #0077B6);
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem; /* Küçültülmüş padding */
-    font-size: 1rem; /* Küçültülmüş font boyutu */
-    font-weight: 600;
-    border-radius: 25px; /* Hafif yuvarlak köşeler */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem; /* Ayarlanmış margin-top */
-    box-shadow: 0 8px 25px rgba(0, 174, 239, 0.3);
-}
 
-.start-btn:hover {
-    transform: translateY(-3px) scale(1.02); /* More pronounced hover effect */
-    box-shadow: 0 12px 35px rgba(0, 174, 239, 0.4);
-}
-
-.start-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
 
 .game-message {
     color: #fff;
@@ -545,7 +521,7 @@ html {
 
 .tab-btn {
     background: rgba(224, 225, 230, 0.1);
-    border: 2px solid rgba(0, 174, 239, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     color: #fff;
     padding: 0.55rem 1.1rem; /* Reduced by 10% */
     border-radius: 30px;
@@ -561,14 +537,14 @@ html {
 .tab-btn.active {
     background: linear-gradient(135deg, #00AEEF, #0077B6);
     border-color: #00AEEF;
-    box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     color: white;
 }
 
 .tab-btn:active {
     background: linear-gradient(135deg, #00AEEF, #0077B6);
     border-color: #00AEEF;
-    box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     transform: none;
 }
 
@@ -576,7 +552,7 @@ html {
     background: rgba(0, 174, 239, 0.2);
     border-color: #00AEEF;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 174, 239, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
 }
 
 .leaderboard-list {
@@ -590,12 +566,23 @@ html {
     flex-direction: column; /* Arrange children vertically */
 }
 
-.leaderboard-list {
-    list-style: none;
-    padding: 0 28px; /* Replaced padding-right with balanced horizontal padding */
-    flex-grow: 1; /* Allow list to take available space */
-    overflow-y: auto; /* Enable scrolling for the list */
-}
+    .leaderboard-content {
+        flex-grow: 1; /* Allow content to take available space */
+        display: flex; /* Enable flexbox for internal layout */
+        flex-direction: column; /* Arrange children vertically */
+    }
+
+    .leaderboard-list {
+        list-style: none;
+        padding: 0 28px; /* Replaced padding-right with balanced horizontal padding */
+        flex-grow: 1; /* Allow list to take available space */
+        overflow-y: auto; /* Enable scrolling for the list */
+    }
+
+    #leaderboardScreen.active {
+        height: 100%;
+        justify-content: flex-start; /* Align content to the top */
+    }
 
 .leaderboard-item {
     display: flex;
@@ -615,7 +602,7 @@ html {
 .leaderboard-item:hover {
     background: rgba(224, 225, 230, 0.07);
     transform: translateX(5px);
-    box-shadow: 0 0 15px rgba(0, 174, 239, 0.4);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
 /* Rank-specific styles - Focused Glow Effect */
@@ -683,6 +670,7 @@ html {
     overflow: hidden;
     text-overflow: ellipsis;
     flex-shrink: 1; /* Allow name to shrink if needed */
+    color: var(--color-white); /* Set color to white */
 }
 
 .country-item .leaderboard-info {
@@ -699,18 +687,20 @@ html {
 .leaderboard-player-count, .leaderboard-mode {
     white-space: nowrap;
     font-size: 0.8rem;
-    color: #A0A0B0; /* More subtle color */
+    color: #A0A0B0;
     flex-shrink: 0; /* Prevent shrinking */
 }
 
 .leaderboard-score {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #00AEEF;
+    color: var(--color-success);
     padding-left: 1rem; /* Add space between info and score */
     text-align: right;
     min-width: 100px; /* Ensure score alignment */
 }
+
+
 
 /* Player Info Modal Specific Styles */
 .player-info-form-content {
@@ -757,7 +747,7 @@ html {
 
 .submit-info-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 174, 239, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
 /* Auth Tabs */
@@ -806,130 +796,24 @@ html {
     display: block;
 }
 
+/* Color swatch in palette */
+.color-swatch {
+    opacity: 0.5; /* Faded by default */
+    filter: grayscale(50%); /* Desaturate to make it look faded */
+    transition: opacity 0.2s ease, filter 0.2s ease; /* Smooth transition */
+}
+
 /* Active color swatch in palette */
 .color-swatch.active {
+    opacity: 1; /* Fully vibrant when active */
+    filter: grayscale(0%); /* Full color when active */
     border-color: #fff;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
-/* Game Over Screen Styles */
-#gameOverScreen {
-    text-align: center;
-    color: #fff;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    padding-top: 2rem; /* Add space for the animation glow */
-    box-sizing: border-box; /* Ensure padding is included in the height */
-}
 
-.game-over-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-}
 
-.game-over-actions .action-btn {
-    min-width: 150px;
-    height: 40px; /* Sabit yükseklik */
-    padding: 0 1.5rem; /* Dikey padding'i kaldırıp içeriği ortalıyoruz */
-}
 
-.x-share-btn {
-    background-color: #000;
-    color: #fff;
-}
-
-.game-over-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 3rem; /* Reduced size */
-    margin-bottom: 1.5rem; /* Reduced margin */
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(-20px) scale(0.8);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-
-/* Win Text Animation */
-@keyframes winTextAnimation {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.8);
-        text-shadow: 0 0 0 rgba(0, 255, 140, 0);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(0) scale(1.1);
-        text-shadow: 0 0 30px rgba(0, 255, 140, 0.8), 0 0 60px rgba(0, 255, 140, 0.5);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1.1);
-        text-shadow: 0 0 30px rgba(0, 255, 140, 0.8), 0 0 60px rgba(0, 255, 140, 0.5);
-    }
-}
-
-.game-over-title.win {
-    animation: winTextAnimation 1.5s ease-out forwards;
-    color: #00FF8C; /* Vibrant Green for WIN */
-}
-
-/* Lose Text Animation */
-@keyframes loseTextAnimation {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(1.2);
-        text-shadow: 0 0 0 rgba(255, 71, 87, 0);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(0) scale(0.9);
-        text-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
-    }
-    100% {
-        opacity: 0.7;
-        transform: scale(0.8);
-        text-shadow: none;
-    }
-}
-
-.game-over-title.lose {
-    animation: loseTextAnimation 1.5s ease-out forwards;
-    color: #FF4757; /* Hata Kırmızısı */
-}
-
-.game-over-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem; /* Reduced gap */
-    margin: 0 auto 2rem auto; /* Centered and reduced bottom margin */
-    max-width: 450px; /* Constrain width */
-    width: 100%;
-}
-
-.stat-item {
-    background: rgba(224, 225, 230, 0.1);
-    padding: 0.75rem; /* Reduced padding */
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.stat-item h4 {
-    font-size: 0.9rem; /* Reduced size */
-    color: #00AEEF;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-}
-
-.stat-item p {
-    font-size: 1.3rem; /* Reduced size */
-    font-weight: bold;
-}
 
 #profileScreen h3 {
     color: #fff;
@@ -944,7 +828,7 @@ html {
     gap: 2rem;
     max-width: 400px;
     margin: 0 auto;
-    max-height: 60vh; /* Set a max height to contain the content */
+    height: 60vh; /* Take full height */
     overflow-y: auto; /* Add a scrollbar only when needed */
     padding-right: 1rem; /* Add space for the scrollbar */
 }
@@ -976,7 +860,7 @@ html {
     border-radius: 50%;
     border: 3px solid #00AEEF;
     object-fit: cover;
-    box-shadow: 0 0 20px rgba(0, 174, 239, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 .input-group {
@@ -1027,7 +911,7 @@ html {
     width: 40px;
     height: 27px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 174, 239, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     vertical-align: middle; /* Bayrağı dikeyde ortaladım */
 }
 
@@ -1043,8 +927,8 @@ html {
 .profile-avatar-small-wrapper {
     position: relative;
     display: inline-block;
-    width: 50px; /* Match profile-avatar-small size */
-    height: 50px; /* Match profile-avatar-small size */
+    width: 50px; /* Match avatar width */
+    height: 50px; /* Match avatar height */
     overflow: visible;
 }
 
@@ -1073,35 +957,17 @@ html {
     font-size: 0.6rem; /* Smaller size for stars to fit above small avatar */
 }
 
-/* Neon Level Borders */
-.profile-avatar-small.level-1-border { border: 3px solid transparent; background: conic-gradient(#A0A0B0, #808090, #A0A0B0) border-box; background-origin: border-box; } /* Gri */
-.profile-avatar-small.level-2-border { border: 3px solid transparent; background: conic-gradient(#2196F3, #1976D2, #2196F3) border-box; background-origin: border-box; } /* Mavi */
-.profile-avatar-small.level-3-border { border: 3px solid transparent; background: conic-gradient(#00FF8C, #00E676, #00FF8C) border-box; background-origin: border-box; } /* Yeşil */
-.profile-avatar-small.level-4-border { border: 3px solid transparent; background: conic-gradient(#FFD700, #FFC107, #FFD700) border-box; background-origin: border-box; } /* Altın */
-.profile-avatar-small.level-5-border { border: 3px solid transparent; background: conic-gradient(#FF0077, #C51162, #FF0077) border-box; background-origin: border-box; } /* Fuşya */
-.profile-avatar-small.level-6-border { border: 3px solid transparent; background: conic-gradient(#8A2BE2, #673AB7, #8A2BE2) border-box; background-origin: border-box; } /* Mor */
-.profile-avatar-small.level-7-border { border: 3px solid transparent; background: conic-gradient(#FF4757, #D32F2F, #FF4757) border-box; background-origin: border-box; } /* Kırmızı */
-.profile-avatar-small.level-8-border { border: 3px solid transparent; background: conic-gradient(#00AEEF, #0077B6, #00AEEF) border-box; background-origin: border-box; } /* Neon Camgöbeği */
-.profile-avatar-small.level-9-border { 
-    border: 5px solid transparent; 
-    background: conic-gradient(#FFD700, #FF0077, #FFD700) border-box; 
-    background-origin: border-box; 
-} /* Altın-Fuşya Gradyan */
-.profile-avatar-small.level-10-border { 
-    border: 6px solid transparent; 
-    background: conic-gradient(#00AEEF, #8A2BE2, #00AEEF) border-box; 
-    background-origin: border-box; 
-} /* Neon Camgöbeği */
 
-
-
+.no-border {
+    border: none !important;
+}
 
 
 .profile-name {
     font-size: 2rem;
     font-weight: 700;
     color: #fff; /* Rengi beyaz yaptım */
-    text-shadow: 0 0 15px rgba(0, 174, 239, 0.5);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 .profile-stats {
@@ -1185,8 +1051,8 @@ html {
 
 /* Image Cropper Modal Styles */
 #imageCropperModal .game-container {
-    max-width: 600px; /* Make the cropper modal a bit smaller */
-    padding-top: 60px; /* Adjust padding for header */
+    max-width: 600px;
+    padding-top: 60px;
 }
 
 .cropper-content {
@@ -1213,7 +1079,7 @@ html {
 .cropper-image-container img {
     display: block;
     max-width: 100%;
-    max-height: 100%;
+    height: auto;
     /* Cropper.js will handle the actual sizing within its canvas */
 }
 
@@ -1268,11 +1134,17 @@ html {
     color: #00AEEF; /* Üzerine gelindiğinde mavi */
 }
 
+.leaderboard-chat-buttons .btn {
+    width: auto; /* Genişliği içeriğe göre ayarla */
+    min-width: 110px; /* Minimum genişlik belirle */
+    white-space: nowrap; /* Metnin alt satıra inmesini engelle */
+    padding: 0.675rem 1.5rem; /* İç boşluğu ayarla */
+}
+
 .leaderboard-chat-buttons .btn-secondary {
-    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Varsayılan olarak daha canlı gradyan */
+    background: linear-gradient(135deg, #00AEEF, #E62E2E); /* Mavi ve Kırmızı gradyan */
     border: none; /* Kenarlığı kaldır */
     color: white; /* Metin rengi beyaz */
-    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 25px;
@@ -1281,15 +1153,10 @@ html {
     box-shadow: none; /* Parlama efektini kaldır */
 }
 
-.leaderboard-chat-buttons .btn-secondary:hover {
-    transform: scale(1.03); /* Daha belirgin ama kusursuz büyüme efekti */
-    background: linear-gradient(135deg, #00AEEF, #8A2BE2); /* Hover'da aynı gradyanı koru */
-    box-shadow: none; /* Parlama efektini kaldır */
-}
 
 .leaderboard-chat-buttons .btn-secondary:active {
     background: linear-gradient(135deg, #0077B6, #6A1BB6); /* Daha koyu gradyan */
-    box-shadow: 0 4px 15px rgba(0, 174, 239, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     transform: translateY(0);
 }
 
@@ -1311,36 +1178,48 @@ html {
 @media (max-width: 768px) {
     /* Game Header: Further scaling and adjustments */
     .game-controls-top-right {
-        height: 55px;
+        height: 36px;
         padding: 0 8px;
     }
     .game-info-display {
-        transform: scale(0.85);
-        gap: 4px;
+        position: absolute;
+        top: 40px; /* Moved slightly upwards */
+        left: 0;
+        right: 0;
+        /* transform: translateX(-50%); */ /* Removed as left/right 0 handles width */
+        width: 100%;
+        justify-content: center;
+        gap: 5px; /* Reduced gap to prevent wrapping on some devices */
+        flex-wrap: nowrap; /* Prevent wrapping */
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+    .back-btn, .close-game {
+        transform: scale(0.95);
+    }
+    .game-header-timers {
+        display: contents; /* Unpack timers to be direct children of the flex container */
     }
     .player-profile, .timer, .mode-info {
-        font-size: 0.7rem;
-        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem; /* Increased font size slightly */
+        padding: 0.3rem 0.3rem; /* Reduced horizontal padding */
         white-space: nowrap;
     }
     .profile-logo {
-        width: 18px;
+        width: 18px; /* Adjust to match new font size */
         height: 18px;
     }
     .player-profile .flag-icon {
-        height: 12px;
-    }
-    .game-header-timers {
-        gap: 5px;
+        height: 12px; /* Adjust to match new font size */
     }
     .timer span, .mode-info span {
-        font-size: 0.75rem;
+        font-size: 0.85rem; /* Adjust to match new font size */
     }
     .game-container {
-        padding-top: 65px;
+        padding-top: 72px; /* Adjusted padding-top */
     }
     .game-controls-top-right h2.modal-title {
-        font-size: 1.1rem;
+        font-size: 0.8rem; /* Adjusted font size */
     }
 
     /* Game Over Screen */
@@ -1348,86 +1227,264 @@ html {
         font-size: 2.2rem;
         margin-bottom: 1rem;
     }
-    .game-over-stats {
-        gap: 0.75rem;
-        padding: 0.5rem;
-        width: 95%;
-    }
-    .stat-item h4 {
-        font-size: 0.8rem;
-    }
-    .stat-item p {
-        font-size: 1.1rem;
-    }
+    
     .game-over-actions {
+        display: flex;
+        flex-direction: column;
         gap: 0.5rem;
+        align-items: center;
         flex-wrap: wrap;
         justify-content: center;
     }
     .game-over-actions .action-btn {
-        flex-grow: 1;
-        font-size: 0.85rem;
-        padding: 0.6rem 1rem;
-        min-width: 110px;
+        font-size: 0.68rem;
+        padding: 0.48rem 0.8rem;
+    }
+
+    #startBtn {
+        font-size: 0.8rem; /* Reduced font size */
+        padding: 0.5rem 0.8rem; /* Reduced padding */
     }
 
     /* Leaderboard */
+    .leaderboard-tabs { gap: 1rem; } /* Reduce gap for mobile */
+    .tab-btn { padding: 0.4rem 0.8rem; font-size: 0.8rem; } /* Smaller tabs for mobile */
     .leaderboard-list { padding: 0 10px; }
     .leaderboard-item, .leaderboard-left-group, .leaderboard-info { gap: 0.5rem; }
     .leaderboard-item { padding: 0.5rem; }
     .leaderboard-rank { min-width: 30px; font-size: 1rem; }
     .leaderboard-avatar { width: 25px; height: 25px; }
-    .leaderboard-info .flag-icon { width: 20px; height: 14px; }
+    .leaderboard-info .flag-icon { width: 20px; height: 14px; position: relative; left: 5px; }
     .leaderboard-name { font-size: 0.9rem; }
     .leaderboard-player-count, .leaderboard-mode { display: none; }
     .leaderboard-score { min-width: 80px; font-size: 1rem; padding-left: 0.5rem; }
+
+    .game-message {
+        font-size: 0.8rem;
+    }
+
+    /* Mobile-specific styles for the main menu */
+    .game-area-controls {
+        display: flex; /* Ensure it's visible */
+        position: absolute; /* Override desktop position */
+        bottom: 3px; /* Position at the bottom */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for centering */
+        top: auto; /* Remove top positioning */
+        right: auto; /* Remove right positioning */
+        flex-direction: row; /* Arrange buttons horizontally for bottom center */
+        gap: 15px; /* Adjust gap for better spacing */
+    }
+    .game-modes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem; /* Increased gap for mobile */
+        max-width: 400px;
+        margin: 1.5rem auto;
+    }
+
+    .mode-btn {
+        padding: 0.97rem; /* Increased padding for better proportion (another 10% larger) */
+        aspect-ratio: 1 / 1;
+        justify-content: center;
+        min-height: 85px; /* Ensure a consistent minimum height (another 10% larger) */
+    }
+
+    .mode-btn:nth-child(10) {
+        grid-column: 2;
+    }
+
+    .mode-btn i {
+        font-size: 1.5rem; /* Remains the same */
+    }
+
+    .mode-size {
+        font-size: 0.84rem; /* Remains the same */
+    }
+
+    .mode-difficulty {
+        font-size: 0.6rem; /* Remains the same */
+    }
+
+    .leaderboard-chat-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-top: 0.3rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .leaderboard-chat-buttons .btn-secondary {
+        font-size: 0.8rem;
+    }
+
+    /* Show and position mobile zoom controls */
+    .zoom-controls-mobile {
+        display: flex; /* Make it visible and a flex container */
+        position: absolute; /* Position relative to its parent (.game-area) */
+        bottom: 10px; /* Adjust as needed to be at the very bottom */
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 10px; /* Space between zoom buttons */
+        z-index: 10; /* Ensure it's above other elements */
+    }
+
+    /* Ensure active state for mobile buttons matches desktop hover */
+    .zoom-controls-mobile .game-control-btn:active i {
+        color: #00AEEF;
+    }
+
+    /* Styling for active zoom buttons on mobile */
+    .zoom-controls-mobile .game-control-btn.active {
+        background-color: transparent; /* Match desktop style */
+    }
+
+    /* Hover effect for mobile zoom buttons (when not active) */
+    .zoom-controls-mobile .game-control-btn:hover:not(.active) i {
+        color: #00AEEF; /* Blue icon on hover */
+    }
+
+    /* Profile Screen Mobile Styles */
+    .profile-settings-content {
+        width: 90%; /* Make content wider */
+        max-width: 500px; /* Set a new max-width for mobile */
+        padding: 1rem;
+        height: 60vh; /* Set a fixed height */
+        overflow-y: auto; /* Ensure internal scrolling */
+        padding-right: 0.5rem; /* Add some space for the scrollbar */
+    }
+
+    .profile-section {
+        padding: 1rem;
+    }
+
+    .profile-section:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    .profile-avatar-preview {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-stats {
+        grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .profile-stat-item p {
+        font-size: 1.2rem;
+    }
+
+    .input-group:not(.vertical) {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
 }
 
 /* Extra Small Screens */
 @media (max-width: 480px) {
     /* Game Header */
+
     .game-info-display {
         transform: scale(0.7);
     }
 
-    /* Game Over Screen */
-    .game-over-title {
-        font-size: 1.8rem;
-    }
-    .game-over-stats {
-        width: 98%;
-        gap: 0.3rem;
-    }
-    .stat-item h4 {
-        font-size: 0.65rem;
-    }
-    .stat-item p {
-        font-size: 1rem;
-    }
-    .game-over-actions .action-btn {
-        width: 100%;
-        max-width: 280px;
-    }
-    .game-over-actions {
-        flex-direction: column;
-        align-items: center;
-        width: 90%;
+    #startBtn {
+        font-size: 0.8rem; /* Reduced font size */
+        padding: 0.5rem 0.8rem; /* Reduced padding */
     }
 
     /* Main Menu */
-    .mode-btn { padding: 0.6rem 0.4rem; }
+    .mode-btn { padding: 0.4rem 0.6rem; }
     .mode-size { font-size: 0.9rem; }
     .mode-difficulty { font-size: 0.6rem; }
 
     /* Leaderboard */
-    .leaderboard-item { flex-wrap: wrap; }
-    .leaderboard-left-group { width: 100%; order: 1; }
-    .leaderboard-score { width: 100%; order: 2; text-align: right; padding-top: 0.25rem; padding-left: 0; min-width: 0; }
-    .leaderboard-name { flex-grow: 1; }
+    .leaderboard-item, .leaderboard-left-group, .leaderboard-info { gap: 0.25rem; }
+    .leaderboard-item { padding: 0.4rem; flex-wrap: nowrap; } /* Prevent wrapping */
+    .leaderboard-rank { min-width: 20px; font-size: 0.8rem; }
+    .leaderboard-avatar { width: 20px; height: 20px; }
+    .leaderboard-info .flag-icon { width: 18px; height: 12px; }
+    .leaderboard-name { font-size: 0.75rem; }
+    .leaderboard-score { min-width: 50px; font-size: 0.8rem; padding-left: 0.25rem; }
+
+    /* Mobile-specific styles for the main menu */
+    .game-modes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem; /* Increased gap for smaller mobile screens */
+        max-width: 300px;
+        margin: 1.5rem auto;
+    }
+
+    .mode-btn {
+        padding: 0.238rem;
+        aspect-ratio: 1 / 1;
+        justify-content: center;
+    }
+
+    .mode-btn:nth-child(10) {
+        grid-column: 2;
+    }
+
+    .mode-btn i {
+        font-size: 0.98rem;
+    }
+
+    .mode-size {
+        font-size: 0.56rem;
+    }
+
+    .mode-difficulty {
+        font-size: 0.42rem;
+    }
+
+    /* Profile Screen Mobile Styles */
+    .profile-settings-content {
+        padding: 0.5rem;
+        gap: 1rem;
+    }
+
+    .profile-section h4 {
+        font-size: 1rem;
+    }
+
+    .profile-avatar-preview {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profile-stats {
+        padding: 0.75rem;
+    }
+
+    .profile-stat-item h4 {
+        font-size: 0.8rem;
+    }
+
+    .profile-stat-item p {
+        font-size: 1.1rem;
+    }
 }
 
-
 /* --- END: Polished Responsive Design --- */
+
+/* Desktop-specific styles for game mode buttons */
+@media (min-width: 769px) {
+    .mode-btn {
+        padding: 0.583rem; /* 10% increased from 0.53rem */
+        min-height: 67.1px; /* 10% increased from 61px */
+    }
+
+    .mode-btn i {
+        font-size: 1.65rem; /* 10% increased from 1.5rem */
+    }
+
+    .mode-size {
+        font-size: 0.902rem; /* 10% increased from 0.82rem */
+    }
+}
 
 /* --- START: Mobile Click Fix --- */
 .game-info-display-in-game,
@@ -1440,3 +1497,78 @@ html {
     pointer-events: auto;
 }
 /* --- END: Mobile Click Fix --- */
+#profileScreen {
+    padding-top: 2rem;
+}
+
+.zoom-controls-mobile {
+    display: none; /* Hidden by default for desktop */
+}
+/* Override for Logout Button Color */
+#profileScreen .logout-section .btn-danger {
+    background: var(--bg-red-gradient) !important; /* Apply red gradient for danger action */
+}
+
+#profileScreen .logout-section .btn-danger:hover,
+#profileScreen .logout-section .btn-danger:focus {
+    background: var(--bg-red-gradient) !important; /* Keep red gradient */
+    filter: brightness(1.1); /* Keep subtle hover effect */
+}
+
+/* Specific styling for the "Buy Now" button in the hero section */
+.hero .btn-secondary {
+    background: var(--bg-purple-gradient) !important;
+    color: var(--color-white); /* Ensure text color remains white */
+}
+
+.hero .btn-secondary:hover,
+.hero .btn-secondary:focus {
+    background: var(--bg-purple-gradient) !important; /* Keep purple on hover */
+    filter: brightness(1.1); /* Add a subtle brightness effect on hover */
+}
+
+
+
+.leaderboard-chat-buttons .btn { white-space: nowrap; } 
+
+/* New styles for leaderboard-preview-avatar */
+.leaderboard-preview-avatar {
+    width: 50px; /* Desired size */
+    height: 50px; /* Desired size */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #00AEEF; /* Default border, can be overridden by level borders */
+    margin-bottom: 0.8rem; /* Added margin to separate from flag */
+}
+
+/* Neon Level Borders for leaderboard-preview-avatar (copied from profile.css and adapted) */
+.leaderboard-preview-avatar.level-1-border { border: 2px solid transparent; background: linear-gradient(to bottom, #FFCCCC, #FF9999, #FFCCCC); background-origin: border-box; } /* Soluk Kırmızı */
+.leaderboard-preview-avatar.level-2-border { border: 2px solid transparent; background: linear-gradient(to bottom, #FF9999, #FF6666, #FF9999); background-origin: border-box; } /* Kırmızı Tonu 2 */
+.leaderboard-preview-avatar.level-3-border { border: 2px solid transparent; background: linear-gradient(to bottom, #FF6666, #FF3333, #FF6666); background-origin: border-box; } /* Kırmızı Tonu 3 */
+.leaderboard-preview-avatar.level-4-border { border: 2px solid transparent; background: linear-gradient(to bottom, #FF3333, #FF0000, #FF3333); background-origin: border-box; } /* Kırmızı Tonu 4 */
+.leaderboard-preview-avatar.level-5-border { border: 2px solid transparent; background: linear-gradient(to bottom, #FF0000, #CC0000, #FF0000); background-origin: border-box; } /* Kırmızı Tonu 5 */
+.leaderboard-preview-avatar.level-6-border { border: 2px solid transparent; background: linear-gradient(to bottom, #CC0000, #990000, #CC0000); background-origin: border-box; } /* Kırmızı Tonu 6 */
+.leaderboard-preview-avatar.level-7-border { border: 2px solid transparent; background: linear-gradient(to bottom, #990000, #660000, #990000); background-origin: border-box; } /* Kırmızı Tonu 7 */
+.leaderboard-preview-avatar.level-8-border { border: 2px solid transparent; background: linear-gradient(to bottom, #660000, #330000, #660000); background-origin: border-box; } /* Kırmızı Tonu 8 */
+.leaderboard-preview-avatar.level-9-border { border: 2px solid transparent; background: linear-gradient(to bottom, #330000, #000000, #330000); background-origin: border-box; } /* Kırmızı Tonu 9 (Canlı Kırmızı) */
+.leaderboard-preview-avatar.level-10-border {
+    border: 3px solid transparent;
+    background: linear-gradient(to bottom, #FF0000, #0000FF, #FFFF00);
+    background-origin: border-box;
+} /* Kırmızı, Mavi, Sarı */
+
+.leaderboard-chat-buttons .btn-casual {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0;
+}
+
+.pong-bg {
+    background-color: #000000;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='50' y1='0' x2='50' y2='100' stroke='%2300AEEF' stroke-width='2' stroke-dasharray='4,6' stroke-opacity='0.4'/%3E%3Crect x='15' y='20' width='4' height='25' fill='%230000FF' rx='2'/%3E%3Crect x='81' y='55' width='4' height='25' fill='%23FF0000' rx='2'/%3E%3Crect x='48' y='48' width='5' height='5' fill='%23FFFF00' rx='1'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    border: 1px solid rgba(0, 174, 239, 0.3);
+}

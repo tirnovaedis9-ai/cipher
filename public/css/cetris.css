@@ -1,0 +1,238 @@
+/* General Cetris Game Container */
+#cetris-game-container {
+    display: flex; /* Use flexbox for overall layout */
+    flex-direction: column; /* Arrange canvas wrapper and controls vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 20px;
+    padding-top: 60px; /* Added padding-top to make space for header above */
+    background-color: var(--game-background-color); /* Use a variable for theme consistency */
+    border-radius: 10px;
+    box-shadow: var(--game-box-shadow); /* Use a variable for theme consistency */
+    max-width: 800px; /* Increased max-width to accommodate controls and rotate button */
+    margin: 20px auto;
+    color: var(--text-color);
+    position: relative; /* For absolute positioning of rotate button */
+}
+
+/* Game Header (Score, Level) - Now inside canvas wrapper */
+.cetris-game-header {
+    position: absolute;
+    top: -40px; /* Position above the canvas */
+    left: 0;
+    width: 100%; /* Occupy full width of wrapper */
+    padding: 10px; /* Add some padding */
+    box-sizing: border-box; /* Include padding in width */
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-color); /* Make text visible on black background */
+    z-index: 1; /* Ensure it's above canvas if needed, but below game over screen */
+    display: flex; /* ADDED BACK */
+    justify-content: space-between; /* ADDED BACK */
+    flex-direction: row-reverse; /* Keep this for swapping */
+}
+
+/* Canvas Wrapper Styling */
+#cetris-canvas-wrapper {
+    position: relative;
+    width: 300px; /* New canvas width */
+    height: 300px; /* Canvas height only */
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    overflow: hidden; /* Hide anything outside the canvas area */
+    display: flex; /* Use flexbox to arrange header and canvas */
+    flex-direction: column; /* Stack header and canvas vertically */
+    align-items: center;
+}
+
+/* Canvas Styling */
+#cetrisCanvas {
+    display: block; /* Remove extra space below canvas */
+    flex-grow: 1; /* Allow canvas to take remaining space */
+    background-color: #000; /* Black background for the game area */
+}
+
+/* Game Controls */
+.cetris-controls {
+    display: flex;
+    flex-direction: row; /* Arrange all controls in a row */
+    align-items: center; /* Center items vertically in the row */
+    justify-content: space-between; /* Distribute items with space between */
+    gap: 15px; /* Space between all buttons */
+    width: 100%;
+    padding: 0 20px; /* Add padding to the sides */
+}
+
+.cetris-controls button {
+    /* ... existing styles ... */
+}
+
+/* Hide old directional buttons on mobile */
+@media (max-width: 768px) {
+    #cetris-left-btn, #cetris-right-btn, #cetris-down-btn {
+        display: none;
+    }
+
+    /* Adjust layout for joystick and hard drop button */
+    .cetris-controls {
+        justify-content: center; /* Center remaining buttons */
+        gap: 50px; /* Space between rotate and hard drop */
+    }
+
+    #cetris-drop-btn {
+        order: -1; /* Place hard drop button first (on the left) */
+    }
+}
+
+/* Rotate Button Positioning */
+#cetris-rotate-btn {
+    width: 80px; /* Keep original size for now */
+    height: 80px;
+    border-radius: 50%;
+    font-size: 2em;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    margin-bottom: 10px; /* Add some space below it */
+}
+
+#cetris-rotate-btn:hover {
+    background-color: var(--button-hover-background-color);
+}
+
+/* Game Over Screen */
+.cetris-game-over-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    border-radius: 8px; /* Match wrapper border-radius */
+    z-index: 10; /* Ensure it's above the canvas */
+}
+
+.cetris-game-over-screen h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.cetris-game-over-screen p {
+    margin-bottom: 15px;
+}
+
+.cetris-game-over-screen button {
+    margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #cetris-game-container {
+        flex-direction: column; /* Stack vertically on mobile */
+        gap: 10px;
+    }
+
+    #cetris-canvas-wrapper {
+        width: 250px;
+        height: 250px;
+    }
+
+    .cetris-game-header {
+        padding: 5px;
+        font-size: 1em;
+    }
+
+    .cetris-controls {
+        max-width: 300px;
+    }
+
+    .cetris-controls button {
+        padding: 10px 0;
+        font-size: 1.2em;
+        width: 80px;
+        height: 40px;
+    }
+
+    .cetris-controls .control-btn-lg {
+        width: 120px;
+    }
+
+    #cetris-rotate-btn {
+        position: static; /* Revert to static positioning on mobile */
+        width: 100px; /* Adjust size for mobile */
+        height: 50px;
+        border-radius: 8px; /* Make it rectangular */
+        font-size: 1.5em;
+        margin-top: 10px; /* Add some space */
+    }
+    /* Re-integrate rotate button into controls flow on mobile */
+    .cetris-controls {
+        flex-direction: column; /* Ensure controls stack */
+    }
+    .cetris-controls .directional-controls {
+        order: 2; /* Place directional controls after rotate button */
+    }
+    #cetris-rotate-btn {
+        order: 1; /* Place rotate button first */
+    }
+    #cetris-drop-btn {
+        order: 3; /* Place drop button last */
+    }
+}
+
+.tetris-bg {
+    background-color: #000000;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 85 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(0, 5)'%3E%3Cg transform='translate(22.5, 0) scale(0.45)'%3E%3Cpolygon points='50,0 90,28 50,50 10,28' fill='%233333FF'/%3E%3Cpolygon points='10,28 50,50 50,100 10,72' fill='%230000FF'/%3E%3Cpolygon points='50,50 90,28 90,72 50,100' fill='%230000CC'/%3E%3C/g%3E%3Cg transform='translate(45, 25) scale(0.45)'%3E%3Cpolygon points='50,0 90,28 50,50 10,28' fill='%23FFFF33'/%3E%3Cpolygon points='10,28 50,50 50,100 10,72' fill='%23FFFF00'/%3E%3Cpolygon points='50,50 90,28 90,72 50,100' fill='%23CCCC00'/%3E%3C/g%3E%3Cg transform='translate(0, 25) scale(0.45)'%3E%3Cpolygon points='50,0 90,28 50,50 10,28' fill='%23FF3333'/%3E%3Cpolygon points='10,28 50,50 50,100 10,72' fill='%23FF0000'/%3E%3Cpolygon points='50,50 90,28 90,72 50,100' fill='%23CC0000'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 63%;
+    border: 1px solid rgba(0, 174, 239, 0.3);
+}
+
+/* --- Cetris Joystick Styles --- */
+#cetris-joystick {
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: 30px;
+    left: 30px; /* Position on the left */
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0.5); /* More opaque background */
+    border: 2px solid var(--primary-color); /* Added border */
+    border-radius: 50%;
+    z-index: 100;
+}
+
+#cetris-joystick-handle {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8); /* More opaque handle */
+    border-radius: 50%;
+}
+
+/* Show joystick only on mobile devices */
+@media (max-width: 768px) {
+    #cetris-joystick {
+        display: block;
+    }
+    /* Adjust game container padding for joystick */
+    #cetris-game-container {
+        padding-bottom: 150px; 
+    }
+}

@@ -26,6 +26,10 @@ function showScreen(screenId) {
             gameInfoDisplay.style.display = 'none';
         }
     }
+
+    if (screenId === 'profileScreen') {
+        populateMyProfileData();
+    }
 }
 
 function openPlayerInfoModal() {
@@ -38,29 +42,48 @@ function closePlayerInfoModal() {
     document.body.classList.remove('no-scroll');
 }
 
-function populateCountryDropdown(selectedCountryCode = null) {
-    const select = document.getElementById('playerCountrySelect');
-    if (!select) return;
+function openCasualGamesModal() {
+    document.getElementById('casualGamesModal').style.display = 'block';
+    document.body.classList.add('no-scroll');
+}
 
-    select.innerHTML = ''; // Clear existing options
+function closeCasualGamesModal() {
+    const casualGamesModal = document.getElementById('casualGamesModal');
+    const snakeGameContainer = document.getElementById('snake-game-container');
 
-    const defaultOption = document.createElement('option');
-    defaultOption.textContent = getTranslation('selectCountry');
-    defaultOption.value = '';
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    select.appendChild(defaultOption);
-
-    const sortedCountries = Object.entries(countries).sort(([, a], [, b]) => a.name.localeCompare(b.name));
-
-    for (const [code, country] of sortedCountries) {
-        const option = document.createElement('option');
-        option.value = code;
-        option.textContent = country.name;
-        if (selectedCountryCode && code === selectedCountryCode) {
-            option.selected = true;
+    if (snakeGameContainer && !snakeGameContainer.classList.contains('hidden')) {
+        // If snake game is active, go back to casual games selection
+        if (typeof window.showCasualMenu === 'function') {
+            window.showCasualMenu();
         }
-        select.appendChild(option);
+    } else {
+        // Otherwise, close the modal and go back to main menu
+        casualGamesModal.style.display = 'none';
+        document.body.classList.remove('no-scroll');
+        showScreen('mainMenu'); // Go back to the main menu
+    }
+}
+
+
+
+function setupCountrySearch() {
+    const searchInput = document.getElementById('countrySearchInput');
+    const select = document.getElementById('playerCountrySelect');
+
+    if (searchInput && select) {
+        searchInput.addEventListener('keyup', () => {
+            const filter = searchInput.value.toLowerCase();
+            const options = select.getElementsByTagName('option');
+            
+            for (const option of options) {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+        });
     }
 }
 
@@ -103,7 +126,8 @@ function updateProfileDisplay(level) {
     const profileNameElement = document.getElementById('profilePlayerName');
     const profileCountryFlagElement = document.getElementById('profileCountryFlag');
     const gameBtn = document.querySelector('.game-btn');
-    const headerPlayGameBtn = document.getElementById('headerPlayGameBtn');
+    const headerPlayGameBtn = document.getElementById('headerPlayGameBtn'); // Mobile button
+    const headerPlayGameBtnDesktop = document.getElementById('headerPlayGameBtnDesktop'); // Desktop button
     const myProfileBtn = document.getElementById('myProfileBtn');
 
     const gameModalProfileLogo = document.querySelector('.profile-logo');
@@ -126,6 +150,11 @@ function updateProfileDisplay(level) {
             const span = headerPlayGameBtn.querySelector('span');
             if(span) span.textContent = getTranslation('playGame');
         }
+        // Add logic for desktop button
+        if(headerPlayGameBtnDesktop) {
+            const span = headerPlayGameBtnDesktop.querySelector('span');
+            if(span) span.textContent = getTranslation('playGame');
+        }
         if(myProfileBtn) {
             myProfileBtn.innerHTML = ` ${getTranslation('myProfile')}`;
         }
@@ -141,20 +170,38 @@ function updateProfileDisplay(level) {
             const span = headerPlayGameBtn.querySelector('span');
             if(span) span.textContent = getTranslation('loginOrRegister');
         }
+        // Add logic for desktop button
+        if(headerPlayGameBtnDesktop) {
+            const span = headerPlayGameBtnDesktop.querySelector('span');
+            if(span) span.textContent = getTranslation('loginOrRegister');
+        }
         if(myProfileBtn) {
             myProfileBtn.innerHTML = ` ${getTranslation('myProfile')}`;
         }
     }
 
-    const levelClass = (level > 0) ? `level-${level}-border` : '';
-
     if (gameModalProfileLogo) {
         gameModalProfileLogo.src = cacheBustedAvatarUrl;
-        gameModalProfileLogo.className = `profile-logo ${levelClass}`.trim();
+        if (level > 0) {
+            gameModalProfileLogo.className = `profile-logo level-${level}-border`;
+        }
+        else {
+            gameModalProfileLogo.className = 'profile-logo no-border';
+        }
     }
     if (profileAvatarPreview) {
         profileAvatarPreview.src = cacheBustedAvatarUrl;
-        profileAvatarPreview.className = `profile-avatar-preview ${levelClass}`.trim();
+        if (level > 0) {
+            profileAvatarPreview.className = `profile-avatar-preview level-${level}-border`;
+        }
+        else {
+            profileAvatarPreview.className = 'profile-avatar-preview no-border';
+        }
+    }
+
+    // Call positionPlayGameButton after UI update
+    if (typeof positionPlayGameButton === 'function') {
+        positionPlayGameButton();
     }
 }
 
@@ -255,7 +302,8 @@ function populateChatTabs() {
 
             rooms.forEach(room => {
                 const li = document.createElement('li');
-                li.textContent = room;
+                const translationKey = 'chat_room_' + room.toLowerCase().replace('-', '_');
+                li.textContent = getTranslation(translationKey, room); // Pass room as fallback
                 li.dataset.roomName = room;
                 li.classList.add('chat-room-list-item');
                 if (room === gameState.currentRoom) {
@@ -277,7 +325,8 @@ function populateChatTabs() {
             const fallbackRooms = ['Global', ...Object.keys(continentMap)];
             fallbackRooms.sort().forEach(room => {
                 const li = document.createElement('li');
-                li.textContent = room;
+                const translationKey = 'chat_room_' + room.toLowerCase().replace('-', '_');
+                li.textContent = getTranslation(translationKey, room); // Pass room as fallback
                 li.dataset.roomName = room;
                 li.classList.add('chat-room-list-item');
                 if (room === gameState.currentRoom) {
@@ -326,11 +375,14 @@ function createTokenChart() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const ctx = document.getElementById('tokenChart');
-                if (ctx && !ctx.chart) {
+                if (ctx) {
+                    if (ctx.chart) {
+                        ctx.chart.destroy();
+                    }
                     const data = {
                         labels: [
-                            'Public Sale / Liquidity',
-                            'Team'
+                            getTranslation('publicSale'),
+                            getTranslation('team')
                         ],
                         datasets: [{
                             data: [90, 10],
@@ -467,5 +519,44 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         localStorage.setItem('hasVisited', 'true');
         setTimeout(transitionToMainContent, 3000);
+    }
+});
+
+function populateCountryDropdown(selectedCountryCode = null) {
+    const select = document.getElementById('playerCountrySelect');
+    if (!select) return;
+
+    select.setAttribute('size', 8); // Make it a listbox
+
+    select.innerHTML = ''; // Clear existing options
+
+    const defaultOption = document.createElement('option');
+    defaultOption.textContent = getTranslation('selectCountry');
+    defaultOption.value = '';
+    select.appendChild(defaultOption);
+
+    const sortedCountries = Object.entries(countries).sort(([, a], [, b]) => a.name.localeCompare(b.name));
+
+    for (const [code, country] of sortedCountries) {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = country.name;
+        if (selectedCountryCode && code === selectedCountryCode) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    }
+}
+
+document.addEventListener('languageChanged', () => {
+    console.log('Language changed event received in ui.js');
+    if (typeof updateProfileDisplay === 'function' && typeof gameState !== 'undefined') {
+        updateProfileDisplay(gameState.level);
+    }
+    if (typeof populateCountryDropdown === 'function') {
+        populateCountryDropdown();
+    }
+    if (typeof createTokenChart === 'function') {
+        createTokenChart();
     }
 });

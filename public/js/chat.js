@@ -3,12 +3,16 @@ let typingTimeout = null;
 
 function connectChat() {
     if (!gameState.isLoggedIn) {
-        console.log('Not logged in, cannot connect to chat.');
+        if (window.IS_DEVELOPMENT) {
+            console.log('Not logged in, cannot connect to chat.');
+        }
         return;
     }
 
     if (socket && socket.connected) {
-        console.log('Already connected to chat, ensuring correct room.');
+        if (window.IS_DEVELOPMENT) {
+            console.log('Already connected to chat, ensuring correct room.');
+        }
         const roomToJoin = gameState.playerCountry ? `country-${gameState.playerCountry}` : window.DEFAULT_CHAT_ROOM;
         if (gameState.currentRoom !== roomToJoin) {
             socket.emit('joinRoom', { 
@@ -26,7 +30,9 @@ function connectChat() {
         return;
     }
 
-    console.log('Attempting to connect to chat...');
+    if (window.IS_DEVELOPMENT) {
+        console.log('Attempting to connect to chat...');
+    }
     initializeChatSocket();
 }
 
@@ -55,19 +61,25 @@ function initializeChatSocket() {
     socket.off('error');
 
     socket.on('connect', () => {
-        console.log('Connected to chat server.');
+        if (window.IS_DEVELOPMENT) {
+            console.log('Connected to chat server.');
+        }
         // Determine the room to join based on user's country
         const roomToJoin = gameState.playerCountry ? `country-${gameState.playerCountry}` : window.DEFAULT_CHAT_ROOM;
         gameState.currentRoom = roomToJoin;
-        console.log('Sending level to server:', gameState.level);
+        if (window.IS_DEVELOPMENT) {
+            console.log('Sending level to server:', gameState.level);
+        }
         socket.emit('joinRoom', { playerId: gameState.playerId, username: gameState.username, room: roomToJoin, avatarUrl: gameState.avatarUrl, level: gameState.level, country: gameState.playerCountry });
         fetchChatMessages(roomToJoin);
         populateChatRoomList();
     });
 
     socket.on('message', (message) => {
-        console.log('Received message:', message);
-        console.log('Current room:', gameState.currentRoom);
+        if (window.IS_DEVELOPMENT) {
+            console.log('Received message:', message);
+            console.log('Current room:', gameState.currentRoom);
+        }
         if (message.room === gameState.currentRoom || message.isSystem) {
             displayMessage(message);
         }
@@ -164,10 +176,12 @@ async function fetchChatMessages(room = gameState.currentRoom, append = false) {
         const history = await apiRequest(`/api/chat/history/${room}?limit=${gameState.chatHistoryLimit}&offset=${gameState.chatHistoryOffset}`, 'GET');
         
         // --- DEBUG LOGS START ---
-        console.log('--- fetchChatMessages DEBUG ---');
-        console.log('GameState Player ID at fetch time:', gameState.playerId);
-        console.log('Fetched History:', history);
-        console.log('-------------------------------');
+        if (window.IS_DEVELOPMENT) {
+            console.log('--- fetchChatMessages DEBUG ---');
+            console.log('GameState Player ID at fetch time:', gameState.playerId);
+            console.log('Fetched History:', history);
+            console.log('-------------------------------');
+        }
         // --- DEBUG LOGS END ---
 
         if (history.length > 0) {
@@ -184,7 +198,11 @@ async function fetchChatMessages(room = gameState.currentRoom, append = false) {
                 fragment.appendChild(messageElement);
             });
             
-            chatMessagesDiv.prepend(fragment);
+            if (append) {
+                chatMessagesDiv.prepend(fragment);
+            } else {
+                chatMessagesDiv.appendChild(fragment);
+            }
 
             // ONLY add the 'Load More' button if the number of messages received is equal to the limit,
             // which implies there might be more messages to fetch.
@@ -198,7 +216,7 @@ async function fetchChatMessages(room = gameState.currentRoom, append = false) {
             }
 
             if (!append) {
-                chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+                scrollToChatBottom();
             }
 
             gameState.chatHistoryOffset += history.length;
@@ -226,6 +244,21 @@ function createMessageElement(message) {
     
     const isSent = currentPlayerId && messageSenderId && currentPlayerId === messageSenderId;
 
+    // --- START: Workaround for potential backend level inconsistency ---
+    let levelToShow = message.level; // Default to the level from the message
+    if (isSent) {
+        // For my own messages, always trust my local state
+        levelToShow = gameState.level;
+    } else if (gameState.chatUsers) {
+        // For received messages, try to find the user in the current user list,
+        // as it's likely more up-to-date than the broadcasted message level.
+        const sender = gameState.chatUsers.find(u => String(u.playerId) === messageSenderId);
+        if (sender) {
+            levelToShow = sender.level;
+        }
+    }
+    // --- END: Workaround ---
+
     // --- DEBUG LOGS START ---
     console.log('--- createMessageElement DEBUG ---');
     console.log('Message ID:', message.id);
@@ -247,12 +280,14 @@ function createMessageElement(message) {
     const timestamp = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const avatarSrc = message.avatarUrl || 'assets/logo.jpg';
 
+    const levelClass = levelToShow > 0 ? ` level-${levelToShow}-border` : ' no-border';
+
     const messageContentHtml = `<p>${parseMarkdown(message.message)} <span class="timestamp">${timestamp}</span></p>`; // Timestamp moved inside p tag
 
     messageElement.innerHTML = `
         <div class="message-avatar-container">
             <span class="username">${message.username}</span>
-            <img src="${avatarSrc}" alt="Avatar" class="chat-avatar level-${message.level}-border">
+            <img src="${avatarSrc}" alt="Avatar" class="chat-avatar${levelClass} clickable-avatar">
         </div>
         <div class="message-bubble">
             <div class="message-content">${messageContentHtml}</div>
@@ -278,6 +313,17 @@ function displayMessage(message) {
     const messageElement = createMessageElement(message);
     chatMessagesDiv.appendChild(messageElement);
     chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+}
+
+function scrollToChatBottom() {
+    const chatMessagesDiv = document.getElementById('chatMessages');
+    if (chatMessagesDiv) {
+        // Use a timeout to ensure the DOM has rendered and scrollHeight is correct, especially on initial load
+        setTimeout(() => {
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+            chatMessagesDiv.classList.remove('messages-loading');
+        }, 50);
+    }
 }
 
 // Event Delegation for chat messages
@@ -383,6 +429,7 @@ function handleTyping() {
 }
 
 function updateUserListDisplay(users) {
+    gameState.chatUsers = users; // Store the current user list for lookups
     const onlineUserList = document.getElementById('onlineUserList');
     const onlineUserCount = document.getElementById('onlineUserCount');
     const activeUserListSidebar = document.getElementById('activeUserListSidebar');
@@ -410,8 +457,9 @@ function createUserListItem(user) {
     const listItem = document.createElement('li');
     listItem.classList.add('online-user-item');
     listItem.dataset.playerId = user.playerId;
+    const levelClass = user.level > 0 ? ` level-${user.level}-border` : ' no-border';
     listItem.innerHTML = `
-        <img src="${user.avatarUrl || 'assets/logo.jpg'}" alt="Avatar" class="online-user-avatar level-${user.level}-border">
+        <img src="${user.avatarUrl || 'assets/logo.jpg'}" alt="Avatar" class="online-user-avatar${levelClass} clickable-avatar">
         <span class="username">${user.username}</span>
     `;
     return listItem;
@@ -466,7 +514,11 @@ function updateUserInList(user) {
         if (avatarImg) {
             avatarImg.src = user.avatarUrl || 'assets/logo.jpg';
             // Update level border if it can change
-            avatarImg.className = `online-user-avatar level-${user.level}-border`;
+            if (user.level > 0) {
+                avatarImg.className = `online-user-avatar level-${user.level}-border`;
+            } else {
+                avatarImg.className = 'online-user-avatar no-border';
+            }
         }
         const usernameSpan = element.querySelector('.username');
         if (usernameSpan) {
@@ -488,115 +540,70 @@ function updateTypingIndicator(typingUsernames) {
     } else if (filteredTypingUsernames.length === 2) {
         typingUsersDisplay.textContent = `${filteredTypingUsernames[0]} and ${filteredTypingUsernames[1]} are typing...`;
     } else {
-        typingUsersDisplay.textContent = `Multiple users are typing...`;
+        typingUsersDisplay.textContent = getTranslation('multipleUsersTyping');
     }
 }
 
 function enableMessageEdit(messageId, currentMessage) {
-    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-    if (!messageElement) return;
-
-    const messageContentDiv = messageElement.querySelector('.message-content');
-    const messageActionsContainer = messageElement.querySelector('.message-actions-container');
-
-    messageElement.dataset.originalContent = messageContentDiv.innerHTML;
-    if (messageActionsContainer) {
-        messageElement.dataset.originalActionsHtml = messageActionsContainer.outerHTML; // Store outerHTML
-    }
-
-    messageContentDiv.innerHTML = `
-        <textarea id="editMessageTextarea" class="edit-message-textarea">${currentMessage}</textarea>
-    `;
-    if (messageActionsContainer) {
-        messageActionsContainer.innerHTML = `
-            <button class="save-edit-btn" data-message-id="${messageId}"><i class="fas fa-check"></i> Save</button>
-            <button class="cancel-edit-btn" data-message-id="${messageId}"><i class="fas fa-times"></i> Cancel</button>
-        `;
-        // Re-attach event listeners for the new buttons
-        messageActionsContainer.querySelector('.save-edit-btn').addEventListener('click', (event) => saveEditedMessage(messageId));
-        messageActionsContainer.querySelector('.cancel-edit-btn').addEventListener('click', (event) => cancelEdit(messageId));
-    }
+    showGenericModal(
+        'Edit Message',
+        '', // Message content will be in textarea
+        true, // Show textarea
+        'Save',
+        (editedMessage) => saveEditedMessage(messageId, editedMessage),
+        () => cancelEdit(messageId) // Pass a function to cancelEdit
+    );
+    // Populate the textarea with the current message
+    document.getElementById('genericModalTextarea').value = currentMessage;
 }
 
-async function saveEditedMessage(messageId) {
-    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-    if (!messageElement) return;
-
-    const newContent = messageElement.querySelector('#editMessageTextarea').value;
-
+async function saveEditedMessage(messageId, newContent) {
     try {
         const response = await apiRequest(`/api/chat/messages/${messageId}`, 'PUT', { message: newContent });
         showNotification(response.message || 'Message updated.', 'success');
     } catch (error) {
         console.error('Failed to save edited message:', error);
         showNotification(`Failed to update message: ${error.message}`, 'error');
-        cancelEdit(messageId);
+        // No need to call cancelEdit here, as the modal handles its own closing
     }
 }
 
 function cancelEdit(messageId) {
-    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-    if (!messageElement) return;
-
-    const messageContentDiv = messageElement.querySelector('.message-content');
-    const messageActionsContainer = messageElement.querySelector('.message-actions-container');
-
-    messageContentDiv.innerHTML = messageElement.dataset.originalContent;
-    if (messageActionsContainer) {
-        messageActionsContainer.innerHTML = messageElement.dataset.originalActionsHtml; // Restore the entire container
-    }
-    const messageStatusSpan = messageElement.querySelector('.message-status');
-    if (messageStatusSpan) {
-        messageStatusSpan.textContent = '';
-    }
-
-    // Re-attach event listeners for the restored message options button
-    const messageOptionsBtn = messageElement.querySelector('.message-options-btn');
-    const messageActions = messageElement.querySelector('.message-actions');
-
-    if (messageOptionsBtn) {
-        messageOptionsBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            document.querySelectorAll('.message-actions').forEach(menu => {
-                if (menu !== messageActions) {
-                    menu.classList.add('hidden');
-                }
-            });
-            messageActions.classList.toggle('hidden');
-        });
-    }
-
-    document.addEventListener('click', (event) => {
-        if (messageActions && !messageActions.contains(event.target) && !messageOptionsBtn.contains(event.target)) {
-            messageActions.classList.add('hidden');
-        }
-    });
-
-    const editBtn = messageElement.querySelector('.edit-message-btn');
-    const deleteBtn = messageElement.querySelector('.delete-message-btn');
-    if (editBtn) editBtn.addEventListener('click', () => enableMessageEdit(messageId, messageElement.querySelector('.message-content p').textContent.trim()));
-    if (deleteBtn) deleteBtn.addEventListener('click', () => deleteMessage(messageId));
+    // No need to restore message content or actions, as the modal handles editing
+    // The original message element remains untouched until messageUpdated event
+    hideGenericModal();
 }
 
 async function deleteMessage(messageId) {
-    try {
-        const response = await apiRequest(`/api/chat/messages/${messageId}`, 'DELETE');
-        showNotification(response.message || 'Message deleted.', 'success');
-    } catch (error) {
-        console.error('Failed to delete message:', error);
-        showNotification(`Failed to delete message: ${error.message}`, 'error');
-    }
+    showGenericModal(
+        'Confirm Deletion',
+        'Are you sure you want to delete this message? This action cannot be undone.',
+        false, // Do not show textarea
+        'Delete',
+        async () => { // On confirm
+            try {
+                const response = await apiRequest(`/api/chat/messages/${messageId}`, 'DELETE');
+                showNotification(response.message || 'Message deleted.', 'success');
+            } catch (error) {
+                console.error('Failed to delete message:', error);
+                showNotification(`Failed to delete message: ${error.message}`, 'error');
+            }
+        },
+        null // No specific action on cancel for delete
+    );
 }
 
 
 function showChatScreen() {
     if (!gameState.isLoggedIn) {
-        showNotification('Please log in to use chat.', 'info');
+        showNotification(getTranslation('pleaseLoginToUseChat'), 'info');
         return;
     }
+    document.getElementById('chatMessages').classList.add('messages-loading');
     document.getElementById('chatModal').style.display = 'block';
     document.getElementById('onlineUsersDropdown').classList.remove('active');
     document.body.classList.add('no-scroll');
+    scrollToChatBottom();
 }
 
 function closeChatScreen() {
@@ -605,25 +612,72 @@ function closeChatScreen() {
     document.body.classList.remove('no-scroll');
 }
 
+// Generic Modal Functions
+function showGenericModal(title, message, showTextarea, confirmBtnText, onConfirm, onCancel) {
+    const genericModal = document.getElementById('genericModal');
+    const genericModalTitle = document.getElementById('genericModalTitle');
+    const genericModalMessage = document.getElementById('genericModalMessage');
+    const genericModalTextarea = document.getElementById('genericModalTextarea');
+    const genericModalConfirmBtn = document.getElementById('genericModalConfirmBtn');
+    const genericModalCancelBtn = document.getElementById('genericModalCancelBtn');
+
+    genericModalTitle.textContent = title;
+    genericModalMessage.innerHTML = message; // Use innerHTML for potential markdown/HTML
+    genericModalConfirmBtn.textContent = confirmBtnText;
+
+    if (showTextarea) {
+        genericModalTextarea.style.display = 'block';
+        genericModalTextarea.value = genericModalMessage.textContent; // Pre-fill with message
+        genericModalMessage.style.display = 'none'; // Hide message if textarea is shown
+    } else {
+        genericModalTextarea.style.display = 'none';
+        genericModalMessage.style.display = 'block';
+    }
+
+    // Clear previous event listeners
+    genericModalConfirmBtn.onclick = null;
+    genericModalCancelBtn.onclick = null;
+
+    // Attach new event listeners
+    genericModalConfirmBtn.onclick = () => {
+        onConfirm(showTextarea ? genericModalTextarea.value : null);
+        hideGenericModal();
+    };
+    genericModalCancelBtn.onclick = () => {
+        if (onCancel) onCancel();
+        hideGenericModal();
+    };
+
+    genericModal.style.display = 'block';
+    document.body.classList.add('no-scroll');
+}
+
+function hideGenericModal() {
+    const genericModal = document.getElementById('genericModal');
+    genericModal.style.display = 'none';
+    document.body.classList.remove('no-scroll');
+}
+
 function populateChatRoomList() {
     const chatRoomList = document.getElementById('chatRoomList');
     if (!chatRoomList) return;
 
-    // Start with general rooms
+    // Define rooms with translation keys
     const rooms = [
-        { id: 'Global', name: 'Global' },
-        { id: 'Europe', name: 'Europe' },
-        { id: 'Asia', name: 'Asia' },
-        { id: 'North-America', name: 'North America' },
-        { id: 'South-America', name: 'South America' },
-        { id: 'Africa', name: 'Africa' },
-        { id: 'Oceania', name: 'Oceania' }
+        { id: 'Global', nameKey: 'chat_room_global' },
+        { id: 'Europe', nameKey: 'chat_room_europe' },
+        { id: 'Asia', nameKey: 'chat_room_asia' },
+        { id: 'North-America', nameKey: 'chat_room_north_america' },
+        { id: 'South-America', nameKey: 'chat_room_south_america' },
+        { id: 'Africa', nameKey: 'chat_room_africa' },
+        { id: 'Oceania', nameKey: 'chat_room_oceania' }
     ];
 
     // Add country-specific room to the beginning of the list if it exists
     if (gameState.playerCountry && countries[gameState.playerCountry]) {
-        const countryName = countries[gameState.playerCountry].name;
-        rooms.unshift({ id: `country-${gameState.playerCountry}`, name: countryName });
+        const countryCode = gameState.playerCountry.toLowerCase();
+        const translationKey = `country_${countryCode}`;
+        rooms.unshift({ id: `country-${gameState.playerCountry}`, nameKey: translationKey });
     }
 
     chatRoomList.innerHTML = ''; // Clear existing list
@@ -631,7 +685,14 @@ function populateChatRoomList() {
     rooms.forEach(room => {
         const listItem = document.createElement('li');
         listItem.className = 'chat-room-list-item';
-        listItem.textContent = room.name;
+        
+        // Use getTranslation for rooms with a nameKey, otherwise use the name directly
+        if (room.nameKey) {
+            listItem.textContent = getTranslation(room.nameKey);
+        } else {
+            listItem.textContent = room.name;
+        }
+        
         listItem.dataset.roomId = room.id;
 
         if (room.id === gameState.currentRoom) {
@@ -660,3 +721,108 @@ function switchRoom(newRoom) {
     fetchChatMessages(newRoom);
     populateChatRoomList(); // Update active room in the list
 }
+
+function setupEmojiPicker() {
+    const emojiPicker = document.getElementById('emojiPicker');
+    const emojiBtn = document.getElementById('emojiBtn');
+    const chatInput = document.getElementById('chatInput');
+    const categoriesContainer = emojiPicker.querySelector('.emoji-categories');
+    const emojiListContainer = emojiPicker.querySelector('.emoji-list-container');
+    const leftArrow = emojiPicker.querySelector('.left-arrow');
+    const rightArrow = emojiPicker.querySelector('.right-arrow');
+
+    const categoryIcons = {
+        smileys: '😊',
+        people: '👋',
+        animals: '🐶',
+        food: '🍔',
+        activities: '⚽️',
+        travel: '🚗',
+        objects: '💻',
+        symbols: '❤️',
+        flags: '🏁'
+    };
+
+    // Populate categories
+    for (const category in EMOJI_CATEGORIES) {
+        const categoryBtn = document.createElement('button');
+        categoryBtn.className = 'emoji-category-btn';
+        categoryBtn.dataset.category = category;
+        categoryBtn.dataset.i18n = `emojiCategory_${category}`;
+        categoryBtn.innerHTML = `<span class="emoji-category-icon">${categoryIcons[category] || '❓'}</span> <span class="emoji-category-name" data-i18n="emojiCategory_${category}">${category}</span>`;
+        categoriesContainer.appendChild(categoryBtn);
+
+        categoryBtn.addEventListener('click', () => {
+            // Set active button
+            const currentActive = categoriesContainer.querySelector('.active');
+            if(currentActive) currentActive.classList.remove('active');
+            categoryBtn.classList.add('active');
+            // Populate emojis for the selected category
+            populateEmojiList(category);
+        });
+    }
+
+    function populateEmojiList(category) {
+        emojiListContainer.innerHTML = '';
+        EMOJI_CATEGORIES[category].forEach(emoji => {
+            const emojiSpan = document.createElement('span');
+            emojiSpan.textContent = emoji;
+            emojiSpan.addEventListener('click', () => {
+                chatInput.value += emoji;
+                chatInput.focus();
+            });
+            emojiListContainer.appendChild(emojiSpan);
+        });
+    }
+
+    // Arrow button logic
+    function updateArrowVisibility() {
+        const isScrollable = categoriesContainer.scrollWidth > categoriesContainer.clientWidth;
+        if (!isScrollable) {
+            leftArrow.classList.add('hidden');
+            rightArrow.classList.add('hidden');
+            return;
+        }
+        leftArrow.classList.toggle('hidden', categoriesContainer.scrollLeft === 0);
+        rightArrow.classList.toggle('hidden', categoriesContainer.scrollLeft + categoriesContainer.clientWidth >= categoriesContainer.scrollWidth - 5); // 5px buffer
+    }
+
+    leftArrow.addEventListener('click', () => {
+        categoriesContainer.scrollLeft -= 100;
+        updateArrowVisibility();
+    });
+
+    rightArrow.addEventListener('click', () => {
+        categoriesContainer.scrollLeft += 100;
+        updateArrowVisibility();
+    });
+
+    categoriesContainer.addEventListener('scroll', updateArrowVisibility);
+    new ResizeObserver(updateArrowVisibility).observe(categoriesContainer);
+
+
+    // Toggle emoji picker
+    emojiBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        emojiPicker.classList.toggle('show');
+        if (emojiPicker.classList.contains('show')) {
+            updateArrowVisibility();
+        }
+    });
+
+    // Close picker when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!emojiPicker.contains(event.target) && !emojiBtn.contains(event.target)) {
+            emojiPicker.classList.remove('show');
+        }
+    });
+
+    // Initial population
+    const firstCategory = Object.keys(EMOJI_CATEGORIES)[0];
+    categoriesContainer.querySelector('.emoji-category-btn').classList.add('active');
+    populateEmojiList(firstCategory);
+    updateArrowVisibility();
+}
+
+window.setupEmojiPicker = setupEmojiPicker;
+EmojiPicker = setupEmojiPicker;

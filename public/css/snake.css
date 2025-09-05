@@ -1,0 +1,211 @@
+/* public/css/snake.css */
+
+.hidden {
+    display: none !important;
+}
+
+.casual-games-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#casual-game-selection {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.casual-games-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
+
+.game-card {
+    background: linear-gradient(135deg, #1C2A41, #0F1A2B);
+    border: 2px solid rgba(0, 174, 239, 0.3);
+    border-radius: 15px;
+    width: 220px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 174, 239, 0.4);
+    border-color: #00AEEF;
+}
+
+.game-card-image-container {
+    width: 100%;
+    height: 120px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 1rem;
+}
+
+.snake-bg {
+    background-color: #0c101c;
+    background-image: 
+        /* Top-left dot (Red) */
+        radial-gradient(circle at 5px 5px, #FF0000 1px, transparent 0),
+        /* Top-right dot (Yellow) */
+        radial-gradient(circle at 20px 5px, #FFFF00 1px, transparent 0),
+        /* Bottom-left dot (Blue) */
+        radial-gradient(circle at 5px 20px, #0000FF 1px, transparent 0),
+        /* Bottom-right dot (Red again, or another color if desired) */
+        radial-gradient(circle at 20px 20px, #FF0000 1px, transparent 0);
+    background-size: 30px 30px;
+    background-position: center center; /* Added back for centering */
+    border: 1px solid rgba(0, 174, 239, 0.3);
+}
+
+.game-card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    color: var(--color-white);
+    margin-bottom: 1rem;
+}
+
+#snake-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.snake-game-header {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#snake-score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* New wrapper for centering overlays on canvas */
+.snake-canvas-wrapper {
+    position: relative;
+}
+
+@keyframes background-pan {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#snakeCanvas {
+    background: linear-gradient(90deg, #0c101c, #121a2b, #0c101c);
+    background-size: 200% 200%;
+    animation: background-pan 20s ease-in-out infinite;
+    border: 2px solid var(--color-primary);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
+    display: block; /* Important for wrapper sizing */
+}
+
+#snake-start-screen, #snake-game-over-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 20;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    width: 100%; /* Ensure they can contain centered text */
+}
+
+#snake-game-over-screen h2 {
+    font-size: 2.5rem; /* Reduced size */
+    margin-bottom: 1rem;
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+#snake-game-over-screen p {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.snake-game-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 2.5rem; /* Reduced size */
+    cursor: pointer;
+    transition: none; /* No transition */
+    text-shadow: none; 
+}
+
+.snake-game-btn:hover {
+    /* No hover effect */
+    color: var(--color-primary);
+    transform: none;
+    text-shadow: none;
+}
+
+#snake-controls {
+    margin-top: 1rem;
+    display: none; 
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#snake-controls button {
+    width: 60px;
+    height: 60px;
+    background: var(--bg-light-10);
+    border: 1px solid var(--border-light);
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+}
+
+.snake-lr-controls {
+    display: flex;
+    gap: 4rem;
+}
+
+@media (max-width: 768px) {
+    #snake-controls {
+        display: flex;
+    }
+}

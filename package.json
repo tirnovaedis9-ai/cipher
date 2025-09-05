@@ -1,10 +1,12 @@
 {
-  "name": "clinecipher",
+  "name": "cipher",
   "version": "1.0.0",
   "description": "CIPHER - Color Puzzle Crypto Game",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "pm2 start ecosystem.config.js --env production",
+    "build:production": "node build-production.js",
+    "deploy": "npm run build:production && pm2 start ecosystem.config.js --env production",
     "test": "cross-env NODE_ENV=test mocha --file test/testHelper.js test/**/*.test.js"
   },
   "keywords": [
@@ -25,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "pg": "^8.16.3",
+    "pm2": "^6.0.8",
     "sharp": "^0.34.3",
     "socket.io": "^4.7.5",
     "uuid": "^11.1.0"

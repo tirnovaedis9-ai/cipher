@@ -1,0 +1,393 @@
+/* Game Section */
+.game-section {
+    padding: 120px 0;
+    background: linear-gradient(135deg, var(--color-background-dark) 0%, var(--color-background-light) 100%);
+}
+
+.game-info {
+    text-align: center;
+}
+
+.game-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 400px));
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature {
+    text-align: center;
+    transition: all 0.3s ease;
+    padding: 1rem;
+}
+
+.feature:hover i {
+    transform: scale(1.03);
+}
+
+.feature i {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    color: var(--color-primary);
+    transition: all 0.3s ease;
+}
+
+.feature h3 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.feature p {
+    color: #A0A0B0;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.leaderboard-preview-section {
+    margin-top: 4rem;
+    text-align: center;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.leaderboard-preview-title {
+    color: #FFFFFF;
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+    text-shadow: none;
+    padding-bottom: 0.5rem; /* Space for the underline */
+    position: relative;
+    display: inline-block;
+    background: none;
+    border: none;
+    backdrop-filter: none;
+}
+
+.leaderboard-preview-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130%; /* Width of the underline */
+    height: 7px; /* Thickness of the underline */
+    background: linear-gradient(90deg, rgba(0, 174, 239, 0), #5900d6, rgba(0, 174, 239, 0)); /* Fading gradient */
+    border-radius: 2px;
+}
+
+.leaderboard-cards-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align cards to the bottom for podium effect */
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    min-height: 320px; /* Ensure container has height for the effect */
+    padding: 0 1rem;
+}
+
+.leaderboard-card {
+    background: linear-gradient(135deg, #1C2A41, #0F1A2B);
+    border: 2px solid rgba(0, 174, 239, 0.3);
+    border-radius: 15px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    /* overflow: visible; */ /* Removed to allow content to wrap */
+    min-height: 380px; /* Increased height for wrapping names */
+    justify-content: space-evenly; /* Distribute content evenly */
+    /* padding-top: 2rem; */ /* Removed as space-evenly handles distribution */
+}
+
+.leaderboard-card:hover {
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 174, 239, 0.4);
+    border-color: #00AEEF;
+}
+
+.leaderboard-card.rank-1:hover {
+    transform: none; /* Remove both lift and scale for rank-1 on hover */
+}
+
+.leaderboard-card .rank {
+    position: relative; /* For crown positioning */
+    font-size: 2rem;
+    font-weight: 800;
+    color: #E0E1E6;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.5rem;
+    padding-top: 1.5rem; /* Add padding to make space for the crown */
+}
+
+.leaderboard-card .rank .fa-crown {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FEEA00; /* Gold color for the crown */
+    font-size: 1.8rem;
+}
+
+.player-name-above-avatar {
+    color: #E0E1E6;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem; /* Increased margin */
+    text-align: center;
+    white-space: normal; /* Allow text to wrap */
+    overflow: visible; /* Allow content to be fully visible */
+    text-overflow: clip; /* Prevent ellipsis */
+    width: 100%;
+    /* height: 1.2em; */ /* Removed to allow height to expand */
+    word-break: break-word; /* Break long words */
+}
+
+.player-avatar-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+    border: 2px solid #00AEEF;
+    box-shadow: 0 0 15px rgba(0, 174, 239, 0.4);
+}
+
+/* New container for country flags to ensure consistent height */
+.country-flag-container {
+    width: 80px;
+    height: 80px; /* Same height as avatar container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.8rem; /* Corresponds to name + avatar margin */
+}
+
+.country-flag-container .country-flag-large {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.player-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.leaderboard-card .flag-icon {
+    width: auto;
+    height: 27px;
+    border-radius: 3px;
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    border: none;
+}
+
+.leaderboard-card .score {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #00FF8C;
+}
+
+/* --- Podium Styles --- */
+.leaderboard-card.rank-1 {
+    order: 2; /* Center */
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
+    border-color: #FEEA00;
+    box-shadow: 0 0 15px rgba(254, 234, 0, 0.5);
+    z-index: 2;
+}
+
+.leaderboard-card.rank-2 {
+    order: 3; /* Right */
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    border-color: #E5E4E2;
+    box-shadow: 0 0 10px rgba(229, 228, 226, 0.5);
+    transform: scale(0.95);
+}
+
+.leaderboard-card.rank-3 {
+    order: 1; /* Left */
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    border-color: #E8912D;
+    box-shadow: 0 0 5px rgba(232, 145, 45, 0.4);
+    transform: scale(0.9);
+}
+
+/* Scaling for Rank 1 Card */
+.leaderboard-card.rank-1 .rank {
+    font-size: 2.2rem; /* Slightly larger */
+}
+.leaderboard-card.rank-1 .player-name-above-avatar {
+    font-size: 1.1rem; /* Slightly larger */
+}
+.leaderboard-card.rank-1 .leaderboard-preview-avatar {
+    width: 55px; /* Slightly larger */
+    height: 55px; /* Slightly larger */
+    margin-bottom: 0.9rem; /* Adjusted margin */
+}
+.leaderboard-card.rank-1 .flag-icon {
+    height: 30px; /* Slightly larger */
+}
+.leaderboard-card.rank-1 .score {
+    font-size: 1.6rem; /* Slightly larger */
+}
+
+/* Scaling for Rank 3 Card */
+.leaderboard-card.rank-3 .rank {
+    font-size: 1.8rem; /* Slightly smaller */
+}
+.leaderboard-card.rank-3 .player-name-above-avatar {
+    font-size: 0.9rem; /* Slightly smaller */
+}
+.leaderboard-card.rank-3 .leaderboard-preview-avatar {
+    width: 45px; /* Slightly smaller */
+    height: 45px; /* Slightly smaller */
+    margin-bottom: 0.7rem; /* Adjusted margin */
+}
+.leaderboard-card.rank-3 .flag-icon {
+    height: 24px; /* Slightly smaller */
+}
+.leaderboard-card.rank-3 .score {
+    font-size: 1.4rem; /* Slightly smaller */
+}
+
+/* Scaling for Rank 1 Country Flag */
+.leaderboard-card.rank-1 .country-flag-container {
+    width: 90px; /* Slightly larger */
+    height: 90px; /* Slightly larger */
+    margin-bottom: 2rem; /* Adjusted margin */
+}
+.leaderboard-card.rank-1 .country-flag-container .country-flag-large {
+    width: 100%;
+    height: auto;
+}
+
+/* Scaling for Rank 3 Country Flag */
+.leaderboard-card.rank-3 .country-flag-container {
+    width: 70px; /* Slightly smaller */
+    height: 70px; /* Slightly smaller */
+    margin-bottom: 1.6rem; /* Adjusted margin */
+}
+.leaderboard-card.rank-3 .country-flag-container .country-flag-large {
+    width: 100%;
+    height: auto;
+}
+
+.view-full-leaderboard-btn {
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Responsive adjustments for leaderboard preview */
+@media (max-width: 768px) {
+    .leaderboard-preview-section {
+        padding: 1.5rem;
+        margin-top: 3rem;
+    }
+
+    .leaderboard-preview-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .leaderboard-cards-container {
+        flex-direction: column;
+        align-items: center; /* Revert alignment for vertical list */
+        gap: 1rem;
+        min-height: unset; /* Unset min-height */
+    }
+
+    .leaderboard-card,
+    .leaderboard-card.rank-1,
+    .leaderboard-card.rank-2,
+    .leaderboard-card.rank-3 {
+        order: 0; /* Reset order */
+        width: 80%;
+        max-width: 250px;
+        padding: 1rem;
+        transform: scale(1); /* Reset scale */
+    }
+
+    .leaderboard-card .rank {
+        font-size: 2rem;
+    }
+
+    .player-avatar-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .leaderboard-card .flag-icon {
+        width: 30px;
+        height: 20px;
+    }
+
+    .leaderboard-card .score {
+        font-size: 1.2rem;
+    }
+
+    .view-full-leaderboard-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .leaderboard-preview-section {
+        padding: 1rem;
+    }
+
+    .leaderboard-preview-title {
+        font-size: 1.3rem;
+    }
+
+    .leaderboard-card {
+        width: 90%;
+        padding: 0.8rem;
+    }
+
+    .player-avatar-container {
+        width: 50px;
+        height: 50px;
+    }
+
+    
+
+    .leaderboard-card .flag-icon {
+        width: 25px; /* Even smaller flag on extra small screens */
+        height: 17px;
+    }
+}
+
+.leaderboard-previews-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.leaderboard-preview-section {
+    flex: 1;
+    min-width: 300px; /* Adjust as needed */
+}

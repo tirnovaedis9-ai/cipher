@@ -1,0 +1,28 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin-bottom: 0 !important;
+}
+
+body {
+    font-family: var(--font-inter);
+    line-height: 1.7;
+    color: var(--color-text-light);
+    background-color: var(--color-background-dark);
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(var(--color-text-light), 0.05) 1px, transparent 0),
+        radial-gradient(circle at 10px 10px, rgba(var(--color-text-light), 0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+    overflow-x: hidden;
+    font-size: 16px;
+}
+
+/* No Scroll for Modals */
+body.no-scroll {
+    overflow: hidden;
+}

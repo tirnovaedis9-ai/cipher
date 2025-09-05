@@ -1,6 +1,7 @@
 module.exports = (io) => {
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const db = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 const { MESSAGE_MAX_LENGTH } = require('../constants');
@@ -10,8 +11,17 @@ const { JSDOM } = require('jsdom');
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
 
+// Rate limiting for chat operations
+const chatLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 30, // limit each IP to 30 chat operations per minute
+    message: 'Too many chat operations, please try again later.',
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // Edit a chat message
-router.put('/messages/:id', authenticateToken, async (req, res) => {
+router.put('/messages/:id', chatLimiter, authenticateToken, async (req, res) => {
     const { id } = req.params;
     let { message } = req.body;
     const senderId = req.user.id;
@@ -52,7 +62,7 @@ router.put('/messages/:id', authenticateToken, async (req, res) => {
 });
 
 // Delete a chat message
-router.delete('/messages/:id', authenticateToken, async (req, res) => {
+router.delete('/messages/:id', chatLimiter, authenticateToken, async (req, res) => {
     const { id } = req.params;
     const senderId = req.user.id;
 

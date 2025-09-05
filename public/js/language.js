@@ -69,15 +69,12 @@ function getTranslation(key, ...args) {
 
 function initializeLanguageSwitcher() {
     const languageButtons = {
-        desktop: document.getElementById('languageBtn'),
         mobile: document.getElementById('mobileLanguageBtn')
     };
     const languageDropdowns = {
-        desktop: document.getElementById('languageDropdown'),
         mobile: document.getElementById('mobileLanguageDropdown')
     };
     const currentFlags = {
-        desktop: document.getElementById('currentFlag'),
         mobile: document.getElementById('mobileCurrentFlag')
     };
 
@@ -98,16 +95,26 @@ function initializeLanguageSwitcher() {
         });
 
         dropdown.querySelectorAll('.language-option').forEach(option => {
-            option.addEventListener('click', (event) => {
+            option.addEventListener('click', async (event) => {
                 event.preventDefault();
                 const newLang = option.getAttribute('data-lang');
-                localStorage.setItem('selectedLanguage', newLang);
-                window.location.reload();
+                const currentLang = localStorage.getItem('selectedLanguage') || 'en';
+
+                if (newLang !== currentLang) {
+                    localStorage.setItem('selectedLanguage', newLang);
+                    document.documentElement.lang = newLang;
+                    await fetchTranslations(newLang);
+                    updateFlag(newLang);
+
+                    // Dispatch a custom event to notify other parts of the app
+                    document.dispatchEvent(new CustomEvent('languageChanged'));
+                }
+                
+                dropdown.classList.remove('show');
             });
         });
     };
 
-    setupSwitcher('desktop');
     setupSwitcher('mobile');
 
     const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
@@ -136,17 +143,12 @@ async function initializeLanguage() {
 
 function updateFlag(lang) {
     const currentFlags = {
-        desktop: document.getElementById('currentFlag'),
         mobile: document.getElementById('mobileCurrentFlag')
     };
     const option = document.querySelector(`.language-option[data-lang='${lang}']`);
     if (option) {
         const flagSrc = option.querySelector('img').src;
         const flagAlt = option.querySelector('img').alt;
-        if (currentFlags.desktop) {
-            currentFlags.desktop.src = flagSrc;
-            currentFlags.desktop.alt = flagAlt;
-        }
         if (currentFlags.mobile) {
             currentFlags.mobile.src = flagSrc;
             currentFlags.mobile.alt = flagAlt;
@@ -154,11 +156,15 @@ function updateFlag(lang) {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
     initializeLanguageSwitcher();
     initializeLanguage().then(() => {
         if (typeof updateProfileDisplay === 'function') {
             updateProfileDisplay(gameState.level);
+        }
+        if (typeof initializeLeaderboardPreviews === 'function') {
+            initializeLeaderboardPreviews();
         }
     });
 });

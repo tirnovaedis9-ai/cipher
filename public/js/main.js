@@ -6,8 +6,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     populateCountryDropdown();
     createTokenChart();
     setupEventListeners();
-    populateEmojiPicker();
+    setupEmojiPicker();
+    setupCountrySearch();
+
+    // Call the function to position the Play Game button on load
+    positionPlayGameButton();
 });
+
+// Call the function to position the Play Game button on window resize
+// Recalculate on resize
+window.addEventListener('resize', positionPlayGameButton);
+
+
 
 // This function is now removed from main.js as its logic is now in checkLoginStatus in auth.js
 /*
@@ -17,6 +27,7 @@ async function initializeApp() {
 */
 
 function setupEventListeners() {
+    setupCarousel();
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -26,6 +37,14 @@ function setupEventListeners() {
                     behavior: 'smooth',
                     block: 'start'
                 });
+            }
+
+            // Close the mobile menu if it's open
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('.nav');
+            if (mobileToggle && nav && mobileToggle.classList.contains('active')) {
+                mobileToggle.classList.remove('active');
+                nav.classList.remove('active');
             }
         });
     });
@@ -38,6 +57,18 @@ function setupEventListeners() {
             mobileToggle.classList.toggle('active');
             nav.classList.toggle('active');
         });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            // Check if the click is outside the mobile toggle button and the navigation menu
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickInsideToggle = mobileToggle.contains(event.target);
+
+            if (nav.classList.contains('active') && !isClickInsideNav && !isClickInsideToggle) {
+                mobileToggle.classList.remove('active');
+                nav.classList.remove('active');
+            }
+        });
     }
 
     const gameBtns = document.querySelectorAll('.game-btn, .play-game-btn');
@@ -47,6 +78,7 @@ function setupEventListeners() {
 
     document.getElementById('gameModal').addEventListener('click', function(e) {
         if (e.target === this) {
+            // Close game modal when clicking outside the game content
             closeGame();
         }
     });
@@ -71,6 +103,7 @@ function setupEventListeners() {
 
     document.getElementById('playerInfoModal').addEventListener('click', function(e) {
         if (e.target === this) {
+            // Close player info modal when clicking outside
             closePlayerInfoModal();
         }
     });
@@ -81,6 +114,16 @@ function setupEventListeners() {
 
     window.addEventListener('scroll', function() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Handle the new dynamic island header
+        const dynamicHeader = document.getElementById('desktop-header-container');
+        if (dynamicHeader) {
+            if (scrollTop > 50) { // A small threshold
+                dynamicHeader.classList.add('scrolled');
+            } else {
+                dynamicHeader.classList.remove('scrolled');
+            }
+        }
 
         if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
             header.classList.add('header-hidden');
@@ -116,10 +159,7 @@ function setupEventListeners() {
             sendMessage();
         }
     });
-    document.getElementById('emojiBtn').addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent the click from closing the picker immediately
-            toggleEmojiPicker();
-        });
+    
 
         const showChatRoomsBtn = document.getElementById('showChatRoomsBtn');
         const showActiveUsersBtn = document.getElementById('showActiveUsersBtn');
@@ -182,7 +222,6 @@ function setupEventListeners() {
         myProfileBtn.addEventListener('click', () => {
             if (gameState.isLoggedIn) {
                 showScreen('profileScreen');
-                populateMyProfileData(); // Yeni eklenecek fonksiyon
             } else {
                 openPlayerInfoModal();
             }
@@ -260,6 +299,21 @@ function setupEventListeners() {
         closeImageCropperBtn.addEventListener('click', closeImageCropper);
     }
 
+    const casualGamesBtn = document.getElementById('casualGamesBtn');
+    if (casualGamesBtn) {
+        casualGamesBtn.addEventListener('click', openCasualGamesModal);
+    }
+
+    const closeCasualGamesModalBtn = document.querySelector('#casualGamesModal .close-game');
+    if (closeCasualGamesModalBtn) {
+        closeCasualGamesModalBtn.addEventListener('click', closeCasualGamesModal);
+    }
+
+    const casualGamesBackBtn = document.getElementById('casualGamesBackBtn');
+    if (casualGamesBackBtn) {
+        casualGamesBackBtn.addEventListener('click', closeCasualGamesModal);
+    }
+
     window.addEventListener('mouseup', () => {
         if (gameState.isPainting) {
             gameState.isPainting = false;
@@ -274,6 +328,54 @@ function setupEventListeners() {
             emojiPicker.classList.remove('show');
         }
     });
+
+    const copyContractBtn = document.getElementById('copyContractBtn');
+    if (copyContractBtn) {
+        copyContractBtn.addEventListener('click', () => {
+            const contractAddress = document.getElementById('contractAddress').textContent;
+            navigator.clipboard.writeText(contractAddress).then(() => {
+                showNotification(getTranslation('addressCopiedSuccess'), 'success');
+                const icon = copyContractBtn.querySelector('i');
+                icon.classList.remove('fa-copy');
+                icon.classList.add('fa-check');
+                setTimeout(() => {
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-copy');
+                }, 2000);
+            }).catch(err => {
+                showNotification(getTranslation('addressCopiedFailed'), 'error');
+                console.error('Failed to copy text: ', err);
+            });
+        });
+    }
+    // Image Modal Logic
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const socialItems = document.querySelectorAll('.social-item');
+    const closeModal = document.querySelector('.close-image-modal');
+
+    if (modal && modalImg && closeModal && socialItems.length > 0) {
+        socialItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    modal.style.display = 'flex';
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt;
+                }
+            });
+        });
+
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
 }
 
 // Export functions for global access
@@ -305,6 +407,8 @@ window.enableMessageEdit = enableMessageEdit;
 window.deleteMessage = deleteMessage;
 window.populateMyProfileData = populateMyProfileData;
 window.goBack = goBack;
+window.openCasualGamesModal = openCasualGamesModal;
+window.closeCasualGamesModal = closeCasualGamesModal;
 
 function showChatSidebarTab(tabName) {
     const chatRoomsContent = document.getElementById('chatRoomsContent');
@@ -324,4 +428,88 @@ function showChatSidebarTab(tabName) {
         showActiveUsersBtn.classList.add('active');
         // Optionally, fetch and update active users here if not already handled by socket.io
     }
+}
+
+// Function to dynamically position the Play Game button
+function positionPlayGameButton() {
+    const dynamicIsland = document.getElementById('dynamic-island-nav');
+    const playGameButton = document.getElementById('headerPlayGameBtnDesktop');
+    const desktopHeaderContainer = document.getElementById('desktop-header-container');
+
+    // Only apply this logic on desktop and if elements exist
+    if (!dynamicIsland || !playGameButton || !desktopHeaderContainer || window.innerWidth <= 768) {
+        // Reset button position if not on desktop or elements not found
+        if (playGameButton) {
+            playGameButton.style.left = '';
+            playGameButton.style.right = ''; // Clear any previous right setting
+        }
+        return;
+    }
+
+    const containerRect = desktopHeaderContainer.getBoundingClientRect();
+    const islandRect = dynamicIsland.getBoundingClientRect();
+    const buttonRect = playGameButton.getBoundingClientRect();
+
+    // The center of the space between the island's right edge and the screen's right edge, in viewport coordinates
+    const targetButtonCenterXViewport = (islandRect.right + window.innerWidth) / 2;
+
+    // Convert the target center to be relative to the container
+    const targetButtonCenterXRelativeToContainer = targetButtonCenterXViewport - containerRect.left;
+
+    // Calculate the new 'left' position for the button
+    const newButtonLeft = targetButtonCenterXRelativeToContainer - (buttonRect.width / 2);
+
+    playGameButton.style.left = `${newButtonLeft}px`;
+    playGameButton.style.right = 'auto'; // Ensure right property is cleared
+
+    // Make the button visible after positioning to avoid FOUC
+    playGameButton.style.opacity = '1';
+}
+
+function setupCarousel() {
+    const carousel = document.querySelector('.casual-games-carousel');
+    const paginationContainer = document.querySelector('.carousel-pagination');
+    const gameCards = document.querySelectorAll('.game-card');
+
+    if (!carousel || !paginationContainer || gameCards.length === 0) {
+        return;
+    }
+
+    // Create dots
+    gameCards.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.classList.add('dot');
+        if (index === 0) {
+            dot.classList.add('active');
+        }
+        dot.addEventListener('click', () => {
+            scrollToCard(index);
+        });
+        paginationContainer.appendChild(dot);
+    });
+
+    const dots = paginationContainer.querySelectorAll('.dot');
+
+    function scrollToCard(index) {
+        carousel.scrollTo({
+            left: gameCards[index].offsetLeft,
+            behavior: 'smooth'
+        });
+    }
+
+    function updatePagination() {
+        const scrollLeft = carousel.scrollLeft;
+        const cardWidth = gameCards[0].offsetWidth;
+        const activeIndex = Math.round(scrollLeft / cardWidth);
+        
+        dots.forEach((dot, index) => {
+            if (index === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    carousel.addEventListener('scroll', updatePagination);
 }

@@ -1,0 +1,121 @@
+/*
+ * Dynamic Island Header Styles
+ * ----------------------------
+ * This file contains styles for the new desktop-only header.
+ */
+
+/* Hide the new desktop header by default */
+#desktop-header-container {
+    display: none;
+}
+
+/* Media query for desktop screens */
+@media (min-width: 769px) {
+
+    /* 1. Hide the original mobile/tablet header on desktop */
+    .header {
+        display: none !important; /* Use !important to ensure it's hidden */
+    }
+
+    /* 2. Style the main container for the new desktop header */
+    #desktop-header-container {
+        display: flex;
+        justify-content: center; /* Changed to center */
+        align-items: center;
+        position: fixed;
+        top: 1.5rem; /* Add some space from the top */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        z-index: 1001;
+        pointer-events: none; /* Allow clicks to pass through the container */
+        transition: top 0.3s ease;
+        padding: 0; /* Added padding for absolute children */
+    }
+
+    /* When scrolled, move it to the top */
+    #desktop-header-container.scrolled {
+        top: 1rem;
+    }
+
+    /* 3. Style the individual elements to be clickable */
+    #desktop-header-container > * {
+        pointer-events: auto; /* Make direct children clickable */
+    }
+
+    /* Positioning for Logo and Play Button */
+    .dynamic-logo {
+        position: absolute; /* Position independently */
+        left: 1.5rem;
+        top: 0.49rem; /* Changed */
+        bottom: 0; /* Added */
+        margin: auto; /* Added */
+    }
+
+    .dynamic-play-btn {
+        position: absolute; /* Position independently */
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        transform: none !important; /* Remove any inherited transforms */
+        height: fit-content; /* Ensure height adapts to content */
+        line-height: 1; /* Ensure text line height doesn't add extra space */
+        padding: 0.9rem 1.5rem !important; /* Reduced by 10% */
+        font-size: 0.9rem;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .dynamic-play-btn:active {
+        transform: none !important; /* Ensure no transform on click */
+    }
+
+    .dynamic-play-btn span { /* Target the span inside the button */
+        line-height: 1; /* Ensure the text itself has no extra line height */
+    }
+
+    /* 4. Style the Dynamic Island navigation (REVERTED TO ORIGINAL STATE) */
+    #dynamic-island-nav {
+        display: flex;
+        gap: 0.3rem; /* Space between nav links */
+        background: var(--color-black); 
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--rgba-text-light-10);
+        padding: 0.5rem 0.7rem 0.5rem 3rem; /* Increased left padding to 3rem */
+        border-radius: var(--border-radius-pill);
+        box-shadow: var(--shadow-black-md);
+        margin: 0 auto; /* Ensure it's centered in flex container */
+    }
+
+    #dynamic-island-nav #theme-toggle-desktop {
+        /* Removed order and margin-right */
+    }
+
+    #dynamic-island-nav .nav-link {
+        padding: 0.4rem 0.8rem;
+        border-radius: var(--border-radius-pill);
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #dynamic-island-nav .nav-link:hover {
+        background-color: var(--rgba-white-10);
+        color: var(--color-white);
+    }
+    
+    /* Remove the underline effect from the base style for the island nav */
+    #dynamic-island-nav .nav-link::after {
+        display: none;
+        font-size: 0.9rem;
+    }
+
+    #dynamic-island-nav {
+        position: relative; /* Ensure positioning context for absolute children */
+    }
+
+    #dynamic-island-nav #theme-toggle-desktop {
+        position: absolute;
+        left: 0.5rem; /* Moved further left */
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1; /* Ensure it's above nav links if needed */
+    }
+}
