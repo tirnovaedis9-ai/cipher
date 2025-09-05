@@ -20,5 +20,4 @@ yarn-error.log*
 database.sqlite
 database.test.sqlite
 
-# Uploads
-/uploads
+
