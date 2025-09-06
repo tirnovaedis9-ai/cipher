@@ -126,7 +126,7 @@ async function initializeLanguage() {
 
     if (!selectedLanguage) {
         const browserLang = navigator.language.split('-')[0];
-        const supportedLanguages = ['en', 'tr', 'de', 'ko', 'ar', 'es', 'fr', 'it', 'ja', 'ru', 'zh']; 
+        const supportedLanguages = ['en', 'tr', 'de', 'ko', 'ar', 'es', 'fr', 'it', 'ja', 'ru', 'zh', 'zh-TW', 'hi', 'pt', 'bn', 'id', 'ur', 'vi', 'pl', 'nl', 'th', 'fa', 'sw', 'ms', 'ro', 'el', 'cs', 'hu', 'sv', 'no', 'da']; 
         if (supportedLanguages.includes(browserLang)) {
             selectedLanguage = browserLang;
         } else {

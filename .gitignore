@@ -20,4 +20,7 @@ yarn-error.log*
 database.sqlite
 database.test.sqlite
 
+# User uploads
+/uploads
+
 

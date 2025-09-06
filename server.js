@@ -37,7 +37,7 @@ app.use(
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
             "script-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "'unsafe-eval'"],
             "style-src": ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
-            "img-src": ["'self'", "data:"],
+            "img-src": ["'self'", "data:", "https://res.cloudinary.com"], // Added Cloudinary to image sources
             "font-src": ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
             "connect-src": ["'self'", "ws:", "wss:", "https://ipapi.co", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"], // Added wss: for secure websockets
         },
@@ -52,13 +52,12 @@ if (process.env.NODE_ENV === 'production') {
         message: 'Too many requests from this IP, please try again later.',
         standardHeaders: true,
         legacyHeaders: false,
-        // Skip rate limiting for static files
+        // Skip rate limiting for static files (uploads path removed)
         skip: (req) => {
             return req.path.includes('/favicon.ico') || 
                    req.path.includes('/assets/') || 
                    req.path.includes('/css/') || 
-                   req.path.includes('/js/') ||
-                   req.path.includes('/uploads/');
+                   req.path.includes('/js/');
         }
     });
     app.use(generalLimiter);
@@ -68,7 +67,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); // Serve all static files from the public directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
 
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');

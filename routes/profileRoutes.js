@@ -3,40 +3,35 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const db = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 const { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, PASSWORD_MIN_LENGTH } = require('../constants');
 const { updateLeaderboardView } = require('../update_leaderboard_view');
+const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
 
-// --- Multer Setup for Avatar Uploads ---
-const avatarUploadPath = path.join(__dirname, '../uploads/avatars');
-
-// Ensure the upload directory exists
-if (!fs.existsSync(avatarUploadPath)) {
-    fs.mkdirSync(avatarUploadPath, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, avatarUploadPath);
-    },
-    filename: function (req, file, cb) {
-        // Create a unique filename to avoid overwrites
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, req.user.id + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
+// --- Cloudinary Configuration ---
+// Configure Cloudinary using environment variables
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// --- Multer Setup for In-Memory File Storage ---
+// We use memoryStorage because we are going to upload the file buffer directly to Cloudinary
+// instead of saving it to disk first.
+const storage = multer.memoryStorage();
+
 const fileFilter = (req, file, cb) => {
-    // Check file extension
+    // Allowed file extensions
     const allowedExtensions = /\.(jpg|jpeg|png|gif)$/i;
     if (!file.originalname.match(allowedExtensions)) {
         req.fileValidationError = 'Only image files (jpg, jpeg, png, gif) are allowed!';
         return cb(new Error('Only image files are allowed!'), false);
     }
     
-    // Check MIME type for additional security
+    // Allowed MIME types
     const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (!allowedMimeTypes.includes(file.mimetype)) {
         req.fileValidationError = 'Invalid file type!';
@@ -52,11 +47,38 @@ const upload = multer({
     fileFilter: fileFilter
 }).single('avatar'); // 'avatar' is the name of the form field
 
+
+// --- Cloudinary Upload Function ---
+const uploadToCloudinary = (fileBuffer, playerId) => {
+    return new Promise((resolve, reject) => {
+        // Use the player's ID to create a unique public_id for the image
+        // This makes it easy to find and delete old avatars
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { 
+                folder: 'avatars', // Optional: store images in a folder named 'avatars' in Cloudinary
+                public_id: playerId, // Use player's ID as the main identifier
+                overwrite: true, // Overwrite the image if one with the same public_id already exists
+                format: 'jpg' // Convert all uploads to a standard format
+            },
+            (error, result) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(result);
+            }
+        );
+        // Pipe the file buffer from memory into the Cloudinary upload stream
+        streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+    });
+};
+
+
 // --- Routes ---
 
 // Avatar Upload Route
 router.post('/avatar', authenticateToken, (req, res) => {
     upload(req, res, async function (err) {
+        // Handle validation and multer errors
         if (req.fileValidationError) {
             return res.status(400).json({ message: req.fileValidationError });
         }
@@ -74,37 +96,28 @@ router.post('/avatar', authenticateToken, (req, res) => {
         }
 
         try {
-            // Get old avatar URL to delete it
-            const result = await db.query('SELECT avatarurl FROM players WHERE id = $1', [req.user.id]);
-            const player = result.rows[0];
-            const oldAvatarPath = player ? player.avatarurl : null;
+            // --- No need to get old avatar path for deletion from filesystem ---
+            // Cloudinary will handle overwriting the image using the public_id (player's ID)
 
-            // Update database with the new avatar URL
-            const newAvatarUrl = `uploads/avatars/${req.file.filename}`.replace(/\\/g, '/');
+            // Upload the new avatar to Cloudinary
+            const cloudinaryResult = await uploadToCloudinary(req.file.buffer, req.user.id);
+            const newAvatarUrl = cloudinaryResult.secure_url;
+
+            // Update database with the new Cloudinary URL
             await db.query('UPDATE players SET avatarUrl = $1 WHERE id = $2', [newAvatarUrl, req.user.id]);
             console.log(`[DEBUG] Avatar updated in DB for user ${req.user.id}. New URL: ${newAvatarUrl}`);
 
-            // Manually trigger leaderboard view refresh after avatar update
-            updateLeaderboardView().catch(err => {
-                // Log the error but don't block the response to the user
-                console.error('[ERROR] Failed to refresh leaderboard view on-demand:', err);
-            });
-
-            // If there was an old avatar and it's a user-uploaded one, delete it
-            if (oldAvatarPath && oldAvatarPath.startsWith('uploads/avatars/')) {
-                const oldAvatarFullPath = path.join(__dirname, '..', oldAvatarPath);
-                if (fs.existsSync(oldAvatarFullPath)) {
-                    fs.unlinkSync(oldAvatarFullPath);
-                }
-            }
+            // Manually trigger leaderboard view refresh
+            updateLeaderboardView().catch(console.error);
 
             res.json({
                 message: 'Avatar updated successfully',
                 avatarUrl: newAvatarUrl
             });
-        } catch (dbErr) {
-            console.error('DB update error after avatar upload:', dbErr);
-            res.status(500).json({ message: 'Could not update avatar in the database.' });
+
+        } catch (uploadErr) {
+            console.error('Error during Cloudinary upload or DB update:', uploadErr);
+            res.status(500).json({ message: 'Could not upload avatar.' });
         }
     });
 });
@@ -122,8 +135,8 @@ router.get('/players/:id', async (req, res) => {
                 avatarurl,
                 createdat,
                 level,
-                highestScore, -- Fetched directly from the new column
-                gameCount     -- Fetched directly from the new column
+                highestScore,
+                gameCount
             FROM
                 players
             WHERE
@@ -152,7 +165,7 @@ router.get('/players/:id', async (req, res) => {
 router.get('/players/:id/scores', async (req, res) => {
     const { id } = req.params;
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 scores per page
+    const limit = parseInt(req.query.limit, 10) || 10;
     const offset = (page - 1) * limit;
 
     try {
@@ -190,7 +203,7 @@ router.put('/username', authenticateToken, async (req, res) => {
         res.json({ message: 'Username updated successfully', newUsername });
     } catch (err) {
         console.error('Username update error:', err);
-        if (err.code === '23505' || err.message.includes('UNIQUE constraint failed')) { // 23505 is unique_violation for PG
+        if (err.code === '23505' || err.message.includes('UNIQUE constraint failed')) {
             return res.status(409).json({ message: 'Username already taken' });
         }
         return res.status(500).json({ message: 'An unexpected error occurred during username update.' });
